@@ -1,1 +1,1 @@
-git init# chow-tracker
+# chow-tracker
