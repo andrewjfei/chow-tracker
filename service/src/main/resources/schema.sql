@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS chow (
                                                 'ITALIAN',
                                                 'JAPANESE',
                                                 'GREEK',
-                                                'THAI',
                                                 'INDIAN',
                                                 'AMERICAN'
                                     )           DEFAULT         'OTHER',
@@ -38,7 +37,7 @@ CREATE TABLE IF NOT EXISTS chow (
                                                 'HAMILTON',
                                                 'CHRISTCHURCH'
                                     )           DEFAULT         'CENTRAL_AUCKLAND',
-    has_been        INT             NOT NULL,
+    has_been        INT             DEFAULT     0,
     created         DATETIME        NOT NULL,
     FOREIGN KEY     (user_id)       REFERENCES  user(id)
 );

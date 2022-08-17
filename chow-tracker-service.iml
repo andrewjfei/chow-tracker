@@ -4,10 +4,11 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$/service">
       <sourceFolder url="file://$MODULE_DIR$/service/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/service/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/service/src/test" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/service/src/main/resources" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/service/src/test" type="java-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/service/src/main/resources" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="openjdk-18" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
