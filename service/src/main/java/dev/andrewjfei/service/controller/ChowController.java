@@ -99,4 +99,13 @@ public class ChowController {
 
         return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
     }
+
+    @GetMapping("/ranking/area")
+    public ResponseEntity<List<RankingItemDto>> getChowListAreaRanking(HttpServletRequest request, @RequestParam int limit) {
+        String userId = RequestUtil.getUserIdAttribute(request);
+
+        List<RankingItemDto> rankingItemDtoList = chowService.retrieveChowListAreaRanking(userId, limit);
+
+        return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
+    }
 }

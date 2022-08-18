@@ -415,6 +415,35 @@ public class ChowControllerIT {
     /*************************************** Get Chow List By Area Ranking ***************************************/
     /*************************************************************************************************************/
 
+    @Test
+    public void getChowListByAreaRanking_success_returnsRankingItemList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("limit", String.valueOf(LIMIT));
+
+        // When
+        ResponseEntity<List<RankingItemDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "/ranking/area?limit={limit}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(LIMIT, response.getBody().size());
+    }
+
     /**********************************************************************************************/
     /*************************************** Helper Methods ***************************************/
     /**********************************************************************************************/
