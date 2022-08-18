@@ -13,7 +13,7 @@ import java.security.interfaces.RSAPublicKey;
 public class KeyGenerator {
 
     private static KeyPairGenerator keyPairGenerator;
-    private static final Integer keySize = 2048;
+    private static final int keySize = 2048;
     private static KeyPair rsaKeyPair;
 
     private static void generateRSAKeyPair() {

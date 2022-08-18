@@ -43,7 +43,7 @@ public class ChowDao {
     private Area area = Area.CENTRAL_AUCKLAND;
 
     @Column(name = "[has_been]", columnDefinition = "INT", nullable = false)
-    private Integer hasBeen = 0;
+    private int hasBeen = 0;
 
     @Column(name = "[created]", columnDefinition = "DATETIME", nullable = false)
     private LocalDateTime created = LocalDateTime.now();
@@ -108,11 +108,11 @@ public class ChowDao {
         this.area = area;
     }
 
-    public Integer getHasBeen() {
+    public int getHasBeen() {
         return hasBeen;
     }
 
-    public void setHasBeen(Integer hasBeen) {
+    public void setHasBeen(int hasBeen) {
         this.hasBeen = hasBeen;
     }
 

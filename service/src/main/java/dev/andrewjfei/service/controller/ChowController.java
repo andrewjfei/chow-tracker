@@ -2,6 +2,7 @@ package dev.andrewjfei.service.controller;
 
 import dev.andrewjfei.service.dto.ChowDto;
 import dev.andrewjfei.service.dto.NewChowDto;
+import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.service.ChowService;
 import dev.andrewjfei.service.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,10 @@ public class ChowController {
 
     @Autowired
     private ChowService chowService;
+
+    /*****************************************************************************************/
+    /*************************************** CRUD APIs ***************************************/
+    /*****************************************************************************************/
 
     @PostMapping
     public ResponseEntity<ChowDto> addNewChow(HttpServletRequest request, @RequestBody NewChowDto newChowDto) {
@@ -39,9 +45,9 @@ public class ChowController {
     public ResponseEntity<List<ChowDto>> getChowListByUserId(HttpServletRequest request) {
         String userId = RequestUtil.getUserIdAttribute(request);
 
-        List<ChowDto> chowDTOList = chowService.retrieveChowListByUserId(userId);
+        List<ChowDto> chowDtoList = chowService.retrieveChowListByUserId(userId);
 
-        return new ResponseEntity<>(chowDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(chowDtoList, HttpStatus.OK);
     }
 
     @PutMapping("/{chowId}")
@@ -56,10 +62,23 @@ public class ChowController {
     }
 
     @DeleteMapping("/{chowId}")
-    public ResponseEntity<Void> removeChow( HttpServletRequest request, @PathVariable String chowId) {
+    public ResponseEntity<Void> removeChow(HttpServletRequest request, @PathVariable String chowId) {
         RequestUtil.validateRequest(request);
 
         chowService.deleteChow(chowId);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /********************************************************************************************/
+    /*************************************** Ranking APIs ***************************************/
+    /********************************************************************************************/
+
+    @GetMapping("/ranking/popularity")
+    public ResponseEntity<List<RankingItemDto>> getChowListPopularityRanking(HttpServletRequest request, @RequestParam int limit) {
+        String userId = RequestUtil.getUserIdAttribute(request);
+
+        List<RankingItemDto> rankingItemDtoList = chowService.retrieveChowListPopularityRanking(userId, limit);
+
+        return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
     }
 }

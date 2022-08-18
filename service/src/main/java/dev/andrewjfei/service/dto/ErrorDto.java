@@ -1,12 +1,12 @@
 package dev.andrewjfei.service.dto;
 
 public record ErrorDto(
-        Integer code,
+        int code,
         String description
 ) {
 
     @Override
-    public Integer code() {
+    public int code() {
         return code;
     }
 

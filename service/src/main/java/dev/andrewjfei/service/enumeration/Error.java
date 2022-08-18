@@ -15,10 +15,10 @@ public enum Error {
     PASSWORD_MISMATCH(11, "Password and confirmed password do not match."),
     CHOW_NAME_EXISTS(12,"Chow name already exists.");
 
-    public final Integer errorCode;
+    public final int errorCode;
     public final String description;
 
-    Error(Integer errorCode, String description) {
+    Error(int errorCode, String description) {
         this.errorCode = errorCode;
         this.description = description;
     }
