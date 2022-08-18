@@ -37,7 +37,7 @@
 -- Chow Table
 | id          | user_id     | name        | cuisine | price_range | area | has_been | created  |
 | ----------- | ----------- | ----------- | ------- | ----------- | ---- | -------- | -------- |
-| VARCHAR(60) | VARCHAR(60) | VARCHAR(16) | ENUM    | ENUM        | ENUM | INT      | DATETIME |
+| VARCHAR(60) | VARCHAR(60) | VARCHAR(32) | ENUM    | ENUM        | ENUM | INT      | DATETIME |
 ```
 
 
@@ -51,26 +51,26 @@
 | HTTP Request/Response | Value                                          |
 | --------------------- | ---------------------------------------------- |
 | **HTTP Method**       | POST                                           |
-| **URI**               | /api/user/register                             |
+| **URI**               | /api/user                                      |
 | **Headers**           | -                                              |
 | **Query Params**      | -                                              |
 | **Request Body**      | username, firstName, lastName, email, password |
-| **Response Body**     | -                                              |
+| **Response Body**     | username, firstName, lastName, email, token    |
 | **Response Status**   | `201 CREATED`,  `400 BAD_REQUEST`              |
 
 
 
 #### Login
 
-| HTTP Request/Response | Value                                |
-| --------------------- | ------------------------------------ |
-| **HTTP Method**       | GET                                  |
-| **URI**               | /api/auth/login                      |
-| **Headers**           | -                                    |
-| **Query Params**      | -                                    |
-| **Request Body**      | username, email, password            |
-| **Response Body**     | username, firstName, lastName, email |
-| **Response Status**   | `200 OK`,  `401 UNAUTHORIZED`        |
+| HTTP Request/Response | Value                                       |
+| --------------------- | ------------------------------------------- |
+| **HTTP Method**       | GET                                         |
+| **URI**               | /api/auth/login                             |
+| **Headers**           | -                                           |
+| **Query Params**      | -                                           |
+| **Request Body**      | username, email, password                   |
+| **Response Body**     | username, firstName, lastName, email, token |
+| **Response Status**   | `200 OK`,  `401 UNAUTHORIZED`               |
 
 
 
