@@ -90,4 +90,13 @@ public class ChowController {
 
         return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
     }
+
+    @GetMapping("/ranking/price-range")
+    public ResponseEntity<List<RankingItemDto>> getChowListPriceRangeRanking(HttpServletRequest request, @RequestParam int limit) {
+        String userId = RequestUtil.getUserIdAttribute(request);
+
+        List<RankingItemDto> rankingItemDtoList = chowService.retrieveChowListPriceRangeRanking(userId, limit);
+
+        return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
+    }
 }

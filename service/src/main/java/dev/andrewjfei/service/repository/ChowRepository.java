@@ -41,7 +41,7 @@ public interface ChowRepository extends CrudRepository<ChowDao, String> {
 
     @Query(
             value = "SELECT \"price_range\" as \"itemName\", SUM(\"has_been\") as \"hasBeen\" " +
-                    "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"price_range\" ORDER BY \"has_been\" " +
+                    "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"price_range\" ORDER BY \"hasBeen\" " +
                     "DESC LIMIT :limit",
             nativeQuery = true
     )
@@ -49,7 +49,7 @@ public interface ChowRepository extends CrudRepository<ChowDao, String> {
 
     @Query(
             value = "SELECT \"area\" as \"itemName\", SUM(\"has_been\") as \"hasBeen\" " +
-                    "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"area\" ORDER BY \"has_been\" " +
+                    "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"area\" ORDER BY \"hasBeen\" " +
                     "DESC LIMIT :limit",
             nativeQuery = true
     )

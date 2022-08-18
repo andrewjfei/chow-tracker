@@ -117,6 +117,17 @@ public class ChowService {
         return toRankingItemList(rankingItemDaoList);
     }
 
+    public List<RankingItemDto> retrieveChowListPriceRangeRanking(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> rankingItemDaoList = chowRepository.retrieveChowListByPriceRangeRanking(userId, limit);
+
+        return toRankingItemList(rankingItemDaoList);
+    }
+
     /**********************************************************************************************/
     /*************************************** Helper Methods ***************************************/
     /**********************************************************************************************/
