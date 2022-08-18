@@ -1,19 +1,22 @@
 package dev.andrewjfei.service.controller;
 
-import dev.andrewjfei.service.dao.ChowDAO;
-import dev.andrewjfei.service.dto.ChowDTO;
+import dev.andrewjfei.service.dto.ChowDto;
+import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.service.ChowService;
+import dev.andrewjfei.service.util.RequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -24,30 +27,39 @@ public class ChowController {
     private ChowService chowService;
 
     @PostMapping
-    public ResponseEntity<Void> addNewChow(@RequestBody ChowDAO chowDAO) {
-        chowService.createNewChow(chowDAO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<ChowDto> addNewChow(HttpServletRequest request, @RequestBody NewChowDto newChowDto) {
+        String userId = RequestUtil.getUserIdAttribute(request);
+
+        ChowDto chowDto = chowService.createNewChow(userId, newChowDto);
+
+        return new ResponseEntity<>(chowDto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<ChowDTO>> getChowListByUserId() {
-        // TODO: Get user id from token
+    public ResponseEntity<List<ChowDto>> getChowListByUserId(HttpServletRequest request) {
+        String userId = RequestUtil.getUserIdAttribute(request);
 
-        List<ChowDTO> chowList = chowService.retrieveChowListByUserId("TEST");
+        List<ChowDto> chowDTOList = chowService.retrieveChowListByUserId(userId);
 
-        return new ResponseEntity<>(chowList, HttpStatus.OK);
+        return new ResponseEntity<>(chowDTOList, HttpStatus.OK);
     }
 
     @PutMapping("/{chowId}")
-    public ResponseEntity<Void> modifyChow(@RequestBody ChowDAO chowDAO, @RequestParam String chowId) {
-        chowService.updateChow(chowDAO, chowId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ChowDto> modifyChow(
+            HttpServletRequest request,
+            @RequestBody NewChowDto newChowDto,
+            @PathVariable String chowId) {
+        RequestUtil.validateRequest(request);
+        ChowDto chowDto = chowService.updateChow(newChowDto, chowId);
+
+        return new ResponseEntity<>(chowDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{chowId}")
-    public ResponseEntity<Void> deleteChow(@RequestParam String chowId) {
+    @DeleteMapping("/{chowId}")
+    public ResponseEntity<Void> removeChow( HttpServletRequest request, @PathVariable String chowId) {
+        RequestUtil.validateRequest(request);
+
         chowService.deleteChow(chowId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

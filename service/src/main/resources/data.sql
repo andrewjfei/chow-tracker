@@ -1,0 +1,15 @@
+-- User Records (Size = 4)
+INSERT INTO "user" ("id", "username", "first_name", "last_name", "email", "password", "created") VALUES ('244fdf66-429e-4d1b-9152-616775172e01', 'bobbyjones', 'Bobby', 'Jones', 'bobbyjones@test.com', '$2a$10$CxfwdprlNE2c2RFX.QtfseTAGoPCCvg2Uc7/jR944ueJMWa94Ydky', CURRENT_TIMESTAMP);
+INSERT INTO "user" ("id", "username", "first_name", "last_name", "email", "password", "created") VALUES ('84aa2a35-00ae-43e3-8103-e648807a303c', 'staceywang', 'Stacey', 'Wang', 'staceywang@test.com', '$2a$10$CxfwdprlNE2c2RFX.QtfseTAGoPCCvg2Uc7/jR944ueJMWa94Ydky', CURRENT_TIMESTAMP);
+INSERT INTO "user" ("id", "username", "first_name", "last_name", "email", "password", "created") VALUES ('fcced5c2-410d-4de9-ba61-b3d2823949d7', 'jeymann', 'Jey', 'Mann', 'jeymann@test.com', '$2a$10$CxfwdprlNE2c2RFX.QtfseTAGoPCCvg2Uc7/jR944ueJMWa94Ydky', CURRENT_TIMESTAMP);
+INSERT INTO "user" ("id", "username", "first_name", "last_name", "email", "password", "created") VALUES ('8fb095a8-2f2a-4052-9c56-bb1da36f0fc8', 'alexbrown', 'Alex', 'Brown', 'alexbrown@test.com', '$2a$10$CxfwdprlNE2c2RFX.QtfseTAGoPCCvg2Uc7/jR944ueJMWa94Ydky', CURRENT_TIMESTAMP);
+
+-- Chow Records
+
+-- Bobby Jones (Size = 6)
+INSERT INTO "chow" ("id", "user_id", "name", "cuisine", "price_range", "area", "has_been", "created") VALUES ('b4d8d043-1e9d-4977-89e0-53480a327f89', '244fdf66-429e-4d1b-9152-616775172e01', 'Botany McDonald''s', 'AMERICAN', 'LOW', 'EAST_AUCKLAND', 10, CURRENT_TIMESTAMP - 10 DAY);
+INSERT INTO "chow" ("id", "user_id", "name", "cuisine", "price_range", "area", "has_been", "created") VALUES ('58e124c2-c494-44d7-ab39-9ac0f96b1c16', '244fdf66-429e-4d1b-9152-616775172e01', 'Gochu', 'KOREAN', 'MEDIUM', 'CENTRAL_AUCKLAND', 2, CURRENT_TIMESTAMP - 8 DAY);
+INSERT INTO "chow" ("id", "user_id", "name", "cuisine", "price_range", "area", "has_been", "created") VALUES ('28e0b33b-be4a-47a6-9638-d39327209949', '244fdf66-429e-4d1b-9152-616775172e01', 'Pakuranga KFC', 'AMERICAN', 'LOW', 'EAST_AUCKLAND', 5, CURRENT_TIMESTAMP - 7 DAY);
+INSERT INTO "chow" ("id", "user_id", "name", "cuisine", "price_range", "area", "has_been", "created") VALUES ('de458535-91be-4b48-be6a-914b09ff7203', '244fdf66-429e-4d1b-9152-616775172e01', 'Botany Subway', 'AMERICAN', 'LOW', 'EAST_AUCKLAND', 7, CURRENT_TIMESTAMP - 6 DAY);
+INSERT INTO "chow" ("id", "user_id", "name", "cuisine", "price_range", "area", "has_been", "created") VALUES ('bb513921-01b8-4981-b7d3-26ed721ff818', '244fdf66-429e-4d1b-9152-616775172e01', 'Mighty Dog', 'KOREAN', 'LOW', 'CENTRAL_AUCKLAND', 4, CURRENT_TIMESTAMP - 5 DAY);
+INSERT INTO "chow" ("id", "user_id", "name", "cuisine", "price_range", "area", "has_been", "created") VALUES ('074423ff-3115-47bb-a6f5-9a3abc701a95', '244fdf66-429e-4d1b-9152-616775172e01', 'Machi Machi', 'CHINESE', 'LOW', 'NORTH_AUCKLAND', 2, CURRENT_TIMESTAMP - 2 DAY);

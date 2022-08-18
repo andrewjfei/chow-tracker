@@ -3,47 +3,56 @@ package dev.andrewjfei.service.dao;
 import dev.andrewjfei.service.enumeration.Area;
 import dev.andrewjfei.service.enumeration.Cuisine;
 import dev.andrewjfei.service.enumeration.PriceRange;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chow")
-public class ChowDAO {
+@Table(name = "[chow]")
+public class ChowDao {
 
     @Id
-    @Column(name = "id")
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(name = "[id]", columnDefinition = "VARCHAR(60)", unique = true, nullable = false)
     private String id;
 
-    @Column(name = "user_id")
+    @Column(name = "[user_id]", columnDefinition = "VARCHAR(60)", nullable = false)
     private String userId;
 
-    @Column(name = "name")
+    @Column(name = "[name]", columnDefinition = "VARCHAR(32)", unique = true, nullable = false)
     private String name;
 
-    @Column(name = "cuisine")
-    private Cuisine cuisine;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "[cuisine]", nullable = false)
+    private Cuisine cuisine = Cuisine.OTHER;
 
-    @Column(name = "price_range")
-    private PriceRange priceRange;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "[price_range]", nullable = false)
+    private PriceRange priceRange = PriceRange.LOW;
 
-    @Column(name = "area")
-    private Area area;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "[area]", nullable = false)
+    private Area area = Area.CENTRAL_AUCKLAND;
 
-    @Column(name = "has_been")
-    private Integer hasBeen;
+    @Column(name = "[has_been]", columnDefinition = "INT", nullable = false)
+    private Integer hasBeen = 0;
 
-    @Column(name = "created")
-    private LocalDateTime created;
+    @Column(name = "[created]", columnDefinition = "DATETIME", nullable = false)
+    private LocalDateTime created = LocalDateTime.now();
 
-    public ChowDAO() {
+    public ChowDao() {
 
     }
 
-    public ChowDAO(String userId, String name, Cuisine cuisine, PriceRange priceRange, Area area) {
+    public ChowDao(String userId, String name, Cuisine cuisine, PriceRange priceRange, Area area) {
         this.userId = userId;
         this.name = name;
         this.cuisine = cuisine;

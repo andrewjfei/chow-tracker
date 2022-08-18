@@ -4,45 +4,42 @@ import dev.andrewjfei.service.enumeration.Area;
 import dev.andrewjfei.service.enumeration.Cuisine;
 import dev.andrewjfei.service.enumeration.PriceRange;
 
-public class ChowDTO {
+public record ChowDto(
+        String id,
+        String name,
+        Cuisine cuisine,
+        PriceRange priceRange,
+        Area area,
+        Integer hasBeen
+) {
 
-    final private String id;
-    final private String name;
-    final private Cuisine cuisine;
-    final private PriceRange priceRange;
-    final private Area area;
-    final private Integer hasBeen;
-
-    public ChowDTO(String id, String name, Cuisine cuisine, PriceRange priceRange, Area area, Integer hasBeen) {
-        this.id = id;
-        this.name = name;
-        this.cuisine = cuisine;
-        this.priceRange = priceRange;
-        this.area = area;
-        this.hasBeen = hasBeen;
-    }
-
-    public String getId() {
+    @Override
+    public String id() {
         return id;
     }
 
-    public String getName() {
+    @Override
+    public String name() {
         return name;
     }
 
-    public Cuisine getCuisine() {
+    @Override
+    public Cuisine cuisine() {
         return cuisine;
     }
 
-    public PriceRange getPriceRange() {
+    @Override
+    public PriceRange priceRange() {
         return priceRange;
     }
 
-    public Area getArea() {
+    @Override
+    public Area area() {
         return area;
     }
 
-    public Integer getHasBeen() {
+    @Override
+    public Integer hasBeen() {
         return hasBeen;
     }
 
