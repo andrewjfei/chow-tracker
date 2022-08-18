@@ -10,7 +10,7 @@ public record ChowDto(
         Cuisine cuisine,
         PriceRange priceRange,
         Area area,
-        Integer hasBeen
+        int hasBeen
 ) {
 
     @Override
@@ -39,7 +39,7 @@ public record ChowDto(
     }
 
     @Override
-    public Integer hasBeen() {
+    public int hasBeen() {
         return hasBeen;
     }
 

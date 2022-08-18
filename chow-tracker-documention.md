@@ -16,11 +16,38 @@
 
 - Java (Spring Boot) - Java 17
   - Maven
+    - spring-boot-starter (Logging & Auto Configuration Support)
+    - spring-boot-starter-data-jpa (JPA & Hibernate)
+    - spring-boot-starter-web (Spring MVC)
+    - spring-security-core (Spring Security Core)
+    - java-jwt (JWT)
+    - h2 (H2)
+    - spring-boot-starter-test (JUnit & Mockito)
 - Javascript (React.js) - ES6
   - Redux Toolkit
 - SQL Database (MySQL)
 
+### JPA & Hibernate
 
+Hibernate provides ORM (Object Relational Mapping). 
+This allows easy and simple mapping between Java objects and database tables.
+
+JPA (Java Persistence API) provides annotations and APIs for a variety of database tasks.
+This includes methods for persisting and fetching data from the database.
+
+### Spring MVC
+
+Spring MVC provides annotations for rest controllers.
+
+### Spring Security Core
+
+Spring Security Core provides classes to encode passwords and to verify them.
+
+### JWT
+
+### H2
+
+### JUnit & Mockito
 
 ## Architecture Design
 

@@ -1,8 +1,10 @@
 package dev.andrewjfei.service.service;
 
 import dev.andrewjfei.service.dao.ChowDao;
+import dev.andrewjfei.service.dao.RankingItemDao;
 import dev.andrewjfei.service.dto.ChowDto;
 import dev.andrewjfei.service.dto.NewChowDto;
+import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.enumeration.Error;
 import dev.andrewjfei.service.exception.ChowTrackerServiceException;
 import dev.andrewjfei.service.repository.ChowRepository;
@@ -24,6 +26,10 @@ public class ChowService {
 
     @Autowired
     private UserRepository userRepository;
+
+    /************************************************************************************/
+    /*************************************** CRUD ***************************************/
+    /************************************************************************************/
 
     public ChowDto createNewChow(String userId, NewChowDto newChowDto) {
         // Check if chow name already exists in database
@@ -48,19 +54,9 @@ public class ChowService {
             throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
         }
 
-        List<ChowDao> chowDAOList = chowRepository.retrieveChowListByUserId(userId);
-        List<ChowDto> chowDTOList = new ArrayList<>();
+        List<ChowDao> chowDaoList = chowRepository.retrieveChowListByUserId(userId);
 
-        if (chowDAOList.isEmpty()) {
-            return chowDTOList;
-        }
-
-        // Convert ChowDAO list to ChowDTO list
-        for (ChowDao chowDAO : chowDAOList) {
-            chowDTOList.add(MapperUtil.toDto(chowDAO));
-        }
-
-        return chowDTOList;
+        return toDtoList(chowDaoList);
     }
 
     public ChowDto updateChow(NewChowDto newChowDto, String chowId) {
@@ -95,7 +91,59 @@ public class ChowService {
         chowRepository.deleteById(chowId);
     }
 
-    public boolean isNameAvailable(String userId, String name) {
+    /***************************************************************************************/
+    /*************************************** Ranking ***************************************/
+    /***************************************************************************************/
+
+    public List<RankingItemDto> retrieveChowListPopularityRanking(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> rankingItemDaoList = chowRepository.retrieveChowListByPopularityRanking(userId, limit);
+
+        return toRankingItemList(rankingItemDaoList);
+    }
+
+    public List<RankingItemDto> retrieveChowListCuisineRanking(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> rankingItemDaoList = chowRepository.retrieveChowListByCuisineRanking(userId, limit);
+
+        return toRankingItemList(rankingItemDaoList);
+    }
+
+    public List<RankingItemDto> retrieveChowListPriceRangeRanking(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> rankingItemDaoList = chowRepository.retrieveChowListByPriceRangeRanking(userId, limit);
+
+        return toRankingItemList(rankingItemDaoList);
+    }
+
+    public List<RankingItemDto> retrieveChowListAreaRanking(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> rankingItemDaoList = chowRepository.retrieveChowListByAreaRanking(userId, limit);
+
+        return toRankingItemList(rankingItemDaoList);
+    }
+
+    /**********************************************************************************************/
+    /*************************************** Helper Methods ***************************************/
+    /**********************************************************************************************/
+
+    private boolean isNameAvailable(String userId, String name) {
         ChowDao chowDao = chowRepository.retrieveChowByUserIdAndName(userId, name);
 
         if (chowDao != null) {
@@ -103,5 +151,34 @@ public class ChowService {
         }
 
         return true;
+    }
+
+    private List<ChowDto> toDtoList(List<ChowDao> chowDaoList) {
+        List<ChowDto> chowDtoList = new ArrayList<>();
+
+        if (chowDaoList.isEmpty()) {
+            return chowDtoList;
+        }
+
+        // Convert ChowDAO list to ChowDTO list
+        for (ChowDao chowDAO : chowDaoList) {
+            chowDtoList.add(MapperUtil.toDto(chowDAO));
+        }
+
+        return chowDtoList;
+    }
+
+    private List<RankingItemDto>  toRankingItemList(List<RankingItemDao> rankingItemDaoList) {
+        List<RankingItemDto> rankingItemDtoList = new ArrayList<>();
+
+        if (rankingItemDaoList.isEmpty()) {
+            return rankingItemDtoList;
+        }
+
+        for (RankingItemDao rankingItemDao : rankingItemDaoList) {
+            rankingItemDtoList.add(MapperUtil.toDto(rankingItemDao));
+        }
+
+        return rankingItemDtoList;
     }
 }
