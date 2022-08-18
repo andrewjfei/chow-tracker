@@ -32,27 +32,27 @@ public interface ChowRepository extends CrudRepository<ChowDao, String> {
     List<RankingItemDao> retrieveChowListByPopularityRanking(@Param("userId") String userId, @Param("limit") int limit);
 
     @Query(
-            value = "SELECT \"cuisine\" as \"item_name\", SUM(\"has_been\") as \"has_been\" " +
-                    "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"cuisine\" ORDER BY \"has_been\" " +
+            value = "SELECT \"cuisine\" as \"itemName\", SUM(\"has_been\") as \"hasBeen\" " +
+                    "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"cuisine\" ORDER BY \"hasBeen\" " +
                     "DESC LIMIT :limit",
             nativeQuery = true
     )
-    List<ChowDao> retrieveChowListByCuisineRanking(@Param("userId") String userId, @Param("limit") int limit);
+    List<RankingItemDao> retrieveChowListByCuisineRanking(@Param("userId") String userId, @Param("limit") int limit);
 
     @Query(
-            value = "SELECT \"price_range\" as \"item_name\", SUM(\"has_been\") as \"has_been\" " +
+            value = "SELECT \"price_range\" as \"itemName\", SUM(\"has_been\") as \"hasBeen\" " +
                     "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"price_range\" ORDER BY \"has_been\" " +
                     "DESC LIMIT :limit",
             nativeQuery = true
     )
-    List<ChowDao> retrieveChowListByPriceRangeRanking(@Param("userId") String userId, @Param("limit") int limit);
+    List<RankingItemDao> retrieveChowListByPriceRangeRanking(@Param("userId") String userId, @Param("limit") int limit);
 
     @Query(
-            value = "SELECT \"area\" as \"item_name\", SUM(\"has_been\") as \"has_been\" " +
+            value = "SELECT \"area\" as \"itemName\", SUM(\"has_been\") as \"hasBeen\" " +
                     "FROM \"chow\" WHERE \"user_id\" = :userId GROUP BY \"area\" ORDER BY \"has_been\" " +
                     "DESC LIMIT :limit",
             nativeQuery = true
     )
-    List<ChowDao> retrieveChowListByAreaRanking(@Param("userId") String userId, @Param("limit") int limit);
+    List<RankingItemDao> retrieveChowListByAreaRanking(@Param("userId") String userId, @Param("limit") int limit);
 
 }

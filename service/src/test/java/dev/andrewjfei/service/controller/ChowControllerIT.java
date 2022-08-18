@@ -6,6 +6,7 @@ import dev.andrewjfei.service.dto.AuthDto;
 import dev.andrewjfei.service.dto.ChowDto;
 import dev.andrewjfei.service.dto.ErrorDto;
 import dev.andrewjfei.service.dto.NewChowDto;
+import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.dto.UserDto;
 import dev.andrewjfei.service.enumeration.Area;
 import dev.andrewjfei.service.enumeration.Cuisine;
@@ -41,7 +42,7 @@ import java.util.Optional;
 public class ChowControllerIT {
 
     private final String CHOW_URI = "/api/chow";
-
+    private final int LIMIT = 3;
 
     private final String NAME = "Kimchi City";
     private final Cuisine CUISINE = Cuisine.KOREAN;
@@ -175,7 +176,7 @@ public class ChowControllerIT {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + userDto.token());
 
-        HttpEntity<NewChowDto> request = new HttpEntity<>(headers);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
 
         // When
         ResponseEntity<List<ChowDto>> response = testRestTemplate.exchange(
@@ -197,12 +198,10 @@ public class ChowControllerIT {
         String token = "incorrect";
 
         // Given
-        NewChowDto newChowDto = createNewChowDto(NAME, CUISINE, PRICE_RANGE, AREA);
-
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
 
-        HttpEntity<NewChowDto> request = new HttpEntity<>(newChowDto, headers);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
 
         // When
         ResponseEntity<ErrorDto> response = testRestTemplate.exchange(
@@ -242,9 +241,6 @@ public class ChowControllerIT {
         ChowDto originalChowDto = retrieveChowByChowId(CHOW_ID); // Retrieve original chow from database
 
         Assertions.assertNotEquals(name, originalChowDto.name());
-        Assertions.assertNotEquals(CUISINE, originalChowDto.cuisine());
-        Assertions.assertNotEquals(PRICE_RANGE, originalChowDto.priceRange());
-        Assertions.assertNotEquals(AREA, originalChowDto.area());
 
         // When
         ResponseEntity<ChowDto> response = testRestTemplate.exchange(
@@ -348,7 +344,7 @@ public class ChowControllerIT {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + userDto.token());
 
-        HttpEntity<NewChowDto> request = new HttpEntity<>(headers);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
 
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("chowId", chowDto.id());
@@ -382,12 +378,10 @@ public class ChowControllerIT {
         String token = "incorrect";
 
         // Given
-        NewChowDto newChowDto = createNewChowDto(NAME, CUISINE, PRICE_RANGE, AREA);
-
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
 
-        HttpEntity<NewChowDto> request = new HttpEntity<>(newChowDto, headers);
+        HttpEntity<Void> request = new HttpEntity<>(headers);
 
         Map<String, String> uriVariables = new HashMap<>();
         uriVariables.put("chowId", CHOW_ID);
@@ -406,6 +400,136 @@ public class ChowControllerIT {
         Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.errorCode, response.getBody().code());
         Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.description, response.getBody().description());
     }
+
+    /*******************************************************************************************************************/
+    /*************************************** Get Chow List By Popularity Ranking ***************************************/
+    /*******************************************************************************************************************/
+
+    @Test
+    public void getChowListByPopularityRanking_success_returnsRankingItemList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("limit", String.valueOf(LIMIT));
+
+        // When
+        ResponseEntity<List<RankingItemDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "/ranking/popularity?limit={limit}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(LIMIT, response.getBody().size());
+    }
+
+    @Test
+    public void getChowListByPopularityRanking_withInvalidToken_throwsException() {
+        String token = "incorrect";
+
+        // Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("limit", String.valueOf(LIMIT));
+
+        // When
+        ResponseEntity<ErrorDto> response = testRestTemplate.exchange(
+                CHOW_URI + "/ranking/popularity?limit={limit}",
+                HttpMethod.GET,
+                request,
+                ErrorDto.class,
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.errorCode, response.getBody().code());
+        Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.description, response.getBody().description());
+    }
+
+    /****************************************************************************************************************/
+    /*************************************** Get Chow List By Cuisine Ranking ***************************************/
+    /****************************************************************************************************************/
+
+    @Test
+    public void getChowListByCuisineRanking_success_returnsRankingItemList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("limit", String.valueOf(LIMIT));
+
+        // When
+        ResponseEntity<List<RankingItemDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "/ranking/cuisine?limit={limit}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(LIMIT, response.getBody().size());
+    }
+
+    @Test
+    public void getChowListByCuisineRanking_withInvalidToken_throwsException() {
+        String token = "incorrect";
+
+        // Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + token);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("limit", String.valueOf(LIMIT));
+
+        // When
+        ResponseEntity<ErrorDto> response = testRestTemplate.exchange(
+                CHOW_URI + "/ranking/cuisine?limit={limit}",
+                HttpMethod.GET,
+                request,
+                ErrorDto.class,
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.errorCode, response.getBody().code());
+        Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.description, response.getBody().description());
+    }
+
+    /********************************************************************************************************************/
+    /*************************************** Get Chow List By Price Range Ranking ***************************************/
+    /********************************************************************************************************************/
+
+    /*************************************************************************************************************/
+    /*************************************** Get Chow List By Area Ranking ***************************************/
+    /*************************************************************************************************************/
 
     /**********************************************************************************************/
     /*************************************** Helper Methods ***************************************/

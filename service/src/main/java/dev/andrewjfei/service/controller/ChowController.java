@@ -81,4 +81,13 @@ public class ChowController {
 
         return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
     }
+
+    @GetMapping("/ranking/cuisine")
+    public ResponseEntity<List<RankingItemDto>> getChowListCuisineRanking(HttpServletRequest request, @RequestParam int limit) {
+        String userId = RequestUtil.getUserIdAttribute(request);
+
+        List<RankingItemDto> rankingItemDtoList = chowService.retrieveChowListCuisineRanking(userId, limit);
+
+        return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
+    }
 }

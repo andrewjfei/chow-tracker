@@ -27,6 +27,10 @@ public class ChowService {
     @Autowired
     private UserRepository userRepository;
 
+    /************************************************************************************/
+    /*************************************** CRUD ***************************************/
+    /************************************************************************************/
+
     public ChowDto createNewChow(String userId, NewChowDto newChowDto) {
         // Check if chow name already exists in database
         isNameAvailable(userId, newChowDto.name());
@@ -87,6 +91,10 @@ public class ChowService {
         chowRepository.deleteById(chowId);
     }
 
+    /***************************************************************************************/
+    /*************************************** Ranking ***************************************/
+    /***************************************************************************************/
+
     public List<RankingItemDto> retrieveChowListPopularityRanking(String userId, int limit) {
         // Check if user id is valid
         if (!userRepository.existsById(userId)) {
@@ -97,6 +105,21 @@ public class ChowService {
 
         return toRankingItemList(rankingItemDaoList);
     }
+
+    public List<RankingItemDto> retrieveChowListCuisineRanking(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> rankingItemDaoList = chowRepository.retrieveChowListByCuisineRanking(userId, limit);
+
+        return toRankingItemList(rankingItemDaoList);
+    }
+
+    /**********************************************************************************************/
+    /*************************************** Helper Methods ***************************************/
+    /**********************************************************************************************/
 
     private boolean isNameAvailable(String userId, String name) {
         ChowDao chowDao = chowRepository.retrieveChowByUserIdAndName(userId, name);
