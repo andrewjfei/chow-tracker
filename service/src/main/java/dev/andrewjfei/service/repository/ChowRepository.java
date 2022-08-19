@@ -5,6 +5,7 @@ import dev.andrewjfei.service.dao.RankingItemDao;
 import dev.andrewjfei.service.enumeration.Area;
 import dev.andrewjfei.service.enumeration.Cuisine;
 import dev.andrewjfei.service.enumeration.PriceRange;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -33,6 +34,13 @@ public interface ChowRepository extends CrudRepository<ChowDao, String> {
             nativeQuery = true
     )
     ChowDao retrieveChowByUserIdAndName(@Param("userId") String userId, @Param("name") String name);
+
+    @Query(
+            value = "UPDATE \"chow\" SET \"has_been\" = \"has_been\" + 1 WHERE \"id\" = :chowId",
+            nativeQuery = true
+    )
+    @Modifying
+    void incrementChowHasBeen(@Param("chowId") String chowId);
 
     @Query(
             value = "SELECT \"name\" as \"itemName\", \"has_been\" as \"hasBeen\" FROM \"chow\" " +

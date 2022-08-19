@@ -1,10 +1,8 @@
 package dev.andrewjfei.service.service;
 
-import dev.andrewjfei.service.controller.ChowController;
 import dev.andrewjfei.service.dao.ChowDao;
 import dev.andrewjfei.service.dao.RankingItemDao;
 import dev.andrewjfei.service.dto.ChowDto;
-import dev.andrewjfei.service.dto.ChowListFilterDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.enumeration.Area;
@@ -21,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -132,6 +131,16 @@ public class ChowService {
         }
 
         chowRepository.deleteById(chowId);
+    }
+
+    @Transactional
+    public void incrementChowHasBeen(String chowId) {
+        // Check if chow id is valid
+        if (!chowRepository.existsById(chowId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_CHOW_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        chowRepository.incrementChowHasBeen(chowId);
     }
 
     /***************************************************************************************/
