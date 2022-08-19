@@ -17,8 +17,11 @@ import dev.andrewjfei.service.repository.UserRepository;
 import dev.andrewjfei.service.service.AuthService;
 import dev.andrewjfei.service.util.MapperUtil;
 import dev.andrewjfei.service.util.RandomUtil;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockedStatic;
@@ -33,6 +36,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +66,7 @@ public class ChowControllerIT {
     private final String PASSWORD = "password";                                 // From data.sql
     private final int CHOW_LIST_SIZE = 10;                                      // From data.sql
     private final String CHOW_ID = "b4d8d043-1e9d-4977-89e0-53480a327f89";      // From data.sql
+    private final int CHOW_HAS_BEEN = 10;                                       // From data.sql
 
     private final String SEARCH_STRING_PARAM = "La";
     private final String CUISINE_LIST_PARAM = "ITALIAN";
@@ -89,8 +94,13 @@ public class ChowControllerIT {
     @Autowired
     private UserRepository userRepository;
 
+    @BeforeEach
+    public void setup() {
+        testRestTemplate.getRestTemplate().setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+    }
+
     @AfterEach
-    public void cleanup() {
+    public void teardown() {
         deleteChowByUserIdAndName(USERNAME, NAME);
     }
 
@@ -509,6 +519,49 @@ public class ChowControllerIT {
         ChowDto updatedChowDto = retrieveChowByChowId(chowDto.id()); // Retrieve updated chow from database
 
         Assertions.assertNull(updatedChowDto);
+    }
+
+    /******************************************************************************************/
+    /*************************************** Visit Chow ***************************************/
+    /******************************************************************************************/
+
+    @Test
+    public void visitChow_success_returnsChow() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("chowId", CHOW_ID);
+
+        ChowDto originalChowDto = retrieveChowByChowId(CHOW_ID);
+
+        Assertions.assertNotNull(originalChowDto);
+        Assertions.assertEquals(CHOW_HAS_BEEN, originalChowDto.hasBeen());
+
+        // When
+        ResponseEntity<Void> response = testRestTemplate.exchange(
+                CHOW_URI + "/{chowId}/visit",
+                HttpMethod.PATCH,
+                request,
+                Void.class,
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertNull(response.getBody());
+
+        ChowDto updatedChowDto = retrieveChowByChowId(CHOW_ID); // Retrieve updated chow from database
+
+        Assertions.assertNotNull(updatedChowDto);
+        Assertions.assertEquals(CHOW_HAS_BEEN + 1, updatedChowDto.hasBeen());
     }
 
     /*******************************************************************************************************************/
