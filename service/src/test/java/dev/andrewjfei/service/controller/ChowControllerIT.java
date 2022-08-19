@@ -16,9 +16,14 @@ import dev.andrewjfei.service.repository.ChowRepository;
 import dev.andrewjfei.service.repository.UserRepository;
 import dev.andrewjfei.service.service.AuthService;
 import dev.andrewjfei.service.util.MapperUtil;
+import dev.andrewjfei.service.util.RandomUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -34,10 +39,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = ("spring.datasource.url=jdbc:h2:mem:chow_tracker")
 )
+@ExtendWith(MockitoExtension.class)
 public class ChowControllerIT {
 
     private final String CHOW_URI = "/api/chow";
@@ -635,6 +643,64 @@ public class ChowControllerIT {
         Assertions.assertEquals(LIMIT, response.getBody().size());
     }
 
+    /***********************************************************************************************/
+    /*************************************** Get Random Chow ***************************************/
+    /***********************************************************************************************/
+
+    @Test
+    public void getRandomChow_success_returnsChow() {
+        String name1 = "Fry Guys";
+        Cuisine cuisine1 = Cuisine.AMERICAN;
+        PriceRange priceRange1 = PriceRange.MEDIUM;
+        Area area1 = Area.HAMILTON;
+
+        String name2 = "Sue Sushi";
+        Cuisine cuisine2 = Cuisine.JAPANESE;
+        PriceRange priceRange2 = PriceRange.MEDIUM;
+        Area area2 = Area.CENTRAL_AUCKLAND;
+
+        String name3 = "Dumpling Boys";
+        Cuisine cuisine3 = Cuisine.CHINESE;
+        PriceRange priceRange3 = PriceRange.LOW;
+        Area area3 = Area.EAST_AUCKLAND;
+
+        // Given
+        ChowDto chowDto1 = createChowDto(name1, cuisine1, priceRange1, area1);
+        ChowDto chowDto2 = createChowDto(name2, cuisine2, priceRange2, area2);
+        ChowDto chowDto3 = createChowDto(name3, cuisine3, priceRange3, area3);
+
+        List<ChowDto> chowDtoList = List.of(chowDto1, chowDto2, chowDto3);
+
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<List<ChowDto>> request = new HttpEntity<>(chowDtoList, headers);
+
+        // Mocking static method using try with resources
+        try (MockedStatic<RandomUtil> mockedRandomUtil = Mockito.mockStatic(RandomUtil.class)) {
+            mockedRandomUtil.when(() -> RandomUtil.getRandomIndex(anyInt())).thenReturn(1);
+
+            // When
+            ResponseEntity<ChowDto> response = testRestTemplate.exchange(
+                    CHOW_URI + "/random",
+                    HttpMethod.POST,
+                    request,
+                    ChowDto.class
+            );
+
+            // Then
+            Assertions.assertNotNull(response);
+            Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+            Assertions.assertEquals(name2, response.getBody().name());
+            Assertions.assertEquals(cuisine2, response.getBody().cuisine());
+            Assertions.assertEquals(priceRange2, response.getBody().priceRange());
+            Assertions.assertEquals(area2, response.getBody().area());
+        }
+    }
+
     /**********************************************************************************************/
     /*************************************** Helper Methods ***************************************/
     /**********************************************************************************************/
@@ -650,6 +716,17 @@ public class ChowControllerIT {
                 cuisine,
                 priceRange,
                 area
+        );
+    }
+
+    private ChowDto createChowDto(String name, Cuisine cuisine, PriceRange priceRange, Area area) {
+        return new ChowDto(
+                USER_ID,
+                name,
+                cuisine,
+                priceRange,
+                area,
+                0
         );
     }
 

@@ -15,6 +15,7 @@ import dev.andrewjfei.service.exception.ChowTrackerServiceException;
 import dev.andrewjfei.service.repository.ChowRepository;
 import dev.andrewjfei.service.repository.UserRepository;
 import dev.andrewjfei.service.util.MapperUtil;
+import dev.andrewjfei.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,6 +180,14 @@ public class ChowService {
         List<RankingItemDao> rankingItemDaoList = chowRepository.retrieveChowListByAreaRanking(userId, limit);
 
         return toRankingItemList(rankingItemDaoList);
+    }
+
+    /*****************************************************************************************/
+    /*************************************** Randomise ***************************************/
+    /*****************************************************************************************/
+
+    public ChowDto selectRandomChow(List<ChowDto> chowDtoList) {
+        return RandomUtil.selectRandomFromList(chowDtoList);
     }
 
     /**********************************************************************************************/

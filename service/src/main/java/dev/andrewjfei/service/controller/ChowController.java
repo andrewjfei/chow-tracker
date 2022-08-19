@@ -134,4 +134,13 @@ public class ChowController {
     /*********************************************************************************************/
     /*************************************** Randomise API ***************************************/
     /*********************************************************************************************/
+
+    @PostMapping("/random")
+    public ResponseEntity<ChowDto> getRandomChow(HttpServletRequest request, @RequestBody List<ChowDto> chowDtoList) {
+        RequestUtil.validateRequest(request);
+
+        ChowDto chowDto = chowService.selectRandomChow(chowDtoList);
+
+        return new ResponseEntity<>(chowDto, HttpStatus.OK);
+    }
 }
