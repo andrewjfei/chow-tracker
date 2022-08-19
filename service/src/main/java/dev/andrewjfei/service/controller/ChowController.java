@@ -1,10 +1,16 @@
 package dev.andrewjfei.service.controller;
 
 import dev.andrewjfei.service.dto.ChowDto;
+import dev.andrewjfei.service.dto.ChowListFilterDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
+import dev.andrewjfei.service.enumeration.Area;
+import dev.andrewjfei.service.enumeration.Cuisine;
+import dev.andrewjfei.service.enumeration.PriceRange;
 import dev.andrewjfei.service.service.ChowService;
 import dev.andrewjfei.service.util.RequestUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +34,8 @@ public class ChowController {
     @Autowired
     private ChowService chowService;
 
+    private final Logger logger = LoggerFactory.getLogger(ChowController.class);
+
     /*****************************************************************************************/
     /*************************************** CRUD APIs ***************************************/
     /*****************************************************************************************/
@@ -42,10 +50,24 @@ public class ChowController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ChowDto>> getChowListByUserId(HttpServletRequest request) {
+    public ResponseEntity<List<ChowDto>> getChowListByUserId(
+            HttpServletRequest request,
+            @RequestParam(required = false) String searchString,
+            @RequestParam(required = false) List<Cuisine> cuisineList,
+            @RequestParam(required = false) List<PriceRange> priceRangeList,
+            @RequestParam(required = false) List<Area> areaList
+            ) {
         String userId = RequestUtil.getUserIdAttribute(request);
 
-        List<ChowDto> chowDtoList = chowService.retrieveChowListByUserId(userId);
+        logger.info("Inside Controller");
+
+        List<ChowDto> chowDtoList = chowService.retrieveChowListByUserId(
+                userId,
+                searchString,
+                cuisineList,
+                priceRangeList,
+                areaList
+        );
 
         return new ResponseEntity<>(chowDtoList, HttpStatus.OK);
     }
@@ -108,4 +130,8 @@ public class ChowController {
 
         return new ResponseEntity<>(rankingItemDtoList, HttpStatus.OK);
     }
+
+    /*********************************************************************************************/
+    /*************************************** Randomise API ***************************************/
+    /*********************************************************************************************/
 }
