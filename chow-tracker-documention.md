@@ -103,15 +103,15 @@ Spring Security Core provides classes to encode passwords and to verify them.
 
 #### Retrieve Chow List
 
-| HTTP Request/Response | Value                                                        |
-| --------------------- | ------------------------------------------------------------ |
-| **HTTP Method**       | GET                                                          |
-| **URI**               | /api/chow                                                    |
-| **Headers**           | Authorization                                                |
-| **Query Params**      | -                                                            |
-| **Request Body**      | searchString, filters (cuisineList, priceRangeList, areaList) |
-| **Response Body**     | chowList                                                     |
-| **Response Status**   | `200 OK`,  `400 BAD_REQUEST`,  `401 UNAUTHORIZED`            |
+| HTTP Request/Response | Value                                               |
+| --------------------- |-----------------------------------------------------|
+| **HTTP Method**       | GET                                                 |
+| **URI**               | /api/chow                                           |
+| **Headers**           | Authorization                                       |
+| **Query Params**      | -                                                   |
+| **Request Body**      | searchString, cuisineList, priceRangeList, areaList |
+| **Response Body**     | chowList                                            |
+| **Response Status**   | `200 OK`,  `400 BAD_REQUEST`,  `401 UNAUTHORIZED`   |
 
 
 

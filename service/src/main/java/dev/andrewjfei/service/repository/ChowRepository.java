@@ -2,6 +2,9 @@ package dev.andrewjfei.service.repository;
 
 import dev.andrewjfei.service.dao.ChowDao;
 import dev.andrewjfei.service.dao.RankingItemDao;
+import dev.andrewjfei.service.enumeration.Area;
+import dev.andrewjfei.service.enumeration.Cuisine;
+import dev.andrewjfei.service.enumeration.PriceRange;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -13,10 +16,17 @@ import java.util.List;
 public interface ChowRepository extends CrudRepository<ChowDao, String> {
 
     @Query(
-            value = "SELECT * FROM \"chow\" WHERE \"user_id\" = :userId ORDER BY \"created\" DESC",
+            value = "SELECT * FROM \"chow\" WHERE \"user_id\" = :userId AND \"cuisine\" IN :#{#cuisineList.![name()]} " +
+                    "AND \"price_range\" IN :#{#priceRangeList.![name()]} AND \"area\" IN :#{#areaList.![name()]} " +
+                    "ORDER BY \"created\" DESC",
             nativeQuery = true
     )
-    List<ChowDao> retrieveChowListByUserId(@Param("userId") String userId);
+    List<ChowDao> retrieveChowListByUserIdWithFilters(
+            @Param("userId") String userId,
+            @Param("cuisineList") List<Cuisine> cuisineList,
+            @Param("priceRangeList")List<PriceRange> priceRangeList,
+            @Param("areaList") List<Area> areaList
+    );
 
     @Query(
             value = "SELECT * FROM \"chow\" WHERE \"user_id\" = :userId AND \"name\" = :name",

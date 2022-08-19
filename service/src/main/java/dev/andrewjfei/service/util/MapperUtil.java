@@ -9,6 +9,9 @@ import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.dto.UserDto;
 import dev.andrewjfei.service.enumeration.Error;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MapperUtil {
 
     static public RankingItemDto toDto(RankingItemDao rankingItemDao) {
@@ -29,14 +32,14 @@ public class MapperUtil {
         );
     }
 
-    static public ChowDto toDto(ChowDao chowDAO) {
+    static public ChowDto toDto(ChowDao chowDao) {
         return new ChowDto(
-                chowDAO.getId(),
-                chowDAO.getName(),
-                chowDAO.getCuisine(),
-                chowDAO.getPriceRange(),
-                chowDAO.getArea(),
-                chowDAO.getHasBeen()
+                chowDao.getId(),
+                chowDao.getName(),
+                chowDao.getCuisine(),
+                chowDao.getPriceRange(),
+                chowDao.getArea(),
+                chowDao.getHasBeen()
         );
     }
 }

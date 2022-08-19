@@ -16,9 +16,14 @@ import dev.andrewjfei.service.repository.ChowRepository;
 import dev.andrewjfei.service.repository.UserRepository;
 import dev.andrewjfei.service.service.AuthService;
 import dev.andrewjfei.service.util.MapperUtil;
+import dev.andrewjfei.service.util.RandomUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -28,17 +33,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = ("spring.datasource.url=jdbc:h2:mem:chow_tracker")
 )
+@ExtendWith(MockitoExtension.class)
 public class ChowControllerIT {
 
     private final String CHOW_URI = "/api/chow";
@@ -53,8 +60,19 @@ public class ChowControllerIT {
     private final String USERNAME = "bobbyjones";                               // From data.sql
     private final String EMAIL = "bobbyjones@test.com";                         // From data.sql
     private final String PASSWORD = "password";                                 // From data.sql
-    private final int CHOW_LIST_SIZE = 6;                                       // From data.sql
+    private final int CHOW_LIST_SIZE = 10;                                      // From data.sql
     private final String CHOW_ID = "b4d8d043-1e9d-4977-89e0-53480a327f89";      // From data.sql
+
+    private final String SEARCH_STRING_PARAM = "La";
+    private final String CUISINE_LIST_PARAM = "ITALIAN";
+    private final String PRICE_RANGE_LIST_PARAM = "LOW";
+    private final String AREA_LIST_PARAM = "CENTRAL_AUCKLAND";
+
+    private final int SEARCH_STRING_PARAM_CHOW_LIST_SIZE = 5;                   // From data.sql
+    private final int CUISINE_LIST_PARAM_CHOW_LIST_SIZE = 2;                    // From data.sql
+    private final int PRICE_RANGE_LIST_PARAM_CHOW_LIST_SIZE = 3;                // From data.sql
+    private final int AREA_LIST_PARAM_CHOW_LIST_SIZE = 5;                       // From data.sql
+    private final int COMBINED_PARAMS_CHOW_LIST_SIZE = 0;                       // From data.sql
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -79,6 +97,7 @@ public class ChowControllerIT {
     @Test
     public void callChowApi_withNoToken_throwsException() {
         // Given
+
         HttpEntity<Void> request = new HttpEntity<>(null);
 
         // When
@@ -162,7 +181,7 @@ public class ChowControllerIT {
     /********************************************************************************************************/
 
     @Test
-    public void getChowListByUserId_success_returnsChowList() {
+    public void getChowListByUserId_withNoFilters_returnsChowList() {
         // Given
         UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
 
@@ -184,6 +203,186 @@ public class ChowControllerIT {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Assertions.assertEquals(CHOW_LIST_SIZE, response.getBody().size());
+    }
+
+    @Test
+    public void getChowListByUserId_withSearchStringFilterApplied_returnsChowList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("searchString", SEARCH_STRING_PARAM);
+        uriVariables.put("cuisineList", null);
+        uriVariables.put("priceRangeList", null);
+        uriVariables.put("areaList", null);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<List<ChowDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "?" +
+                        "searchString={searchString}&" +
+                        "cuisineList={cuisineList}&" +
+                        "priceRangeList={priceRangeList}&" +
+                        "areaList={areaList}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(SEARCH_STRING_PARAM_CHOW_LIST_SIZE, response.getBody().size());
+    }
+
+    @Test
+    public void getChowListByUserId_withCuisineListFilterApplied_returnsChowList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("searchString", null);
+        uriVariables.put("cuisineList",CUISINE_LIST_PARAM);
+        uriVariables.put("priceRangeList", null);
+        uriVariables.put("areaList", null);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<List<ChowDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "?" +
+                        "searchString={searchString}&" +
+                        "cuisineList={cuisineList}&" +
+                        "priceRangeList={priceRangeList}&" +
+                        "areaList={areaList}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(CUISINE_LIST_PARAM_CHOW_LIST_SIZE, response.getBody().size());
+    }
+
+    @Test
+    public void getChowListByUserId_withPriceRangeListFilterApplied_returnsChowList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("searchString", null);
+        uriVariables.put("cuisineList", null);
+        uriVariables.put("priceRangeList", PRICE_RANGE_LIST_PARAM);
+        uriVariables.put("areaList", null);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<List<ChowDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "?" +
+                        "searchString={searchString}&" +
+                        "cuisineList={cuisineList}&" +
+                        "priceRangeList={priceRangeList}&" +
+                        "areaList={areaList}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(PRICE_RANGE_LIST_PARAM_CHOW_LIST_SIZE, response.getBody().size());
+    }
+
+    @Test
+    public void getChowListByUserId_withAreaListFilterApplied_returnsChowList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("searchString", null);
+        uriVariables.put("cuisineList", null);
+        uriVariables.put("priceRangeList", null);
+        uriVariables.put("areaList", AREA_LIST_PARAM);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<List<ChowDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "?" +
+                        "searchString={searchString}&" +
+                        "cuisineList={cuisineList}&" +
+                        "priceRangeList={priceRangeList}&" +
+                        "areaList={areaList}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(AREA_LIST_PARAM_CHOW_LIST_SIZE, response.getBody().size());
+    }
+
+    @Test
+    public void getChowListByUserId_withAllFiltersApplied_returnsChowList() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("searchString", SEARCH_STRING_PARAM);
+        uriVariables.put("cuisineList", CUISINE_LIST_PARAM);
+        uriVariables.put("priceRangeList", PRICE_RANGE_LIST_PARAM);
+        uriVariables.put("areaList", AREA_LIST_PARAM);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<List<ChowDto>> response = testRestTemplate.exchange(
+                CHOW_URI + "?" +
+                        "searchString={searchString}&" +
+                        "cuisineList={cuisineList}&" +
+                        "priceRangeList={priceRangeList}&" +
+                        "areaList={areaList}",
+                HttpMethod.GET,
+                request,
+                new ParameterizedTypeReference<>() {},
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(COMBINED_PARAMS_CHOW_LIST_SIZE, response.getBody().size());
     }
 
     /*******************************************************************************************/
@@ -444,6 +643,64 @@ public class ChowControllerIT {
         Assertions.assertEquals(LIMIT, response.getBody().size());
     }
 
+    /***********************************************************************************************/
+    /*************************************** Get Random Chow ***************************************/
+    /***********************************************************************************************/
+
+    @Test
+    public void getRandomChow_success_returnsChow() {
+        String name1 = "Fry Guys";
+        Cuisine cuisine1 = Cuisine.AMERICAN;
+        PriceRange priceRange1 = PriceRange.MEDIUM;
+        Area area1 = Area.HAMILTON;
+
+        String name2 = "Sue Sushi";
+        Cuisine cuisine2 = Cuisine.JAPANESE;
+        PriceRange priceRange2 = PriceRange.MEDIUM;
+        Area area2 = Area.CENTRAL_AUCKLAND;
+
+        String name3 = "Dumpling Boys";
+        Cuisine cuisine3 = Cuisine.CHINESE;
+        PriceRange priceRange3 = PriceRange.LOW;
+        Area area3 = Area.EAST_AUCKLAND;
+
+        // Given
+        ChowDto chowDto1 = createChowDto(name1, cuisine1, priceRange1, area1);
+        ChowDto chowDto2 = createChowDto(name2, cuisine2, priceRange2, area2);
+        ChowDto chowDto3 = createChowDto(name3, cuisine3, priceRange3, area3);
+
+        List<ChowDto> chowDtoList = List.of(chowDto1, chowDto2, chowDto3);
+
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<List<ChowDto>> request = new HttpEntity<>(chowDtoList, headers);
+
+        // Mocking static method using try with resources
+        try (MockedStatic<RandomUtil> mockedRandomUtil = Mockito.mockStatic(RandomUtil.class)) {
+            mockedRandomUtil.when(() -> RandomUtil.getRandomIndex(anyInt())).thenReturn(1);
+
+            // When
+            ResponseEntity<ChowDto> response = testRestTemplate.exchange(
+                    CHOW_URI + "/random",
+                    HttpMethod.POST,
+                    request,
+                    ChowDto.class
+            );
+
+            // Then
+            Assertions.assertNotNull(response);
+            Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+            Assertions.assertEquals(name2, response.getBody().name());
+            Assertions.assertEquals(cuisine2, response.getBody().cuisine());
+            Assertions.assertEquals(priceRange2, response.getBody().priceRange());
+            Assertions.assertEquals(area2, response.getBody().area());
+        }
+    }
+
     /**********************************************************************************************/
     /*************************************** Helper Methods ***************************************/
     /**********************************************************************************************/
@@ -459,6 +716,17 @@ public class ChowControllerIT {
                 cuisine,
                 priceRange,
                 area
+        );
+    }
+
+    private ChowDto createChowDto(String name, Cuisine cuisine, PriceRange priceRange, Area area) {
+        return new ChowDto(
+                USER_ID,
+                name,
+                cuisine,
+                priceRange,
+                area,
+                0
         );
     }
 
