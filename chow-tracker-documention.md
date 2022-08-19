@@ -1,6 +1,6 @@
 # Chow Tracker Documentation
 
----
+
 
 ## What is Chow Tracker?
 
@@ -73,32 +73,135 @@ Spring Security Core provides classes to encode passwords and to verify them.
 
 
 
+
 #### Register
 
-| HTTP Request/Response | Value                                          |
-| --------------------- | ---------------------------------------------- |
-| **HTTP Method**       | POST                                           |
-| **URI**               | /api/user                                      |
-| **Headers**           | -                                              |
-| **Query Params**      | -                                              |
-| **Request Body**      | username, firstName, lastName, email, password |
-| **Response Body**     | username, firstName, lastName, email, token    |
-| **Response Status**   | `201 CREATED`,  `400 BAD_REQUEST`              |
+<table>
+  
+<tr>
+  <td> <b>HTTP Method</b> </td> 
+  <td> POST </td>
+</tr>
+  
+<tr>
+  <td> <b>URI</b> </td> 
+  <td> /api/auth/register </td>
+</tr>
+  
+<tr>
+  <td> <b>Headers</b> </td> 
+  <td> - </td>
+</tr>
+  
+<tr>
+  <td> <b>Query Params</b> 
+  </td> <td> - </td>
+</tr>
+  
+<tr>
+  <td> <b>Request Body</b> </td>
+  <td>
+    
+```json
+{
+  "username": "bobbyjones",
+  "firstName": "Bobby",
+  "lastName": "Jones",
+  "email": "bobbyjones@test.com",
+  "password": "PASSWORD",
+  "confirmedPassword": "PASSWORD"
+}
+```
+  </td>
+</tr>
+  
+<tr>
+  <td> <b>Response Body</b> </td>
+  <td>
+    
+```json
+{
+  "username": "bobbyjones",
+  "firstName": "Bobby",
+  "lastName": "Jones",
+  "email": "bobbyjones@test.com",
+  "token": "TOKEN"
+}
+```
+
+  </td>
+</tr>
+  
+<tr>
+  <td> <b>Response Status</b> </td> 
+  <td> <code>201 CREATED</code>,  <code>400 BAD_REQUEST</code> </td>
+</tr>
+  
+</table>
 
 
 
 #### Login
 
-| HTTP Request/Response | Value                                       |
-| --------------------- | ------------------------------------------- |
-| **HTTP Method**       | GET                                         |
-| **URI**               | /api/auth/login                             |
-| **Headers**           | -                                           |
-| **Query Params**      | -                                           |
-| **Request Body**      | username, email, password                   |
-| **Response Body**     | username, firstName, lastName, email, token |
-| **Response Status**   | `200 OK`,  `401 UNAUTHORIZED`               |
+<table>
+  
+<tr>
+  <td> <b>HTTP Method</b> </td> 
+  <td> POST </td>
+</tr>
+  
+<tr>
+  <td> <b>URI</b> </td> 
+  <td> /api/auth/login </td>
+</tr>
+  
+<tr>
+  <td> <b>Headers</b> </td> 
+  <td> - </td>
+</tr>
+  
+<tr>
+  <td> <b>Query Params</b> 
+  </td> <td> - </td>
+</tr>
+  
+<tr>
+  <td> <b>Request Body</b> </td>
+  <td>
+    
+```json
+{
+  "username": "bobbyjones",
+  "email": "bobbyjones@test.com",
+  "password": "PASSWORD"
+}
+```
+  </td>
+</tr>
+  
+<tr>
+  <td> <b>Response Body</b> </td>
+  <td>
+    
+```json
+{
+  "username": "bobbyjones",
+  "firstName": "Bobby",
+  "lastName": "Jones",
+  "email": "bobbyjones@test.com",
+  "token": "TOKEN"
+}
+```
 
+  </td>
+</tr>
+  
+<tr>
+  <td> <b>Response Status</b> </td> 
+  <td> <code>201 CREATED</code>,  <code>401 UNAUTHORIZED</code> </td>
+</tr>
+  
+</table>
 
 
 #### Retrieve Chow List
