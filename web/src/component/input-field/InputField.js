@@ -4,6 +4,7 @@ import styles from './InputField.module.css';
 
 const InputField = ({
   className,
+  type = 'text',
   label,
   placeholder,
   prefixIcon,
@@ -30,7 +31,7 @@ const InputField = ({
           </div>
         )}
         <input
-          type='text'
+          type={type}
           className={`${styles.inputField} p2`}
           placeholder={placeholder}
           value={value}

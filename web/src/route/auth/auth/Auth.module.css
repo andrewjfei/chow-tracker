@@ -11,11 +11,13 @@
 }
 
 .authFormContainer {
-  background-color: palegoldenrod;
   flex: 1 1 auto;
 }
 
 .authFormContainer > .authFormButtonRow {
-  background-color: palegreen;
-  margin-bottom: 25px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 18px;
 }

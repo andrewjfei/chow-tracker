@@ -1,17 +1,30 @@
 import { InputField, Button } from '../../../../component';
 import { UserCircleIcon } from '../../../../asset';
 
+import styles from './LoginForm.module.css';
+
 const LoginForm = () => {
   return (
-    <div style={{ border: 'solid 3px orange' }}>
-      <p className='s2'>Login Form</p>
-      <InputField label='Username/Email' prefixIcon={<UserCircleIcon />} />
+    <div className={styles.loginForm}>
+      <InputField
+        label='Username/Email'
+        prefixIcon={<UserCircleIcon />}
+        placeholder='Enter username or email address'
+      />
       <InputField
         label='Password'
+        type='password'
         prefixIcon={<UserCircleIcon />}
-        suffixIcon={<UserCircleIcon />}
+        placeholder='Enter password'
       />
-      <Button text='Login' type='button' onClick={() => {}} />
+      <Button
+        className={styles.loginButton}
+        variant='filled'
+        colour='primary'
+        text='Login'
+        type='button'
+        onClick={() => {}}
+      />
     </div>
   );
 };

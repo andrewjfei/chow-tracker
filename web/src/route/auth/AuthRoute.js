@@ -24,12 +24,19 @@ const AuthRoute = () => {
           <p className='c1'>Caption 1</p>
           <p className='c2'>Caption 2</p>
           <p className='l1'>Label 1</p>
+          <input
+            type='text'
+            placeholder='Test'
+            className='w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500'
+          />
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
             <Button text='Default' />
             <Button text='Filled Default' variant='filled' colour='default' />
             <Button text='Filled Primary' variant='filled' colour='primary' />
             <Button text='Outline Default' variant='outline' colour='default' />
             <Button text='Outline Primary' variant='outline' colour='primary' />
+            <Button text='Text Default' variant='text' colour='default' />
+            <Button text='Text Primary' variant='text' colour='primary' />
           </div>
         </div>
       </div>
