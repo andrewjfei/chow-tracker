@@ -1,34 +1,29 @@
-import { Button } from '../../component';
+import { Button, Card, InputField } from '../../component';
 import { RouteContainer } from '../../component/route-container/RouteContainer';
 import { Auth } from './auth/Auth';
-import styles from './AuthRoute.module.css';
 
 const AuthRoute = () => {
   return (
     <RouteContainer>
-      <div className={styles.authColumn}>
-        <Auth className={styles.auth} />
+      <div className='flex col-start-[1] col-end-[6]'>
+        <Auth className='flex-auto' />
       </div>
-      <div className={styles.imageColumn}>
-        <div className={styles.image} style={{ border: 'solid 3px orange' }}>
-          <p className='h1'>Heading 1</p>
-          <p className='h2'>Heading 2</p>
-          <p className='h3'>Heading 3</p>
-          <p className='h4'>Heading 4</p>
-          <p className='h5'>Heading 5</p>
-          <p className='h6'>Heading 6</p>
-          <p className='s1'>Subtitle 1</p>
-          <p className='s2'>Subtitle 2</p>
-          <p className='p1'>Paragraph 1</p>
-          <p className='p2'>Paragraph 2</p>
-          <p className='c1'>Caption 1</p>
-          <p className='c2'>Caption 2</p>
-          <p className='l1'>Label 1</p>
-          <input
-            type='text'
-            placeholder='Test'
-            className='w-full border border-gray-300 px-3 py-2 rounded-lg shadow-sm focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500'
-          />
+      <div className='flex col-start-[6] col-end-[19]'>
+        <Card className='flex-auto'>
+          <p className='text-9xl'>Text 9XL</p>
+          <p className='text-8xl'>Text 8XL</p>
+          <p className='text-7xl'>Text 7XL</p>
+          <p className='text-6xl'>Text 6XL</p>
+          <p className='text-5xl'>Text 5XL</p>
+          <p className='text-4xl'>Text 4XL</p>
+          <p className='text-3xl'>Text 3XL</p>
+          <p className='text-2xl'>Text 2XL</p>
+          <p className='text-xl'>Text XL</p>
+          <p className='text-lg'>Text LG</p>
+          <p className='text-base'>Text Base</p>
+          <p className='text-sm'>Text SM</p>
+          <p className='text-xs'>Text XS</p>
+          <InputField placeholder='Placeholder' />
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
             <Button text='Default' />
             <Button text='Filled Default' variant='filled' colour='default' />
@@ -38,7 +33,7 @@ const AuthRoute = () => {
             <Button text='Text Default' variant='text' colour='default' />
             <Button text='Text Primary' variant='text' colour='primary' />
           </div>
-        </div>
+        </Card>
       </div>
     </RouteContainer>
   );
