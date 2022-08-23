@@ -1,0 +1,29 @@
+.routeContainer {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  column-gap: 10px;
+  border: solid 3px blue;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.authColumn {
+  display: flex;
+  grid-column-start: 1;
+  grid-column-end: 6;
+}
+
+.auth{
+  flex: 1 1 auto;
+}
+
+.imageColumn {
+  display: flex;
+  grid-column-start: 6;
+  grid-column-end: 19;
+}
+
+.image {
+  flex: 1 1 auto;
+}
