@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { TestRoute } from './route';
 import reportWebVitals from './reportWebVitals';
+import { AuthRoute } from './route/auth/AuthRoute';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

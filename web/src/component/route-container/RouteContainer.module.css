@@ -1,0 +1,9 @@
+.routeContainer {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  column-gap: 10px;
+  border: solid 3px blue;
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 10px;
+}
