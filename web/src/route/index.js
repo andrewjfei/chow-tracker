@@ -1,1 +1,1 @@
-export { AppRoute } from './app/AppRoute';
+export { TestRoute } from './app/TestRoute';
