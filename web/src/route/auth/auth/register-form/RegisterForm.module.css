@@ -1,0 +1,8 @@
+.registerForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.registerForm > .registerButton {
+  margin-top: 36px;
+}
