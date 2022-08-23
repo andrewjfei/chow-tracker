@@ -1,9 +1,10 @@
+import { RouteContainer } from '../../component/route-container/RouteContainer';
 import { Auth } from './auth/Auth';
 import styles from './AuthRoute.module.css';
 
 const AuthRoute = () => {
   return (
-    <div className={styles.routeContainer}>
+    <RouteContainer>
       <div className={styles.authColumn}>
         <Auth className={styles.auth} />
       </div>
@@ -12,7 +13,7 @@ const AuthRoute = () => {
           Image
         </div>
       </div>
-    </div>
+    </RouteContainer>
   );
 };
 

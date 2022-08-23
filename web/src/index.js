@@ -8,7 +8,7 @@ import { AuthRoute } from './route/auth/AuthRoute';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthRoute />
+    <TestRoute />
   </React.StrictMode>
 );
 

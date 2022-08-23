@@ -1,4 +1,4 @@
-import { WelcomeWidget, RankingWidget } from '../../component';
+import { WelcomeWidget, RankingWidget, RouteContainer } from '../../component';
 import { ChowList } from './chow-list/ChowList';
 import { ChowsSearchBar } from './chow-search-bar/ChowSearchBar';
 import { NavBar } from './nav-bar/NavBar';
@@ -7,7 +7,7 @@ import styles from './AppRoute.module.css';
 
 const TestRoute = () => {
   return (
-    <div className={styles.routeContainer}>
+    <RouteContainer>
       <div className={styles.navBarColumn}>
         <NavBar className={styles.navBar} />
       </div>
@@ -24,7 +24,7 @@ const TestRoute = () => {
         <ChowsSearchBar />
         <ChowList className={styles.chowList} />
       </div>
-    </div>
+    </RouteContainer>
   );
 };
 
