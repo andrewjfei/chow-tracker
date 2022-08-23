@@ -11,3 +11,85 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.h1 {
+  font-size: 36px;
+  font-weight: 700;
+}
+
+.h2 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.h3 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.h4 {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.h5 {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.h6 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.s1 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.s2 {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.p1 {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.p2 {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.c1 {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.c2 {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.l1 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.icon-sm {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-md {
+  width: 30px;
+  height: 30px;
+}
+
+.icon-lg {
+  width: 36px;
+  height: 36px;
+}
+

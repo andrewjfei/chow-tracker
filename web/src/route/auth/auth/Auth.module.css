@@ -1,0 +1,21 @@
+.authContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoContainer {
+  background-color: grey;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+.authFormContainer {
+  background-color: palegoldenrod;
+  flex: 1 1 auto;
+}
+
+.authFormContainer > .authFormButtonRow {
+  background-color: palegreen;
+  margin-bottom: 25px;
+}
