@@ -3,7 +3,7 @@ import { UserCircleIcon } from '../../../../asset';
 
 import styles from './LoginForm.module.css';
 
-const LoginForm = () => {
+const LoginForm = ({ onLogin }) => {
   return (
     <div className={styles.loginForm}>
       <InputField
@@ -23,7 +23,7 @@ const LoginForm = () => {
         colour='primary'
         text='Login'
         type='button'
-        onClick={() => {}}
+        onClick={onLogin}
       />
     </div>
   );

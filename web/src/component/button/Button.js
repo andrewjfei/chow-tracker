@@ -1,6 +1,6 @@
 const styles = {
   button: {
-    base: 'px-4 py-2 border-2 rounded-lg text-sm font-regular transition-colors hover:cursor-pointer focus:outline-none focus:border-orange-600',
+    base: 'flex flex-row items-center px-4 py-2 border-2 rounded-lg text-sm font-regular transition-colors hover:cursor-pointer focus:outline-none focus:border-orange-600',
     filled: {
       default:
         'bg-stone-500 border-stone-500 text-white hover:bg-stone-600 hover:border-stone-600',
@@ -24,7 +24,7 @@ const styles = {
 
 const Button = ({
   className,
-  text,
+  children,
   type,
   variant = 'filled',
   colour = 'primary',
@@ -36,7 +36,7 @@ const Button = ({
       type={type}
       onClick={onClick}
     >
-      {text}
+      {children}
     </button>
   );
 };
