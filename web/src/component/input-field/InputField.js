@@ -13,11 +13,11 @@ const InputField = ({ className, type = 'text', label, placeholder }) => {
   const onInputFieldChange = (value) => setValue(value);
 
   return (
-    <div className={styles.inputFieldContainer}>
+    <div className={`${className} ${styles.inputFieldContainer}`}>
       {label && <p className={styles.inputFieldLabel}>{label}</p>}
       <input
         type={type}
-        className={`${className} ${styles.inputField}`}
+        className={`${styles.inputField}`}
         placeholder={placeholder}
         value={value}
         onChange={(event) => onInputFieldChange(event.target.value)}

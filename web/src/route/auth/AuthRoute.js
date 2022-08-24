@@ -25,13 +25,25 @@ const AuthRoute = ({ onLogin }) => {
           <p className='text-xs'>Text XS</p>
           <InputField placeholder='Placeholder' />
           <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <Button text='Default' />
-            <Button text='Filled Default' variant='filled' colour='default' />
-            <Button text='Filled Primary' variant='filled' colour='primary' />
-            <Button text='Outline Default' variant='outline' colour='default' />
-            <Button text='Outline Primary' variant='outline' colour='primary' />
-            <Button text='Text Default' variant='text' colour='default' />
-            <Button text='Text Primary' variant='text' colour='primary' />
+            <Button>Default</Button>
+            <Button variant='filled' colour='default'>
+              Filled Default
+            </Button>
+            <Button variant='filled' colour='primary'>
+              Filled Primary
+            </Button>
+            <Button variant='outline' colour='default'>
+              Outline Default
+            </Button>
+            <Button variant='outline' colour='primary'>
+              Outline Primary
+            </Button>
+            <Button variant='text' colour='default'>
+              Text Default
+            </Button>
+            <Button variant='text' colour='primary'>
+              Text Primary
+            </Button>
           </div>
         </Card>
       </div>
