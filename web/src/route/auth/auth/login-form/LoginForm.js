@@ -1,30 +1,31 @@
 import { InputField, Button } from '../../../../component';
 import { UserCircleIcon } from '../../../../asset';
 
-import styles from './LoginForm.module.css';
-
 const LoginForm = ({ onLogin }) => {
   return (
-    <div className={styles.loginForm}>
+    <div className='flex flex-col'>
       <InputField
+        className='mt-3'
         label='Username/Email'
         prefixIcon={<UserCircleIcon />}
         placeholder='Enter username or email address'
       />
       <InputField
+        className='mt-3'
         label='Password'
         type='password'
         prefixIcon={<UserCircleIcon />}
         placeholder='Enter password'
       />
       <Button
-        className={styles.loginButton}
+        className='mt-10'
         variant='filled'
         colour='primary'
-        text='Login'
         type='button'
         onClick={onLogin}
-      />
+      >
+        Login
+      </Button>
     </div>
   );
 };
