@@ -6,6 +6,9 @@ module.exports = {
       gridTemplateColumns: {
         layout: 'repeat(18, minmax(0, 1fr))',
       },
+      fontSize: {
+        tag: ['0.625rem', '0.75rem'],
+      },
     },
   },
   plugins: [],

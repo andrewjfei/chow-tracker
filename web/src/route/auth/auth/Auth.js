@@ -4,7 +4,7 @@ import styles from './Auth.module.css';
 import { LoginForm } from './login-form/LoginForm';
 import { RegisterForm } from './register-form/RegisterForm';
 
-const Auth = ({ className }) => {
+const Auth = ({ className, onLogin }) => {
   const [isLoginFormSelected, setIsLoginFormSelected] = useState(true);
 
   return (
@@ -25,7 +25,11 @@ const Auth = ({ className }) => {
             onClick={() => setIsLoginFormSelected(false)}
           />
         </div>
-        {isLoginFormSelected ? <LoginForm /> : <RegisterForm />}
+        {isLoginFormSelected ? (
+          <LoginForm onLogin={onLogin} />
+        ) : (
+          <RegisterForm />
+        )}
       </div>
     </Card>
   );

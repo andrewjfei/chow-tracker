@@ -1,17 +1,22 @@
-const WelcomeWidget = () => {
+import { Card } from '../../card/Card';
+
+const WelcomeWidget = ({ className }) => {
   return (
-    <div style={{ border: 'solid 3px orange' }}>
-      WelcomeWidget
-      {/* <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-        type='submit'
-      >
-        Button
-      </button>
-      <label>
-        <input type='checkbox' checked /> Browser default
-      </label> */}
-    </div>
+    <Card className={`${className} p-7`}>
+      <p className='text-2xl text-stone-700'>Welcome, Joe Bloggs!</p>
+      <div className='mt-5 w-4/6'>
+        <p className='text-base text-stone-700'>
+          Having Trouble deciding what to eat?
+        </p>
+        <p className='text-base text-stone-700'>
+          We've gone ahead and done the dirty work for you have have ranked all
+          the chow destinations you have been to in the past.
+        </p>
+        <p className='text-base text-stone-700'>
+          Hopefully this can help you decide your next meal.
+        </p>
+      </div>
+    </Card>
   );
 };
 
