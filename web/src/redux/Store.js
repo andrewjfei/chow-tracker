@@ -1,15 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { mapApi } from '../routes/app/map/MapService';
-import mapReducer from '../routes/app/map/MapSlice';
+import { apiSlice, authSlice, chowListSlice, counterSlice } from './slice';
 
 export const store = configureStore({
   reducer: {
-    map: mapReducer,
-    [mapApi.reducerPath]: mapApi.reducer,
+    auth: authSlice.reducer,
+    chowList: chowListSlice.reducer,
+    counter: counterSlice.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(mapApi.middleware),
+    getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 setupListeners(store.dispatch);

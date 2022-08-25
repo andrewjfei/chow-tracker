@@ -2,11 +2,11 @@ import { Button, Card, InputField } from '../../component';
 import { RouteContainer } from '../../component/route-container/RouteContainer';
 import { Auth } from './auth/Auth';
 
-const AuthRoute = ({ onLogin }) => {
+const AuthRoute = () => {
   return (
     <RouteContainer>
       <div className='flex col-start-[1] col-end-[6]'>
-        <Auth className='flex-auto' onLogin={onLogin} />
+        <Auth className='flex-auto' />
       </div>
       <div className='flex col-start-[6] col-end-[19]'>
         <Card className='flex-auto'>

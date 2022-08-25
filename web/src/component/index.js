@@ -6,3 +6,4 @@ export { InputField } from './input-field/InputField';
 export { Card } from './card/Card';
 export { Button } from './button/Button';
 export { Tag } from './tag/Tag';
+export { Loading } from './loading/Loading';
