@@ -1,5 +1,9 @@
+const styles = {
+  loading: 'flex flex-col justify-center',
+};
+
 const Loading = () => {
-  return <p className='flex flex-col justify-center'>Is Loading ...</p>;
+  return <p className={`${styles.loading}`}>Is Loading ...</p>;
 };
 
 export { Loading };

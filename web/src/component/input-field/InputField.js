@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 const styles = {
   inputFieldContainer: 'flex flex-col',
   inputFieldLabel: 'py-1 text-sm text-stone-700 font-medium',
@@ -14,7 +12,6 @@ const InputField = ({
   placeholder,
   value,
   onChange,
-  onMouseLeave,
 }) => {
   return (
     <div className={`${className} ${styles.inputFieldContainer}`}>
@@ -25,7 +22,6 @@ const InputField = ({
         placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        // onPointerLeave={onMouseLeave}
       />
     </div>
   );

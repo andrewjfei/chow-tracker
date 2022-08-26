@@ -8,5 +8,9 @@ export {
   useGetAreaChowRankingQuery,
 } from './ApiSlice';
 export { authSlice, updateAuthUser } from './AuthSlice';
-export { chowListSlice, updateChowList } from './ChowListSlice';
-export { counterSlice, increment } from './CounterSlice';
+export {
+  chowListSlice,
+  updateChowList,
+  chowListFilterSlice,
+  updateChowListFilter,
+} from './ChowSlice';

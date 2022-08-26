@@ -235,8 +235,10 @@ public class ChowService {
             return rankingItemDtoList;
         }
 
+        int ranking = 1;
+
         for (RankingItemDao rankingItemDao : rankingItemDaoList) {
-            rankingItemDtoList.add(MapperUtil.toDto(rankingItemDao));
+            rankingItemDtoList.add(MapperUtil.toDto(rankingItemDao, ranking++));
         }
 
         return rankingItemDtoList;

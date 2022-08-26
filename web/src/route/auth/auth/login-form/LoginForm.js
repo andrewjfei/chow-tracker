@@ -3,7 +3,7 @@ import { UserCircleIcon } from '../../../../asset';
 import { updateAuthUser } from '../../../../redux/slice';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useLoginMutation } from '../../../../redux/slice/ApiSlice';
 import { isValidEmail } from '../../../../util';
 

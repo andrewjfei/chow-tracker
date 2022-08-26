@@ -11,8 +11,6 @@ export const apiSlice = createApi({
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.user?.token;
 
-      console.log(token);
-
       // If we have a token set in state, let's assume that we should be passing it.
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -31,7 +29,9 @@ export const apiSlice = createApi({
     }),
     getChowList: build.mutation({
       query: (params) => ({
-        url: `/chow?searchString=${params.searchString}`,
+        url: `/chow?searchString=${
+          params.searchString
+        }&cuisineList=${params.cuisineList.toString()}&priceRangeList=${params.priceRangeList.toString()}&areaList=${params.areaList.toString()}`,
         method: 'GET',
       }),
     }),

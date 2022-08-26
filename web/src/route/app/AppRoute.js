@@ -16,11 +16,12 @@ import {
   useGetCuisineChowRankingQuery,
   useGetPriceRangeChowRankingQuery,
   useGetAreaChowRankingQuery,
+  updateChowListFilter,
 } from '../../redux/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { increment } from '../../redux/slice';
 import { SuggestionsInput } from '../../component/suggestions-input/SuggestionsInput';
+import { ChowsSearchBar } from './chow-search-bar/ChowSearchBar';
 
 const AppRoute = () => {
   const dispatch = useDispatch();
@@ -35,9 +36,10 @@ const AppRoute = () => {
     useGetAreaChowRankingQuery();
 
   const [getChowList] = useGetChowListMutation();
+  const { filter } = useSelector((state) => state.chowListFilter);
 
-  const onSearch = (string) => {
-    getChowList({ searchString: string }).then(({ data, error }) => {
+  useEffect(() => {
+    getChowList(filter).then(({ data, error }) => {
       // console.log(result);
       if (error) {
         console.log(error);
@@ -45,10 +47,6 @@ const AppRoute = () => {
       console.log(data);
       dispatch(updateChowList(data));
     });
-  };
-
-  useEffect(() => {
-    onSearch('');
   }, []);
 
   // const rankingData = [
@@ -95,12 +93,12 @@ const AppRoute = () => {
         </div>
       </div>
       <div className='flex flex-col col-start-[12] col-end-[19]'>
-        {/* <SuggestionsInput placeholder='Search Chow' /> */}
-        <InputField placeholder='Search Chow' onChange={onSearch} />
+        <ChowsSearchBar placeholder='Search Chow' />
+        {/* <InputField placeholder='Search Chow' onChange={onSearch} /> */}
         <div className='flex flex-col flex-auto'>
           <div className='flex flex-row justify-between items-end mt-5 mb-3'>
             <p className='text-xl text-stone-700'>Chow List</p>
-            <Button variant='outline' onClick={() => dispatch(increment())}>
+            <Button variant='outline' onClick={() => {}}>
               <PlusIcon className='h-5 mr-3 stroke- stroke-orange-400' />
               Add New Chow
             </Button>

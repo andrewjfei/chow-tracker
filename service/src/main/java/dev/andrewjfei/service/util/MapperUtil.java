@@ -14,8 +14,8 @@ import java.util.List;
 
 public class MapperUtil {
 
-    static public RankingItemDto toDto(RankingItemDao rankingItemDao) {
-        return new RankingItemDto(rankingItemDao.getItemName(), rankingItemDao.getHasBeen());
+    static public RankingItemDto toDto(RankingItemDao rankingItemDao, int ranking) {
+        return new RankingItemDto(ranking, rankingItemDao.getItemName(), rankingItemDao.getHasBeen());
     }
 
     static public ErrorDto toDto(Error error) {

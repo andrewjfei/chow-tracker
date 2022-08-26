@@ -1,9 +1,13 @@
 import { Card } from '../../card/Card';
 import { Tag } from '../../tag/Tag';
 
+const styles = {
+  rankingWidget: 'flex flex-col',
+};
+
 const RankingWidget = ({ className, data, title }) => {
   return (
-    <Card className={`${className} flex flex-col`}>
+    <Card className={`${className} ${styles.rankingWidget}`}>
       <p className='flex text-xl'>{title}</p>
       <div>
         {data.map((dataItem) => (

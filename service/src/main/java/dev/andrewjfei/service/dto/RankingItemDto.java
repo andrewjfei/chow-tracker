@@ -1,9 +1,15 @@
 package dev.andrewjfei.service.dto;
 
 public record RankingItemDto(
+        int ranking,
         String itemName,
         int hasBeen
 ) {
+
+    @Override
+    public int ranking() {
+        return ranking;
+    }
 
     @Override
     public String itemName() {
@@ -18,7 +24,8 @@ public record RankingItemDto(
     @Override
     public String toString() {
         return "RankingItemDto{" +
-                "itemName='" + itemName + '\'' +
+                "ranking=" + ranking +
+                ", itemName='" + itemName + '\'' +
                 ", hasBeen=" + hasBeen +
                 '}';
     }

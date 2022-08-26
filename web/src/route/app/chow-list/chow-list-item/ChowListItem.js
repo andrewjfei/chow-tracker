@@ -6,15 +6,15 @@ import {
 
 import { Card, Button, Tag } from '../../../../component';
 
+const PRICE_RANGE_MAP = {
+  LOW: 1,
+  MEDIUM: 2,
+  HIGH: 3,
+};
+
 const ChowListItem = ({ chowVenue }) => {
   const formatArea = (area) => {
     return area.replace('_', ' ');
-  };
-
-  const PRICE_RANGE_MAP = {
-    LOW: 1,
-    MEDIUM: 2,
-    HIGH: 3,
   };
 
   const createPiceRangeObject = (priceRange) => {

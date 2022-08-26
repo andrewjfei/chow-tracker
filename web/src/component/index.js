@@ -1,9 +1,12 @@
 export { RouteContainer } from './route-container/RouteContainer';
-export { WelcomeWidget } from './widget/welcome/WelcomeWidget';
-export { RankingWidget } from './widget/ranking/RankingWidget';
-export { CardListWidget } from './widget/card-list/CardListWidget';
+export { WelcomeWidget } from './widget';
+export { RankingWidget } from './widget';
+export { CardListWidget } from './widget';
 export { InputField } from './input-field/InputField';
 export { Card } from './card/Card';
 export { Button } from './button/Button';
 export { Tag } from './tag/Tag';
 export { Loading } from './loading/Loading';
+export { HorizontalDivider } from './horizontal-divider/HorizontalDivider';
+export { VerticalDivider } from './vertical-divider/VerticalDivider';
+export { ToggleButton } from './toggle-button/ToggleButton';
