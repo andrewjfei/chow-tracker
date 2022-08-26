@@ -1,18 +1,31 @@
+import { useSelector } from 'react-redux';
+
 import { Card } from '../../card/Card';
 
+const styles = {
+  welcomeWidget: 'p-7',
+  welcomeTitle: 'text-2xl text-stone-700',
+  welcomeDescriptionContainer: 'mt-5 w-4/6',
+  welcomeDescription: 'text-base text-stone-700',
+};
+
 const WelcomeWidget = ({ className }) => {
+  const { user } = useSelector((state) => state.auth);
+
   return (
-    <Card className={`${className} p-7`}>
-      <p className='text-2xl text-stone-700'>Welcome, Joe Bloggs!</p>
-      <div className='mt-5 w-4/6'>
-        <p className='text-base text-stone-700'>
+    <Card className={`${className} ${styles.welcomeWidget}`}>
+      <p
+        className={`${styles.welcomeTitle}`}
+      >{`Welcome, ${user?.firstName} ${user?.lastName}!`}</p>
+      <div className={`${styles.welcomeDescriptionContainer}`}>
+        <p className={`${styles.welcomeDescription}`}>
           Having Trouble deciding what to eat?
         </p>
-        <p className='text-base text-stone-700'>
+        <p className={`${styles.welcomeDescription}`}>
           We've gone ahead and done the dirty work for you have have ranked all
           the chow destinations you have been to in the past.
         </p>
-        <p className='text-base text-stone-700'>
+        <p className={`${styles.welcomeDescription}`}>
           Hopefully this can help you decide your next meal.
         </p>
       </div>

@@ -1,8 +1,10 @@
-const RouteContainer = ({ children }) => {
+const styles = {
+  routeContainer: 'grid grid-cols-layout gap-5 h-screen p-5 bg-stone-100',
+};
+
+const RouteContainer = ({ className, children }) => {
   return (
-    <div className='grid grid-cols-layout gap-5 h-screen p-5 bg-stone-100'>
-      {children}
-    </div>
+    <div className={`${className} ${styles.routeContainer}`}>{children}</div>
   );
 };
 

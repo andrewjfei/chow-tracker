@@ -1,38 +1,30 @@
 import React, { useState } from 'react';
-import {
-  Routes,
-  Route,
-  Navigate,
-  ProtectedRoute,
-  useNavigate,
-} from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { AuthRoute } from './auth/AuthRoute';
 import { AppRoute } from './app/AppRoute';
+import { TestRoute } from './TestRoute';
 
 const RootRouter = () => {
-  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const onSubmit = () => {
-    setIsAuthenticated(true);
-    navigate('/app');
-  };
+  useState(() => {}, [user]);
 
   return (
     <Routes>
       <Route
         path='/'
         element={
-          isAuthenticated ? (
+          user ? (
             <Navigate replace to='/app' />
           ) : (
             <Navigate replace to='/auth' />
           )
         }
       />
-      <Route path='/auth' element={<AuthRoute onLogin={onSubmit} />} />
+      <Route path='/auth' element={<AuthRoute />} />
       <Route path='/app' element={<AppRoute />} />
+      <Route path='/test' element={<TestRoute />} />
     </Routes>
   );
 };

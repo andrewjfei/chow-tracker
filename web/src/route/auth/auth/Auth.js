@@ -3,7 +3,7 @@ import { Card, Button } from '../../../component';
 import { LoginForm } from './login-form/LoginForm';
 import { RegisterForm } from './register-form/RegisterForm';
 
-const Auth = ({ className, onLogin }) => {
+const Auth = ({ className }) => {
   const [isLoginFormSelected, setIsLoginFormSelected] = useState(true);
 
   return (
@@ -26,11 +26,7 @@ const Auth = ({ className, onLogin }) => {
             Register
           </Button>
         </div>
-        {isLoginFormSelected ? (
-          <LoginForm onLogin={onLogin} />
-        ) : (
-          <RegisterForm />
-        )}
+        {isLoginFormSelected ? <LoginForm /> : <RegisterForm />}
       </div>
     </Card>
   );
