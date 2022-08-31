@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Input, Select } from 'antd';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 
 import {
+  useRetrieveChowFilterOptionsQuery,
+  resetFilters,
   updateSearchFilter,
   updateCuisineFilter,
   updatePriceRangeFilter,
@@ -11,29 +14,17 @@ import {
 
 import styles from './ChowFilter.module.less';
 
-const cuisineOptions = [
-  'CHINESE',
-  'KOREAN',
-  'AMERICAN',
-  'ITALIAN',
-  'GREEK',
-  'JAPANESE',
-];
-
-const priceRangeOptions = ['LOW', 'MEDIUM', 'HIGH'];
-
-const areaOptions = [
-  'CENTRAL_AUCKLAND',
-  'EAST_AUCKLAND',
-  'WEST_AUCKLAND',
-  'SOUTH_AUCKLAND',
-  'NORTH_AUCKLAND',
-  'HAMILTON',
-  'CHRISTCHURCH',
-];
-
 const ChowFilter = () => {
   const dispatch = useDispatch();
+
+  const { data: chowFilterOptions } = useRetrieveChowFilterOptionsQuery();
+
+  const [searchString, setSearchString] = useState('');
+  const [selectedCuisineOptions, setSelectedCuisineOptions] = useState([]);
+  const [selectedPriceRangeOptions, setSelectedPriceRangeOptions] = useState(
+    []
+  );
+  const [selectedAreaOptions, setSelectedAreaOptions] = useState([]);
 
   const formatAreaOption = (option) => {
     return option.replace('_', ' ');
@@ -43,20 +34,34 @@ const ChowFilter = () => {
     return option.replace('_', '-');
   };
 
+  // Updating Filters
   const onSearchFilterChange = (value) => {
+    setSearchString(value);
     dispatch(updateSearchFilter(value));
   };
 
   const onCuisineFilterChange = (value) => {
+    setSelectedCuisineOptions(value);
     dispatch(updateCuisineFilter(value));
   };
 
   const onPriceRangeFilterChange = (value) => {
+    setSelectedPriceRangeOptions(value);
     dispatch(updatePriceRangeFilter(value));
   };
 
   const onAreaFilterChange = (value) => {
+    setSelectedAreaOptions(value);
     dispatch(updateAreaFilter(value));
+  };
+
+  // Reset Filters
+  const onResetFiltersClick = () => {
+    setSearchString('');
+    setSelectedCuisineOptions([]);
+    setSelectedPriceRangeOptions([]);
+    setSelectedAreaOptions([]);
+    dispatch(resetFilters());
   };
 
   return (
@@ -67,6 +72,7 @@ const ChowFilter = () => {
           placeholder='Search chow'
           type='text'
           style={{ width: '25%' }}
+          value={searchString}
           onChange={(event) => onSearchFilterChange(event.target.value)}
         />
         <Select
@@ -76,12 +82,14 @@ const ChowFilter = () => {
           placeholder='Select cuisines'
           onChange={onCuisineFilterChange}
           maxTagCount={1}
+          value={selectedCuisineOptions}
         >
-          {cuisineOptions.map((option) => (
-            <Select.Option key={option.toLocaleLowerCase()} value={option}>
-              {option}
-            </Select.Option>
-          ))}
+          {chowFilterOptions &&
+            chowFilterOptions.cuisineOptions.map((option) => (
+              <Select.Option key={option.toLocaleLowerCase()} value={option}>
+                {option}
+              </Select.Option>
+            ))}
         </Select>
         <Select
           mode='multiple'
@@ -90,12 +98,14 @@ const ChowFilter = () => {
           placeholder='Select price ranges'
           onChange={onPriceRangeFilterChange}
           maxTagCount={1}
+          value={selectedPriceRangeOptions}
         >
-          {priceRangeOptions.map((option) => (
-            <Select.Option key={option.toLocaleLowerCase()} value={option}>
-              {option}
-            </Select.Option>
-          ))}
+          {chowFilterOptions &&
+            chowFilterOptions.priceRangeOptions.map((option) => (
+              <Select.Option key={option.toLocaleLowerCase()} value={option}>
+                {option}
+              </Select.Option>
+            ))}
         </Select>
         <Select
           mode='multiple'
@@ -104,19 +114,21 @@ const ChowFilter = () => {
           placeholder='Select areas'
           onChange={onAreaFilterChange}
           maxTagCount={1}
+          value={selectedAreaOptions}
         >
-          {areaOptions.map((option) => (
-            <Select.Option
-              key={formatAreaOptionForKey(option.toLocaleLowerCase())}
-              value={option}
-            >
-              {formatAreaOption(option)}
-            </Select.Option>
-          ))}
+          {chowFilterOptions &&
+            chowFilterOptions.areaOptions.map((option) => (
+              <Select.Option
+                key={formatAreaOptionForKey(option.toLocaleLowerCase())}
+                value={option}
+              >
+                {formatAreaOption(option)}
+              </Select.Option>
+            ))}
         </Select>
       </div>
 
-      <Button type='primary' danger>
+      <Button type='primary' danger onClick={onResetFiltersClick}>
         Reset Filters
       </Button>
     </div>

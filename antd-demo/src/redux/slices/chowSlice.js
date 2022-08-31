@@ -3,9 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   chowListFilter: {
     searchString: '',
-    cuisineList: '',
-    priceRangeList: '',
-    areaList: '',
+    cuisineList: [],
+    priceRangeList: [],
+    areaList: [],
   },
   chowList: [],
 };
@@ -14,6 +14,9 @@ const chowSlice = createSlice({
   name: 'chow',
   initialState: initialState,
   reducers: {
+    resetFilters: (state) => {
+      state.chowListFilter = initialState.chowListFilter;
+    },
     updateSearchFilter: (state, action) => {
       state.chowListFilter.searchString = action.payload;
     },
@@ -33,6 +36,7 @@ const chowSlice = createSlice({
 });
 
 export const {
+  resetFilters,
   updateSearchFilter,
   updateCuisineFilter,
   updatePriceRangeFilter,

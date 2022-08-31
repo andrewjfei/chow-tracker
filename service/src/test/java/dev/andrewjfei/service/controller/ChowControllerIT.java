@@ -5,6 +5,7 @@ import dev.andrewjfei.service.dao.UserDao;
 import dev.andrewjfei.service.dto.AuthDto;
 import dev.andrewjfei.service.dto.ChowDto;
 import dev.andrewjfei.service.dto.ErrorDto;
+import dev.andrewjfei.service.dto.FilterOptionsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.dto.UserDto;
@@ -38,10 +39,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Filter;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
@@ -733,6 +736,7 @@ public class ChowControllerIT {
 
         // Mocking static method using try with resources
         try (MockedStatic<RandomUtil> mockedRandomUtil = Mockito.mockStatic(RandomUtil.class)) {
+            // TODO: Fix mocking static method
             mockedRandomUtil.when(() -> RandomUtil.getRandomIndex(anyInt())).thenReturn(1);
 
             // When
@@ -752,6 +756,40 @@ public class ChowControllerIT {
             Assertions.assertEquals(priceRange2, response.getBody().priceRange());
             Assertions.assertEquals(area2, response.getBody().area());
         }
+    }
+
+    /*******************************************************************************************************/
+    /*************************************** Get Chow Filter Options ***************************************/
+    /*******************************************************************************************************/
+
+    @Test
+    public void getChowFilterOptions_success_returnsFilterOptions() {
+        List<Cuisine> cuisineList = Arrays.asList(Cuisine.values());
+        List<PriceRange> priceRangeList = Arrays.asList(PriceRange.values());
+        List<Area> areaList = Arrays.asList(Area.values());
+
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<FilterOptionsDto> response = testRestTemplate.exchange(
+                CHOW_URI + "/filter-options",
+                HttpMethod.GET,
+                request,
+                FilterOptionsDto.class
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(cuisineList.size(), response.getBody().cuisineOptions().size());
+        Assertions.assertEquals(priceRangeList.size(), response.getBody().priceRangeOptions().size());
+        Assertions.assertEquals(areaList.size(), response.getBody().areaOptions().size());
     }
 
     /**********************************************************************************************/

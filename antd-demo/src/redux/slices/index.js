@@ -1,6 +1,11 @@
-export { apiSlice, useRetrieveChowListMutation } from './apiSlice';
+export {
+  apiSlice,
+  useRetrieveChowFilterOptionsQuery,
+  useRetrieveChowListMutation,
+} from './apiSlice';
 export {
   chowSlice,
+  resetFilters,
   updateSearchFilter,
   updateCuisineFilter,
   updatePriceRangeFilter,

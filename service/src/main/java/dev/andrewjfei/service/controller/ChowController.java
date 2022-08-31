@@ -1,6 +1,7 @@
 package dev.andrewjfei.service.controller;
 
 import dev.andrewjfei.service.dto.ChowDto;
+import dev.andrewjfei.service.dto.FilterOptionsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.enumeration.Area;
@@ -151,5 +152,18 @@ public class ChowController {
         ChowDto chowDto = chowService.selectRandomChow(chowDtoList);
 
         return new ResponseEntity<>(chowDto, HttpStatus.OK);
+    }
+
+    /**************************************************************************************************/
+    /*************************************** Filter Options API ***************************************/
+    /**************************************************************************************************/
+
+    @GetMapping("/filter-options")
+    public ResponseEntity<FilterOptionsDto> getChowFilterOptions(HttpServletRequest request) {
+        RequestUtil.validateRequest(request);
+
+        FilterOptionsDto filterOptionsDto = chowService.retrieveChowFilterOptions();
+
+        return new ResponseEntity<>(filterOptionsDto, HttpStatus.OK);
     }
 }
