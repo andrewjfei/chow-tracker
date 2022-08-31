@@ -5,7 +5,7 @@ import styles from './LogoHeader.module.less';
 const LogoHeader = () => {
   return (
     <div className={`${styles.logoHeaderContainer}`}>
-      <BugTwoTone className={`${styles.icon}`} twoToneColor='#FF7B33' />
+      <BugTwoTone className={`${styles.icon}`} twoToneColor='#ff7b33' />
       <p className={`${styles.text}`}>Chow Tracker</p>
     </div>
   );

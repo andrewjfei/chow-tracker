@@ -1,11 +1,11 @@
 import { Button, Typography, Space } from 'antd';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
 
-import styles from './ChowListActionRow.module.less';
+import styles from './ChowActionRow.module.less';
 
-const ChowListActionRow = () => {
+const ChowActionRow = () => {
   return (
-    <div className={`${styles.chowListActionRowContainer}`}>
+    <div className={`${styles.chowActionRowContainer}`}>
       <Space
         className={`${styles.randomiseChowContainer}`}
         direction='horizontal'
@@ -28,4 +28,4 @@ const ChowListActionRow = () => {
   );
 };
 
-export { ChowListActionRow };
+export { ChowActionRow };

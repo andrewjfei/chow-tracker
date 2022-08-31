@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.less';
 import 'antd/dist/antd.less';
 import reportWebVitals from './reportWebVitals';
-import { AppRoute, AuthRoute } from './routes';
+import { store } from './redux';
+import { Provider } from 'react-redux';
+
+import { AppRoute } from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AppRoute />
+    <Provider store={store}>
+      <AppRoute />
+    </Provider>
   </React.StrictMode>
 );
 

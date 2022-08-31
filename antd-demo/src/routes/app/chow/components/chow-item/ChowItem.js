@@ -1,8 +1,7 @@
-import { Button, Card, Tag, Typography, Space, List } from 'antd';
+import { Button, Card, Tag, Typography, Space } from 'antd';
 import DollarOutlined from '@ant-design/icons/DollarOutlined';
-import MoreOutlined from '@ant-design/icons/MoreOutlined';
 
-import styles from './ChowListItem.module.less';
+import styles from './ChowItem.module.less';
 
 const PRICE_RANGE_MAP = {
   LOW: 1,
@@ -10,12 +9,9 @@ const PRICE_RANGE_MAP = {
   HIGH: 3,
 };
 
-const ChowListItem = ({ chowItem }) => {
+const ChowItem = ({ chowItem }) => {
   return (
-    <Card
-      className={`${styles.chowListItemCard}`}
-      bodyStyle={{ padding: '0rem' }}
-    >
+    <Card className={`${styles.chowItemCard}`} bodyStyle={{ padding: '0rem' }}>
       <div className={`${styles.cardBody}`}>
         <div className={`${styles.infoContainer}`}>
           <Space direction='horizontal' size='small'>
@@ -54,4 +50,4 @@ const ChowListItem = ({ chowItem }) => {
   );
 };
 
-export { ChowListItem };
+export { ChowItem };

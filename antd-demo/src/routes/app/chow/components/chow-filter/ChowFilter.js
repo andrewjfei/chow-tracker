@@ -1,7 +1,15 @@
+import { useDispatch } from 'react-redux';
 import { Button, Input, Select } from 'antd';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 
-import styles from './ChowListFilter.module.less';
+import {
+  updateSearchFilter,
+  updateCuisineFilter,
+  updatePriceRangeFilter,
+  updateAreaFilter,
+} from '../../../../../redux/slices';
+
+import styles from './ChowFilter.module.less';
 
 const cuisineOptions = [
   'CHINESE',
@@ -24,7 +32,9 @@ const areaOptions = [
   'CHRISTCHURCH',
 ];
 
-const ChowListFilter = () => {
+const ChowFilter = () => {
+  const dispatch = useDispatch();
+
   const formatAreaOption = (option) => {
     return option.replace('_', ' ');
   };
@@ -33,27 +43,39 @@ const ChowListFilter = () => {
     return option.replace('_', '-');
   };
 
-  const handleChange = (value) => {
-    console.log(`selected ${value}`);
+  const onSearchFilterChange = (value) => {
+    dispatch(updateSearchFilter(value));
+  };
+
+  const onCuisineFilterChange = (value) => {
+    dispatch(updateCuisineFilter(value));
+  };
+
+  const onPriceRangeFilterChange = (value) => {
+    dispatch(updatePriceRangeFilter(value));
+  };
+
+  const onAreaFilterChange = (value) => {
+    dispatch(updateAreaFilter(value));
   };
 
   return (
-    <div className={`${styles.chowListFilterContainer}`}>
+    <div className={`${styles.chowFilterContainer}`}>
       <div className={`${styles.filterGroupContainer}`}>
         <Input
           prefix={<SearchOutlined />}
           placeholder='Search chow'
           type='text'
           style={{ width: '25%' }}
+          onChange={(event) => onSearchFilterChange(event.target.value)}
         />
         <Select
           mode='multiple'
           allowClear
           style={{ width: '20%' }}
           placeholder='Select cuisines'
-          onChange={handleChange}
+          onChange={onCuisineFilterChange}
           maxTagCount={1}
-          // value={['CHINESE', 'JAPANESE']}
         >
           {cuisineOptions.map((option) => (
             <Select.Option key={option.toLocaleLowerCase()} value={option}>
@@ -66,7 +88,7 @@ const ChowListFilter = () => {
           allowClear
           style={{ width: '20%' }}
           placeholder='Select price ranges'
-          onChange={handleChange}
+          onChange={onPriceRangeFilterChange}
           maxTagCount={1}
         >
           {priceRangeOptions.map((option) => (
@@ -80,7 +102,7 @@ const ChowListFilter = () => {
           allowClear
           style={{ width: '30%' }}
           placeholder='Select areas'
-          onChange={handleChange}
+          onChange={onAreaFilterChange}
           maxTagCount={1}
         >
           {areaOptions.map((option) => (
@@ -101,4 +123,4 @@ const ChowListFilter = () => {
   );
 };
 
-export { ChowListFilter };
+export { ChowFilter };
