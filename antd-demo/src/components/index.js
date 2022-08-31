@@ -1,1 +1,1 @@
-export { LogoHeader } from './LogoHeader';
+export { LogoHeader } from './logo-header/LogoHeader';

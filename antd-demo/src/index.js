@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.less';
 import 'antd/dist/antd.less';
 import reportWebVitals from './reportWebVitals';
-import { AuthRoute } from './routes';
+import { AppRoute, AuthRoute } from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthRoute />
+    <AppRoute />
   </React.StrictMode>
 );
 
