@@ -4,7 +4,7 @@ import { Card, Empty } from 'antd';
 
 import {
   useRetrieveChowListMutation,
-  updateChowList,
+  setChowList,
 } from '../../../redux/slices';
 import { ChowList, ChowActionRow, ChowFilter } from './components';
 
@@ -25,7 +25,7 @@ const ChowRoute = () => {
         return;
       }
 
-      dispatch(updateChowList(data));
+      dispatch(setChowList(data));
     });
   }, [chowListFilter]);
 

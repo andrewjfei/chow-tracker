@@ -6,7 +6,7 @@ import dev.andrewjfei.service.enumeration.PriceRange;
 
 import java.util.List;
 
-public record FilterOptionsDto(
+public record CategoryOptionsDto(
         List<Cuisine> cuisineOptions,
         List<PriceRange> priceRangeOptions,
         List<Area> areaOptions
@@ -29,7 +29,7 @@ public record FilterOptionsDto(
 
     @Override
     public String toString() {
-        return "FilterOptionsDto{" +
+        return "CategoryOptionsDto{" +
                 "cuisineOptions=" + cuisineOptions +
                 ", priceRangeOptions=" + priceRangeOptions +
                 ", areaOptions=" + areaOptions +

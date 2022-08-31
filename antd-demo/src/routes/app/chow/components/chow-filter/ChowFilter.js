@@ -1,23 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, Input, Select } from 'antd';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 
 import {
-  useRetrieveChowFilterOptionsQuery,
+  useRetrieveChowCategoryOptionsQuery,
+  setChowCategoryOptions,
   resetFilters,
-  updateSearchFilter,
-  updateCuisineFilter,
-  updatePriceRangeFilter,
-  updateAreaFilter,
+  setSearchFilter,
+  setCuisineFilter,
+  setPriceRangeFilter,
+  setAreaFilter,
 } from '../../../../../redux/slices';
+import {
+  formatAreaOption,
+  formatAreaOptionForKey,
+} from '../../../../../utils/formatUtil';
 
 import styles from './ChowFilter.module.less';
 
 const ChowFilter = () => {
   const dispatch = useDispatch();
 
-  const { data: chowFilterOptions } = useRetrieveChowFilterOptionsQuery();
+  const { data: chowCategoryOptions, isSuccess } =
+    useRetrieveChowCategoryOptionsQuery();
 
   const [searchString, setSearchString] = useState('');
   const [selectedCuisineOptions, setSelectedCuisineOptions] = useState([]);
@@ -26,33 +32,31 @@ const ChowFilter = () => {
   );
   const [selectedAreaOptions, setSelectedAreaOptions] = useState([]);
 
-  const formatAreaOption = (option) => {
-    return option.replace('_', ' ');
-  };
-
-  const formatAreaOptionForKey = (option) => {
-    return option.replace('_', '-');
-  };
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(setChowCategoryOptions(chowCategoryOptions));
+    }
+  }, [isSuccess]);
 
   // Updating Filters
   const onSearchFilterChange = (value) => {
     setSearchString(value);
-    dispatch(updateSearchFilter(value));
+    dispatch(setSearchFilter(value));
   };
 
   const onCuisineFilterChange = (value) => {
     setSelectedCuisineOptions(value);
-    dispatch(updateCuisineFilter(value));
+    dispatch(setCuisineFilter(value));
   };
 
   const onPriceRangeFilterChange = (value) => {
     setSelectedPriceRangeOptions(value);
-    dispatch(updatePriceRangeFilter(value));
+    dispatch(setPriceRangeFilter(value));
   };
 
   const onAreaFilterChange = (value) => {
     setSelectedAreaOptions(value);
-    dispatch(updateAreaFilter(value));
+    dispatch(setAreaFilter(value));
   };
 
   // Reset Filters
@@ -84,8 +88,8 @@ const ChowFilter = () => {
           maxTagCount={1}
           value={selectedCuisineOptions}
         >
-          {chowFilterOptions &&
-            chowFilterOptions.cuisineOptions.map((option) => (
+          {chowCategoryOptions &&
+            chowCategoryOptions.cuisineOptions.map((option) => (
               <Select.Option key={option.toLocaleLowerCase()} value={option}>
                 {option}
               </Select.Option>
@@ -100,8 +104,8 @@ const ChowFilter = () => {
           maxTagCount={1}
           value={selectedPriceRangeOptions}
         >
-          {chowFilterOptions &&
-            chowFilterOptions.priceRangeOptions.map((option) => (
+          {chowCategoryOptions &&
+            chowCategoryOptions.priceRangeOptions.map((option) => (
               <Select.Option key={option.toLocaleLowerCase()} value={option}>
                 {option}
               </Select.Option>
@@ -116,8 +120,8 @@ const ChowFilter = () => {
           maxTagCount={1}
           value={selectedAreaOptions}
         >
-          {chowFilterOptions &&
-            chowFilterOptions.areaOptions.map((option) => (
+          {chowCategoryOptions &&
+            chowCategoryOptions.areaOptions.map((option) => (
               <Select.Option
                 key={formatAreaOptionForKey(option.toLocaleLowerCase())}
                 value={option}

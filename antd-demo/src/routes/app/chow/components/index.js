@@ -1,3 +1,4 @@
+export { ChowDrawer } from './chow-drawer/ChowDrawer';
 export { ChowFilter } from './chow-filter/ChowFilter';
 export { ChowList } from './chow-list/ChowList';
 export { ChowItem } from './chow-item/ChowItem';

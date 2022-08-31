@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  chowCategoryOptions: {
+    cuisineOptions: [],
+    priceRangeOptions: [],
+    areaOptions: [],
+  },
   chowListFilter: {
     searchString: '',
     cuisineList: [],
@@ -14,34 +19,43 @@ const chowSlice = createSlice({
   name: 'chow',
   initialState: initialState,
   reducers: {
+    setChowCategoryOptions: (state, action) => {
+      state.chowCategoryOptions = action.payload;
+    },
     resetFilters: (state) => {
       state.chowListFilter = initialState.chowListFilter;
     },
-    updateSearchFilter: (state, action) => {
+    setSearchFilter: (state, action) => {
       state.chowListFilter.searchString = action.payload;
     },
-    updateCuisineFilter: (state, action) => {
+    setCuisineFilter: (state, action) => {
       state.chowListFilter.cuisineList = action.payload;
     },
-    updatePriceRangeFilter: (state, action) => {
+    setPriceRangeFilter: (state, action) => {
       state.chowListFilter.priceRangeList = action.payload;
     },
-    updateAreaFilter: (state, action) => {
+    setAreaFilter: (state, action) => {
       state.chowListFilter.areaList = action.payload;
     },
-    updateChowList: (state, action) => {
+    addNewChow: (state, action) => {
+      const updatedChowList = [action.payload, ...state.chowList];
+      state.chowList = updatedChowList;
+    },
+    setChowList: (state, action) => {
       state.chowList = action.payload;
     },
   },
 });
 
 export const {
+  setChowCategoryOptions,
   resetFilters,
-  updateSearchFilter,
-  updateCuisineFilter,
-  updatePriceRangeFilter,
-  updateAreaFilter,
-  updateChowList,
+  setSearchFilter,
+  setCuisineFilter,
+  setPriceRangeFilter,
+  setAreaFilter,
+  addNewChow,
+  setChowList,
 } = chowSlice.actions;
 
 export { chowSlice };

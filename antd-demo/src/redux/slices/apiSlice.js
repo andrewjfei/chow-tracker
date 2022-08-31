@@ -10,7 +10,7 @@ const apiSlice = createApi({
       // const token = getState().auth.user?.token;
 
       const token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYxOTM3MTY0LCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.Xb0-7JP7EE2eSTVcxGmVq6uwGunwS46vS853PFfhRB-fK8e58Pr1ht9X4vcCXyrKKl7D1_4lDUzmNJMb6JnWYTJWy-BfvEEU89woMnJD9j8cL4rs-QLMviRxE6tp02LWixmivt8Vi3wtITzUn55V-pERMRS1Fi5HrRQ7KmUBxkJ0DDtVJCut4tOIIEBYEabanqGN5X1fyjYbROuZGd4M_PONLDOZ-PTiA4N1QMOg-5dWmC2C_0W0M2xcGIjuzGF7sG-hBDbZ84fw6_KulHv-L7czr8Bkdj8tebKa1rs83k9gdTauTnv4r7tGTrUIzHErahfj8TbryklNLjj0i5-C_A';
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYxOTg0NjM5LCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.ct6L9acqaBTG58-Yp_5go_JXXAnYGT0VQ96bN26B0BO9yxcFfL55jjmAq3RMQqgzpBHptPuvnOmhrjViKrZmq5qAqwhPVqZkVkVS13524hJdqZ0RHZsiYcgTL6WrpDRV4zaoUMY0xRWhLv_62xwOfXvRBVcCsISWf7Nn-2pZSTLt_OSkOVN3R_mbok4sWRon_JHb3s1kNks2y3Zvhn3NhGpnXZm0DqM2Af1UAmlw2mTCapf578JiEIfwpfmZLPvwKsMkvR7okxtGRVW_S7fDBPDdpne6ixk3wrxwSUfR-3BycnBrskbJg4ShzPVuYE9bMF0xIyK0BIOjjoxbM_UYig';
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -20,10 +20,17 @@ const apiSlice = createApi({
     },
   }),
   endpoints: (build) => ({
-    retrieveChowFilterOptions: build.query({
+    retrieveChowCategoryOptions: build.query({
       query: () => ({
-        url: `/chow/filter-options`,
+        url: `/chow/category-options`,
         method: 'GET',
+      }),
+    }),
+    createNewChow: build.mutation({
+      query: (newChow) => ({
+        url: `/chow`,
+        method: 'POST',
+        body: newChow,
       }),
     }),
     retrieveChowList: build.mutation({
@@ -36,7 +43,8 @@ const apiSlice = createApi({
 });
 
 export const {
-  useRetrieveChowFilterOptionsQuery,
+  useRetrieveChowCategoryOptionsQuery,
+  useCreateNewChowMutation,
   useRetrieveChowListMutation,
 } = apiSlice;
 

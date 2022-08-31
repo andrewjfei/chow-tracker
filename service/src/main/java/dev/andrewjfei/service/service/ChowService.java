@@ -3,7 +3,7 @@ package dev.andrewjfei.service.service;
 import dev.andrewjfei.service.dao.ChowDao;
 import dev.andrewjfei.service.dao.RankingItemDao;
 import dev.andrewjfei.service.dto.ChowDto;
-import dev.andrewjfei.service.dto.FilterOptionsDto;
+import dev.andrewjfei.service.dto.CategoryOptionsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.enumeration.Area;
@@ -26,10 +26,8 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -207,14 +205,14 @@ public class ChowService {
     /*************************************** Filter Options ***************************************/
     /**********************************************************************************************/
 
-    public FilterOptionsDto retrieveChowFilterOptions() {
+    public CategoryOptionsDto retrieveChowCategoryOptions() {
         List<Cuisine> cuisineList = Arrays.asList(Cuisine.values());
         List<PriceRange> priceRangeList = Arrays.asList(PriceRange.values());
         List<Area> areaList = Arrays.asList(Area.values());
 
-        FilterOptionsDto filterOptionsDto = new FilterOptionsDto(cuisineList, priceRangeList, areaList);
+        CategoryOptionsDto categoryOptionsDto = new CategoryOptionsDto(cuisineList, priceRangeList, areaList);
 
-        return filterOptionsDto;
+        return categoryOptionsDto;
     }
 
     /**********************************************************************************************/

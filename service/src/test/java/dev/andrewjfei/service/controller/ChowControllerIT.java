@@ -5,7 +5,7 @@ import dev.andrewjfei.service.dao.UserDao;
 import dev.andrewjfei.service.dto.AuthDto;
 import dev.andrewjfei.service.dto.ChowDto;
 import dev.andrewjfei.service.dto.ErrorDto;
-import dev.andrewjfei.service.dto.FilterOptionsDto;
+import dev.andrewjfei.service.dto.CategoryOptionsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.dto.UserDto;
@@ -18,10 +18,8 @@ import dev.andrewjfei.service.repository.UserRepository;
 import dev.andrewjfei.service.service.AuthService;
 import dev.andrewjfei.service.util.MapperUtil;
 import dev.andrewjfei.service.util.RandomUtil;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -44,7 +42,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.logging.Filter;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
@@ -763,7 +760,7 @@ public class ChowControllerIT {
     /*******************************************************************************************************/
 
     @Test
-    public void getChowFilterOptions_success_returnsFilterOptions() {
+    public void getChowCategoryOptions_success_returnsCategoryOptions() {
         List<Cuisine> cuisineList = Arrays.asList(Cuisine.values());
         List<PriceRange> priceRangeList = Arrays.asList(PriceRange.values());
         List<Area> areaList = Arrays.asList(Area.values());
@@ -776,11 +773,11 @@ public class ChowControllerIT {
         HttpEntity<Void> request = new HttpEntity<>(headers);
 
         // When
-        ResponseEntity<FilterOptionsDto> response = testRestTemplate.exchange(
+        ResponseEntity<CategoryOptionsDto> response = testRestTemplate.exchange(
                 CHOW_URI + "/filter-options",
                 HttpMethod.GET,
                 request,
-                FilterOptionsDto.class
+                CategoryOptionsDto.class
         );
 
         // Then

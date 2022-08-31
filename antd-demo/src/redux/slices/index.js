@@ -1,14 +1,17 @@
 export {
   apiSlice,
-  useRetrieveChowFilterOptionsQuery,
+  useRetrieveChowCategoryOptionsQuery,
+  useCreateNewChowMutation,
   useRetrieveChowListMutation,
 } from './apiSlice';
 export {
   chowSlice,
+  setChowCategoryOptions,
   resetFilters,
-  updateSearchFilter,
-  updateCuisineFilter,
-  updatePriceRangeFilter,
-  updateAreaFilter,
-  updateChowList,
+  setSearchFilter,
+  setCuisineFilter,
+  setPriceRangeFilter,
+  setAreaFilter,
+  addNewChow,
+  setChowList,
 } from './chowSlice';
