@@ -1,7 +1,4 @@
-import { Card, Empty } from 'antd';
-import { useSelector } from 'react-redux';
-
-import { ChowRoute } from '.';
+import { ChowRoute, DashboardRoute } from '.';
 
 import styles from './AppRoute.module.less';
 
@@ -17,6 +14,7 @@ const AppRoute = () => {
         backgroundColor: '#f9f9f9',
       }}
     >
+      <DashboardRoute />
       <ChowRoute />
     </div>
   );
