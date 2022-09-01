@@ -3,6 +3,8 @@ export {
   useRetrieveChowCategoryOptionsQuery,
   useCreateNewChowMutation,
   useRetrieveChowListMutation,
+  useUpdateChowMutation,
+  useDeleteChowMutation,
 } from './apiSlice';
 export {
   chowSlice,
@@ -12,6 +14,8 @@ export {
   setCuisineFilter,
   setPriceRangeFilter,
   setAreaFilter,
-  addNewChow,
   setChowList,
+  addNewChow,
+  modifyChow,
+  removeChow,
 } from './chowSlice';

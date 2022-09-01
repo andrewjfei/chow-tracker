@@ -774,7 +774,7 @@ public class ChowControllerIT {
 
         // When
         ResponseEntity<CategoryOptionsDto> response = testRestTemplate.exchange(
-                CHOW_URI + "/filter-options",
+                CHOW_URI + "/category-options",
                 HttpMethod.GET,
                 request,
                 CategoryOptionsDto.class

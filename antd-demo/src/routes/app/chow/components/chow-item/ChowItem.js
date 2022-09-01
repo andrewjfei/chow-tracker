@@ -1,8 +1,15 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button, Card, Tag, Typography, Space, Modal } from 'antd';
 import DollarOutlined from '@ant-design/icons/DollarOutlined';
 import ExclamationCircleOutlined from '@ant-design/icons/ExclamationCircleOutlined';
 
+import {
+  useUpdateChowMutation,
+  useDeleteChowMutation,
+  modifyChow,
+  removeChow,
+} from '../../../../../redux/slices';
 import { formatAreaOption } from '../../../../../utils/formatUtil';
 import { ChowDrawer } from '../';
 
@@ -14,15 +21,48 @@ const PRICE_RANGE_MAP = {
   HIGH: 3,
 };
 
-const ChowItem = ({ chowItem }) => {
+const ChowItem = ({ chowItem, index }) => {
+  const dispatch = useDispatch();
+
+  const [updateChow] = useUpdateChowMutation();
+  const [deleteChow] = useDeleteChowMutation();
+
   const [isUpdateDrawerVisible, setIsUpdateDrawerVisible] = useState(false);
 
   const onUpdateButtonClick = () => {
+    console.log(index);
+    console.log(chowItem);
     setIsUpdateDrawerVisible(true);
   };
 
   const onDrawerCloseClick = () => {
     setIsUpdateDrawerVisible(false);
+  };
+
+  const onSaveClick = (updatedChow) => {
+    updateChow({ id: chowItem.id, ...updatedChow }).then(({ data, error }) => {
+      if (error) {
+        // TODO: Call error method to handle error
+        console.log(error);
+        return;
+      }
+      console.log(data);
+      dispatch(modifyChow({ index, modifedChow: data }));
+      onDrawerCloseClick();
+    });
+  };
+
+  const onDeleteClick = () => {
+    console.log(chowItem);
+    deleteChow({ id: chowItem.id }).then(({ data, error }) => {
+      if (error) {
+        // TODO: Call error method to handle error
+        console.log(error);
+        return;
+      }
+      dispatch(removeChow(index));
+      onDrawerCloseClick();
+    });
   };
 
   const showDeleteModal = () => {
@@ -32,9 +72,7 @@ const ChowItem = ({ chowItem }) => {
       content: 'Are you sure you want to delete this chow?',
       okText: 'Delete',
       okType: 'danger',
-      onOk() {
-        console.log('OK');
-      },
+      onOk: onDeleteClick,
     });
   };
 
@@ -45,6 +83,7 @@ const ChowItem = ({ chowItem }) => {
         visible={isUpdateDrawerVisible}
         onClose={onDrawerCloseClick}
         chow={chowItem}
+        onSubmit={onSaveClick}
       />
       <Card
         className={`${styles.chowItemCard}`}

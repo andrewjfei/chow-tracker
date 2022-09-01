@@ -5,8 +5,8 @@ import { ChowItem } from '..';
 import styles from './ChowList.module.less';
 
 const ChowList = ({ chowListData }) => {
-  const renderChowListItem = (item) => {
-    return <ChowItem chowItem={item} />;
+  const renderChowListItem = (item, index) => {
+    return <ChowItem chowItem={item} index={index} />;
   };
 
   return (

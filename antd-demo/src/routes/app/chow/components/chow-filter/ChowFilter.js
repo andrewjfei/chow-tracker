@@ -11,6 +11,7 @@ import {
   setCuisineFilter,
   setPriceRangeFilter,
   setAreaFilter,
+  useUpdateChowMutation,
 } from '../../../../../redux/slices';
 import {
   formatAreaOption,

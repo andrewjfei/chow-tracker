@@ -37,12 +37,19 @@ const chowSlice = createSlice({
     setAreaFilter: (state, action) => {
       state.chowListFilter.areaList = action.payload;
     },
+    setChowList: (state, action) => {
+      state.chowList = action.payload;
+    },
     addNewChow: (state, action) => {
       const updatedChowList = [action.payload, ...state.chowList];
       state.chowList = updatedChowList;
     },
-    setChowList: (state, action) => {
-      state.chowList = action.payload;
+    modifyChow: (state, action) => {
+      const { index, modifedChow } = action.payload;
+      state.chowList[index] = modifedChow;
+    },
+    removeChow: (state, action) => {
+      state.chowList.splice(action.payload, 1);
     },
   },
 });
@@ -54,8 +61,10 @@ export const {
   setCuisineFilter,
   setPriceRangeFilter,
   setAreaFilter,
-  addNewChow,
   setChowList,
+  addNewChow,
+  modifyChow,
+  removeChow,
 } = chowSlice.actions;
 
 export { chowSlice };

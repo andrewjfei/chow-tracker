@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Alert, Button, Drawer, Form, Input, Select, Space } from 'antd';
 
@@ -27,6 +27,22 @@ const ChowDrawer = ({
   );
   const [chowArea, setChowArea] = useState(chow ? chow.area : null);
 
+  // useEffect(() => {
+  //   resetValues();
+  // }, [chow]);
+
+  // const resetValues = () => {
+  //   if (!chow) return;
+
+  //   console.log('Setting Chow Values');
+  //   console.log(chow);
+  //   setShowError(false);
+  //   setChowName(chow.name);
+  //   setChowCuisine(chow.cuisine);
+  //   setChowPriceRange(chow.priceRange);
+  //   setChowArea(chow.area);
+  // };
+
   const onAlertClose = () => {
     setShowError(false);
   };
@@ -45,6 +61,10 @@ const ChowDrawer = ({
 
   const onAreaCategoryChange = (value) => {
     setChowArea(value);
+  };
+
+  const onCloseClick = () => {
+    onClose();
   };
 
   const onSubmitClick = () => {
@@ -69,7 +89,7 @@ const ChowDrawer = ({
     <Drawer
       title={title}
       width={420}
-      onClose={onClose}
+      onClose={onCloseClick}
       visible={visible}
       bodyStyle={{ paddingBottom: 80 }}
       extra={

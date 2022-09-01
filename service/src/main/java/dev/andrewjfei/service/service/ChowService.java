@@ -113,10 +113,13 @@ public class ChowService {
 
         ChowDao chowDao = optionalChowDao.get();
 
-        // Check if chow name already exists in database
-        isNameAvailable(chowDao.getUserId(), newChowDto.name());
+        // If names are same then no need to check if name is available
+        if (!newChowDto.name().equals(chowDao.getName())) {
+            // Check if chow name already exists in database
+            isNameAvailable(chowDao.getUserId(), newChowDto.name());
+            chowDao.setName(newChowDto.name());
+        }
 
-        chowDao.setName(newChowDto.name());
         chowDao.setCuisine(newChowDto.cuisine());
         chowDao.setPriceRange(newChowDto.priceRange());
         chowDao.setArea(newChowDto.area());
