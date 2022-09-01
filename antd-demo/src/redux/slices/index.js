@@ -6,6 +6,7 @@ export {
   useUpdateChowMutation,
   useDeleteChowMutation,
   useRetrieveRandomChowMutation,
+  useVisitChowMutation,
 } from './apiSlice';
 
 export {
@@ -22,4 +23,5 @@ export {
   removeChow,
   setChowError,
   setRandomChow,
+  modifyChowHasBeen,
 } from './chowSlice';

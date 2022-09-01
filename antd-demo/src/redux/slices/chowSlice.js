@@ -59,6 +59,9 @@ const chowSlice = createSlice({
     setRandomChow: (state, action) => {
       state.randomChow = action.payload;
     },
+    modifyChowHasBeen: (state, action) => {
+      state.chowList[action.payload].hasBeen++;
+    },
   },
 });
 
@@ -75,6 +78,7 @@ export const {
   removeChow,
   setChowError,
   setRandomChow,
+  modifyChowHasBeen,
 } = chowSlice.actions;
 
 export { chowSlice };

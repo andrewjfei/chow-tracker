@@ -10,7 +10,7 @@ const apiSlice = createApi({
       // const token = getState().auth.user?.token;
 
       const token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYyMDIzNTUwLCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.G2LwisR8CCoC01hFkrCHgwE4v2G-6J08KBErehyOnzpukbgwjDyhT5zgBEoKZpXp9pu8K0yC3SiA3vJAG7NfpUZ3znxZMwT8WqGCuCOTxi9kUb6Sr_LeEiDkqXkpFh_s-JjQPv28bgly4_6DbAsLlmBggA16lM7XTEOlrB45-kJoFWe2LlB5HZigzN19tR6UGqiFA3B78CfrbUZ2Nk-SLwr2rHxKi7kEq70v_79gNd8TMXihhz2mw3Z_K3HfEh78VfV2CP5i1_qTlGBIg1jjLW1kOj9axILd5qGmX_BgEFNJL-5QBL_tL1wRPRTxMLnqxYAYU6CR-mA7hUzuNJV_8w';
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYyMDI5Mzc0LCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.jNyf2777hwSkO2P5pdO4dhVNkGD2WpRx3tCkUnNE1JRaNwUeU54u9Q2TocOKU0ZOBAwcPZKL_P21pnxfiFIH0ZITYSz96v5bHiru8bAusNIDwfkM9pMNppUqOPpdQygL7tWg-I98yBFImfLzdK3-YN2_vhxvBKoN1fuw0xZ3w0GQe9hMvxusyvPX_jqWbSxIWLro84zeMgsm5p8GtZ2LwDTt0-WVZ67UDFXNdbyOyTTQMEbIJp1yaG2J36WozoWu7aVWy0OGZtzz7JH26LSeUouLOvV1XoCwPc3ZXagF_OiFe9OmYGWjm9u2k8BK8G8nZHc6wqXNGBIl2quJ4-T4bw';
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -66,6 +66,14 @@ const apiSlice = createApi({
         };
       },
     }),
+    visitChow: build.mutation({
+      query: ({ id }) => {
+        return {
+          url: `/chow/${id}/visit`,
+          method: 'PATCH',
+        };
+      },
+    }),
   }),
 });
 
@@ -76,6 +84,7 @@ export const {
   useUpdateChowMutation,
   useDeleteChowMutation,
   useRetrieveRandomChowMutation,
+  useVisitChowMutation,
 } = apiSlice;
 
 export { apiSlice };

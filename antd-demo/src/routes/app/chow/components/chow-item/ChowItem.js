@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Card, Tag, Typography, Space, Modal } from 'antd';
+import { Button, Card, Tag, Typography, Space, Modal, Divider } from 'antd';
 import DollarOutlined from '@ant-design/icons/DollarOutlined';
 import ExclamationCircleOutlined from '@ant-design/icons/ExclamationCircleOutlined';
+import ShopOutlined from '@ant-design/icons/ShopOutlined';
 
 import {
   useUpdateChowMutation,
   useDeleteChowMutation,
+  useVisitChowMutation,
   modifyChow,
   removeChow,
   setChowError,
+  modifyChowHasBeen,
 } from '../../../../../redux/slices';
 import { PRICE_RANGE_MAP } from '../../../../../utils/mapUtil';
 import { formatAreaOption } from '../../../../../utils/formatUtil';
@@ -22,6 +25,7 @@ const ChowItem = ({ chowItem, index }) => {
 
   const [updateChow] = useUpdateChowMutation();
   const [deleteChow] = useDeleteChowMutation();
+  const [visitChow] = useVisitChowMutation();
 
   const [isUpdateDrawerVisible, setIsUpdateDrawerVisible] = useState(false);
 
@@ -31,6 +35,19 @@ const ChowItem = ({ chowItem, index }) => {
 
   const onDrawerCloseClick = () => {
     setIsUpdateDrawerVisible(false);
+  };
+
+  const onVisitClick = () => {
+    visitChow({ id: chowItem.id }).then(({ data, error }) => {
+      if (error) {
+        // TODO: Call error method to handle error
+        dispatch(setChowError(error.data));
+        console.log(error);
+        return;
+      }
+
+      dispatch(modifyChowHasBeen(index));
+    });
   };
 
   const onSaveClick = (updatedChow) => {
@@ -55,9 +72,18 @@ const ChowItem = ({ chowItem, index }) => {
         console.log(error);
         return;
       }
-
       dispatch(removeChow(index));
-      onDrawerCloseClick();
+    });
+  };
+
+  const showVisitModal = () => {
+    Modal.confirm({
+      title: 'Visit Chow',
+      icon: <ShopOutlined />,
+      content: 'Are you sure you have visited this chow?',
+      okText: 'Visit',
+      okType: 'primary',
+      onOk: onVisitClick,
     });
   };
 
@@ -108,10 +134,20 @@ const ChowItem = ({ chowItem, index }) => {
               <Tag className={`${styles.area}`}>
                 {formatAreaOption(chowItem.area)}
               </Tag>
+              <Divider type='vertical' className={`${styles.divider}`} />
+              <Tag className={`${styles.hasBeen}`}>{`${chowItem.hasBeen}`}</Tag>
             </Space>
           </div>
           <div className={`${styles.actionButtonRow}`}>
             <Space direction='horizontal' size='middle'>
+              <Button
+                type='primary'
+                icon={<ShopOutlined />}
+                onClick={showVisitModal}
+                className={`${styles.visitButton}`}
+              >
+                Visit Chow
+              </Button>
               <Button
                 onClick={onUpdateButtonClick}
                 className={`${styles.updateButton}`}

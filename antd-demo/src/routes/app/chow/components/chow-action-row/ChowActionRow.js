@@ -54,7 +54,6 @@ const ChowActionRow = () => {
           return;
         }
 
-        console.log(data);
         dispatch(setRandomChow(data));
       });
     }, 1000);
@@ -69,7 +68,6 @@ const ChowActionRow = () => {
         return;
       }
 
-      console.log(data);
       dispatch(addNewChow(newChow));
       onDrawerCloseClick();
     });

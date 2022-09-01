@@ -1,4 +1,4 @@
-import { Alert, Space, Tag, Typography } from 'antd';
+import { Alert, Divider, Space, Tag, Typography } from 'antd';
 import DollarOutlined from '@ant-design/icons/DollarOutlined';
 
 import { PRICE_RANGE_MAP } from '../../../../../utils/mapUtil';
@@ -38,6 +38,8 @@ const RandomChow = ({ chow }) => {
             {chow.cuisine}
           </Tag>
           <Tag className={`${styles.area}`}>{formatAreaOption(chow.area)}</Tag>
+          <Divider type='vertical' className={`${styles.divider}`} />
+          <Tag className={`${styles.hasBeen}`}>{`${chow.hasBeen}`}</Tag>
         </Space>
         <Space direction='horizontal'></Space>
       </div>

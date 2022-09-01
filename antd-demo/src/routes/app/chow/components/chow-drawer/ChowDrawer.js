@@ -22,13 +22,13 @@ const ChowDrawer = ({
 
   const { chowCategoryOptions, chowError } = useSelector((state) => state.chow);
 
-  const [showError, setShowError] = useState(false);
   const [chowName, setChowName] = useState(chow ? chow.name : '');
   const [chowCuisine, setChowCuisine] = useState(chow ? chow.cuisine : null);
   const [chowPriceRange, setChowPriceRange] = useState(
     chow ? chow.priceRange : null
   );
   const [chowArea, setChowArea] = useState(chow ? chow.area : null);
+  const [chowHasBeen, setChowHasBeen] = useState(chow ? chow.hasBeen : 0);
 
   // useEffect(() => {
   //   resetValues();
@@ -83,6 +83,7 @@ const ChowDrawer = ({
       cuisine: chowCuisine,
       priceRange: chowPriceRange,
       area: chowArea,
+      hasBeen: chowHasBeen,
     };
 
     onSubmit(chow);
