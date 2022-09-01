@@ -9,17 +9,13 @@ import {
   useDeleteChowMutation,
   modifyChow,
   removeChow,
+  setChowError,
 } from '../../../../../redux/slices';
+import { PRICE_RANGE_MAP } from '../../../../../utils/mapUtil';
 import { formatAreaOption } from '../../../../../utils/formatUtil';
 import { ChowDrawer } from '../';
 
 import styles from './ChowItem.module.less';
-
-const PRICE_RANGE_MAP = {
-  LOW: 1,
-  MEDIUM: 2,
-  HIGH: 3,
-};
 
 const ChowItem = ({ chowItem, index }) => {
   const dispatch = useDispatch();
@@ -30,8 +26,6 @@ const ChowItem = ({ chowItem, index }) => {
   const [isUpdateDrawerVisible, setIsUpdateDrawerVisible] = useState(false);
 
   const onUpdateButtonClick = () => {
-    console.log(index);
-    console.log(chowItem);
     setIsUpdateDrawerVisible(true);
   };
 
@@ -43,23 +37,25 @@ const ChowItem = ({ chowItem, index }) => {
     updateChow({ id: chowItem.id, ...updatedChow }).then(({ data, error }) => {
       if (error) {
         // TODO: Call error method to handle error
+        dispatch(setChowError(error.data));
         console.log(error);
         return;
       }
-      console.log(data);
+
       dispatch(modifyChow({ index, modifedChow: data }));
       onDrawerCloseClick();
     });
   };
 
   const onDeleteClick = () => {
-    console.log(chowItem);
     deleteChow({ id: chowItem.id }).then(({ data, error }) => {
       if (error) {
         // TODO: Call error method to handle error
+        dispatch(setChowError(error.data));
         console.log(error);
         return;
       }
+
       dispatch(removeChow(index));
       onDrawerCloseClick();
     });

@@ -5,7 +5,9 @@ export {
   useRetrieveChowListMutation,
   useUpdateChowMutation,
   useDeleteChowMutation,
+  useRetrieveRandomChowMutation,
 } from './apiSlice';
+
 export {
   chowSlice,
   setChowCategoryOptions,
@@ -18,4 +20,6 @@ export {
   addNewChow,
   modifyChow,
   removeChow,
+  setChowError,
+  setRandomChow,
 } from './chowSlice';

@@ -10,7 +10,7 @@ const apiSlice = createApi({
       // const token = getState().auth.user?.token;
 
       const token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYyMDAyMDIyLCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.f1ETneoidOeVGv5DC9gJMWnLkXqgVU1gbAS1T_htKPfjkVSpWujTqQg4GOx_Qq1B1KdBR61cOeG3nfn8HVtEoCJIO_ZRCup9NlwaD4wHp_51HOVsS9AeU_43jKXBC8P3RmAKm9fgNQrT1PD4f-IgzkADdnbVUAWX5GAVdKO0nt3zU380nM236W_wralko3rBsQY-6EhEqdR0mXYMlSxTzefF7bu3s2s5jMan4ei-I4paZCC7-glfEKLRK2CsMPa6LUb3JdCIKDXkNOlKsZ5D5hwqp5UoW6HjFr1Q4eSqt8QDTumT5ve8Np80h0ulXKJj6Ig1AFvvEOX8iFO8xlMGMg';
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYyMDIzNTUwLCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.G2LwisR8CCoC01hFkrCHgwE4v2G-6J08KBErehyOnzpukbgwjDyhT5zgBEoKZpXp9pu8K0yC3SiA3vJAG7NfpUZ3znxZMwT8WqGCuCOTxi9kUb6Sr_LeEiDkqXkpFh_s-JjQPv28bgly4_6DbAsLlmBggA16lM7XTEOlrB45-kJoFWe2LlB5HZigzN19tR6UGqiFA3B78CfrbUZ2Nk-SLwr2rHxKi7kEq70v_79gNd8TMXihhz2mw3Z_K3HfEh78VfV2CP5i1_qTlGBIg1jjLW1kOj9axILd5qGmX_BgEFNJL-5QBL_tL1wRPRTxMLnqxYAYU6CR-mA7hUzuNJV_8w';
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -57,6 +57,15 @@ const apiSlice = createApi({
         };
       },
     }),
+    retrieveRandomChow: build.mutation({
+      query: (chowList) => {
+        return {
+          url: `/chow/random`,
+          method: 'POST',
+          body: chowList,
+        };
+      },
+    }),
   }),
 });
 
@@ -66,6 +75,7 @@ export const {
   useRetrieveChowListMutation,
   useUpdateChowMutation,
   useDeleteChowMutation,
+  useRetrieveRandomChowMutation,
 } = apiSlice;
 
 export { apiSlice };

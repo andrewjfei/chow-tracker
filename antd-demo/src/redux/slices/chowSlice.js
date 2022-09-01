@@ -13,6 +13,8 @@ const initialState = {
     areaList: [],
   },
   chowList: [],
+  chowError: null,
+  randomChow: null,
 };
 
 const chowSlice = createSlice({
@@ -51,6 +53,12 @@ const chowSlice = createSlice({
     removeChow: (state, action) => {
       state.chowList.splice(action.payload, 1);
     },
+    setChowError: (state, action) => {
+      state.chowError = action.payload;
+    },
+    setRandomChow: (state, action) => {
+      state.randomChow = action.payload;
+    },
   },
 });
 
@@ -65,6 +73,8 @@ export const {
   addNewChow,
   modifyChow,
   removeChow,
+  setChowError,
+  setRandomChow,
 } = chowSlice.actions;
 
 export { chowSlice };

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Drawer, Form, Input, Select, Space } from 'antd';
 
 import {
   formatAreaOption,
   formatAreaOptionForKey,
 } from '../../../../../utils/formatUtil';
+import { setChowError } from '../../../../../redux/slices';
 
 import styles from './ChowDrawer.module.less';
 
@@ -17,7 +18,9 @@ const ChowDrawer = ({
   formSubmitText = 'Save',
   onSubmit,
 }) => {
-  const { chowCategoryOptions } = useSelector((state) => state.chow);
+  const dispatch = useDispatch();
+
+  const { chowCategoryOptions, chowError } = useSelector((state) => state.chow);
 
   const [showError, setShowError] = useState(false);
   const [chowName, setChowName] = useState(chow ? chow.name : '');
@@ -29,13 +32,11 @@ const ChowDrawer = ({
 
   // useEffect(() => {
   //   resetValues();
-  // }, [chow]);
+  // });
 
   // const resetValues = () => {
   //   if (!chow) return;
 
-  //   console.log('Setting Chow Values');
-  //   console.log(chow);
   //   setShowError(false);
   //   setChowName(chow.name);
   //   setChowCuisine(chow.cuisine);
@@ -44,7 +45,7 @@ const ChowDrawer = ({
   // };
 
   const onAlertClose = () => {
-    setShowError(false);
+    dispatch(setChowError(null));
   };
 
   const onNameChange = (value) => {
@@ -71,7 +72,9 @@ const ChowDrawer = ({
     // TODO: Call update api on success update item in list
 
     if (chowName.length === 0 || !chowCuisine || !chowPriceRange || !chowArea) {
-      setShowError(true);
+      dispatch(
+        setChowError({ code: -1, description: 'All fields are required.' })
+      );
       return;
     }
 
@@ -91,7 +94,6 @@ const ChowDrawer = ({
       width={420}
       onClose={onCloseClick}
       visible={visible}
-      bodyStyle={{ paddingBottom: 80 }}
       extra={
         <Button onClick={onSubmitClick} type='primary' htmlType='submit'>
           {formSubmitText}
@@ -114,12 +116,12 @@ const ChowDrawer = ({
           size='middle'
           className={`${styles.formItem}`}
         >
-          {showError && (
+          {chowError && (
             <Alert
               type='error'
               afterClose={onAlertClose}
               showIcon
-              message='All fields are required.'
+              message={chowError.description}
               closable
             />
           )}

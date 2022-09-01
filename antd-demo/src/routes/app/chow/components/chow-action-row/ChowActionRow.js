@@ -1,22 +1,29 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Button, Typography, Space } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Modal, Typography, Space, Spin } from 'antd';
 import PlusOutlined from '@ant-design/icons/PlusOutlined';
 
 import {
   useCreateNewChowMutation,
+  useRetrieveRandomChowMutation,
   addNewChow,
+  setChowError,
+  setRandomChow,
 } from '../../../../../redux/slices';
-import { ChowDrawer } from '../';
+import { ChowDrawer, RandomChow } from '../';
 
 import styles from './ChowActionRow.module.less';
 
 const ChowActionRow = () => {
   const dispatch = useDispatch();
 
+  const { chowList, randomChow } = useSelector((state) => state.chow);
+
+  const [retrieveRandomChow] = useRetrieveRandomChowMutation();
   const [createNewChow] = useCreateNewChowMutation();
 
   const [isCreateDrawerVisible, setIsCreateDrawerVisible] = useState(false);
+  const [isRandomModalVisible, setIsRandomModalVisible] = useState(false);
 
   const onCreateButtonClick = () => {
     setIsCreateDrawerVisible(true);
@@ -26,10 +33,38 @@ const ChowActionRow = () => {
     setIsCreateDrawerVisible(false);
   };
 
-  const onSubmitClick = (newChow) => {
+  const showRandomModal = () => {
+    setIsRandomModalVisible(true);
+  };
+
+  const onOkClick = () => {
+    setIsRandomModalVisible(false);
+    dispatch(setRandomChow(null));
+  };
+
+  const onRandomiseClick = () => {
+    showRandomModal();
+
+    setTimeout(() => {
+      retrieveRandomChow(chowList).then(({ data, error }) => {
+        if (error) {
+          // TODO: Call error method to handle error
+          dispatch(setChowError(error.data));
+          console.log(error);
+          return;
+        }
+
+        console.log(data);
+        dispatch(setRandomChow(data));
+      });
+    }, 1000);
+  };
+
+  const onCreateClick = (newChow) => {
     createNewChow(newChow).then(({ data, error }) => {
       if (error) {
         // TODO: Call error method to handle error
+        dispatch(setChowError(error.data));
         console.log(error);
         return;
       }
@@ -47,8 +82,18 @@ const ChowActionRow = () => {
         visible={isCreateDrawerVisible}
         onClose={onDrawerCloseClick}
         formSubmitText='Create'
-        onSubmit={onSubmitClick}
+        onSubmit={onCreateClick}
       />
+      <Modal
+        title={randomChow ? 'Your Selected Chow' : 'Selecting A Random Chow'}
+        visible={isRandomModalVisible}
+        closable={false}
+        onOk={onOkClick}
+        cancelButtonProps={{ style: { display: 'none' } }}
+        bodyStyle={{ display: 'flex', justifyContent: 'center' }}
+      >
+        {randomChow ? <RandomChow chow={randomChow} /> : <Spin />}
+      </Modal>
       <div className={`${styles.chowActionRowContainer}`}>
         <Space
           className={`${styles.randomiseChowContainer}`}
@@ -58,7 +103,11 @@ const ChowActionRow = () => {
           <Typography.Text className={`${styles.text}`}>
             Having trouble deciding what to eat? Let us decide for you!
           </Typography.Text>
-          <Button type='primary' className={`${styles.button}`}>
+          <Button
+            type='primary'
+            className={`${styles.button}`}
+            onClick={onRandomiseClick}
+          >
             Randomise Chow
           </Button>
         </Space>
