@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Button, Card, Tooltip } from 'antd';
 import BugTwoTone from '@ant-design/icons/BugTwoTone';
 import HomeOutlined from '@ant-design/icons/HomeOutlined';
@@ -6,6 +7,12 @@ import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import styles from './NavBar.module.less';
 
 const NavBar = () => {
+  const navigate = useNavigate();
+
+  const onLogoutClick = () => {
+    navigate('/auth');
+  };
+
   return (
     <Card
       className={`${styles.navBarContainer}`}
@@ -34,6 +41,7 @@ const NavBar = () => {
             type='text'
             icon={<LogoutOutlined rotate={180} className={`${styles.icon}`} />}
             className={`${styles.button}`}
+            onClick={onLogoutClick}
           />
         </Tooltip>
       </div>

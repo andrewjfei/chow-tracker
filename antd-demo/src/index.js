@@ -5,14 +5,17 @@ import 'antd/dist/antd.less';
 import reportWebVitals from './reportWebVitals';
 import { store } from './redux';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
-import { AppRoute } from './routes';
+import { RootRoute } from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <AppRoute />
+      <BrowserRouter>
+        <RootRoute />
+      </BrowserRouter>
     </Provider>
   </React.StrictMode>
 );

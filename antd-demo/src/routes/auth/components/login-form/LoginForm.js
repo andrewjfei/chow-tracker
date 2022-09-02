@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Form, Checkbox, Input, Button, Space, Alert } from 'antd';
 
 import { FormTextButtonRow } from '../form-text-button-row/FormTextButtonRow';
@@ -6,6 +7,8 @@ import { FormTextButtonRow } from '../form-text-button-row/FormTextButtonRow';
 import styles from './LoginForm.module.less';
 
 const LoginForm = ({ onRegisterHereClick }) => {
+  const navigate = useNavigate();
+
   const [showError, setShowError] = useState(false);
 
   const onAlertClose = () => {
@@ -15,6 +18,7 @@ const LoginForm = ({ onRegisterHereClick }) => {
   const onLogin = (values) => {
     console.log('Success:', values);
     setShowError(true);
+    navigate('/app');
   };
 
   return (

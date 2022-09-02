@@ -25,7 +25,6 @@ const DashboardRoute = () => {
         console.log(error);
         return;
       }
-      console.log(data);
       dispatch(setChowRankings(data));
     });
   }, [chowList]);
