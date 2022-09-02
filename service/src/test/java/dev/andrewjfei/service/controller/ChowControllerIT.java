@@ -565,9 +565,9 @@ public class ChowControllerIT {
         Assertions.assertEquals(CHOW_HAS_BEEN + 1, updatedChowDto.hasBeen());
     }
 
-    /****************************************************************************************************************/
-    /*************************************** Get Chow List By Cuisine Ranking ***************************************/
-    /****************************************************************************************************************/
+    /*************************************************************************************************/
+    /*************************************** Get Chow Rankings ***************************************/
+    /*************************************************************************************************/
 
     @Test
     public void getChowRankings_success_returnsChowRankings() {
@@ -595,10 +595,10 @@ public class ChowControllerIT {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        Assertions.assertEquals(LIMIT, response.getBody().popularityRankings().size());
-        Assertions.assertEquals(LIMIT, response.getBody().cuisineRankings().size());
-        Assertions.assertEquals(LIMIT, response.getBody().priceRangeRankings().size());
-        Assertions.assertEquals(LIMIT, response.getBody().areaRankings().size());
+        Assertions.assertEquals(LIMIT, response.getBody().popularity().size());
+        Assertions.assertEquals(LIMIT, response.getBody().cuisine().size());
+        Assertions.assertEquals(LIMIT, response.getBody().priceRange().size());
+        Assertions.assertEquals(LIMIT, response.getBody().area().size());
     }
 
     /*******************************************************************************************************************/

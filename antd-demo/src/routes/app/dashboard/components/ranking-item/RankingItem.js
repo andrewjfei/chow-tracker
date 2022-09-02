@@ -1,4 +1,7 @@
 import { List, Space, Tag, Typography } from 'antd';
+
+import { formatAreaOption } from '../../../../../utils/formatUtil';
+
 import styles from './RankingItem.module.less';
 
 const RankingItem = ({ rankingItem, index }) => {
@@ -7,7 +10,7 @@ const RankingItem = ({ rankingItem, index }) => {
       <Space size='middle' className={`${styles.rankingAndItemNameContainer}`}>
         <Tag color={index === 0 ? '#ff7b33' : null}>{rankingItem.ranking}</Tag>
         <Typography.Text strong={index === 0}>
-          {rankingItem.itemName}
+          {formatAreaOption(rankingItem.itemName)}
         </Typography.Text>
       </Space>
       <Typography.Text

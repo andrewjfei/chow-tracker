@@ -1,25 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  chowRankings: {
-    popularity: [],
-    cuisine: [],
-    priceRange: [],
-    area: [],
-  },
+  chowRankings: null,
 };
 
 const dashboardSlice = createSlice({
   name: 'dashboard',
   initialState: initialState,
   reducers: {
-    setChowRanking: (state, action) => {
-      const { type, data } = action.payload;
-      state.chowRankings[type] = data;
+    setChowRankings: (state, action) => {
+      state.chowRankings = action.payload;
     },
   },
 });
 
-export const { setChowRanking } = dashboardSlice.actions;
+export const { setChowRankings } = dashboardSlice.actions;
 
 export { dashboardSlice };

@@ -3,38 +3,38 @@ package dev.andrewjfei.service.dto;
 import java.util.List;
 
 public record ChowRankingsDto(
-        List<RankingItemDto> popularityRankings,
-        List<RankingItemDto> cuisineRankings,
-        List<RankingItemDto> priceRangeRankings,
-        List<RankingItemDto> areaRankings
+        List<RankingItemDto> popularity,
+        List<RankingItemDto> cuisine,
+        List<RankingItemDto> priceRange,
+        List<RankingItemDto> area
 ) {
     @Override
-    public List<RankingItemDto> popularityRankings() {
-        return popularityRankings;
+    public List<RankingItemDto> popularity() {
+        return popularity;
     }
 
     @Override
-    public List<RankingItemDto> cuisineRankings() {
-        return cuisineRankings;
+    public List<RankingItemDto> cuisine() {
+        return cuisine;
     }
 
     @Override
-    public List<RankingItemDto> priceRangeRankings() {
-        return priceRangeRankings;
+    public List<RankingItemDto> priceRange() {
+        return priceRange;
     }
 
     @Override
-    public List<RankingItemDto> areaRankings() {
-        return areaRankings;
+    public List<RankingItemDto> area() {
+        return area;
     }
 
     @Override
     public String toString() {
         return "ChowRankingsDto{" +
-                "popularityRankings=" + popularityRankings +
-                ", cuisineRankings=" + cuisineRankings +
-                ", priceRangeRankings=" + priceRangeRankings +
-                ", areaRankings=" + areaRankings +
+                "popularity=" + popularity +
+                ", cuisine=" + cuisine +
+                ", priceRange=" + priceRange +
+                ", area=" + area +
                 '}';
     }
 }

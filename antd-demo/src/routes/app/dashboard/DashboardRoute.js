@@ -3,76 +3,58 @@ import { useDispatch, useSelector } from 'react-redux';
 import TrophyOutlined from '@ant-design/icons/TrophyOutlined';
 
 import {
-  useRetrieveChowPopularityRankingQuery,
-  setChowRanking,
+  useRetrieveChowRankingsMutation,
+  setChowRankings,
 } from '../../../redux/slices';
 import { RankingWidget } from './components';
 
 import styles from './DashboardRoute.module.less';
 
-const data = [
-  {
-    ranking: 1,
-    itemName: 'Burger King',
-    hasBeen: 25,
-  },
-  {
-    ranking: 2,
-    itemName: 'Taco Bell',
-    hasBeen: 19,
-  },
-  {
-    ranking: 3,
-    itemName: "Nando's",
-    hasBeen: 6,
-  },
-];
-
 const DashboardRoute = () => {
   const dispatch = useDispatch();
 
+  const { chowList } = useSelector((state) => state.chow);
   const { chowRankings } = useSelector((state) => state.dashboard);
 
-  const { data: chowPopularityData, isSuccess: isChowPopularitySuccess } =
-    useRetrieveChowPopularityRankingQuery();
+  const [retrieveChowRankings] = useRetrieveChowRankingsMutation();
 
   useEffect(() => {
-    if (isChowPopularitySuccess) {
-      dispatch(
-        setChowRanking({ type: 'popularity', data: chowPopularityData })
-      );
-    }
-  }, [isChowPopularitySuccess]);
+    retrieveChowRankings().then(({ data, error }) => {
+      if (error) {
+        // TODO: Logout user and display error modal
+        console.log(error);
+        return;
+      }
+      console.log(data);
+      dispatch(setChowRankings(data));
+    });
+  }, [chowList]);
 
   return (
     <div className={`${styles.dashboardRouteContainer}`}>
-      {chowRankings.popularity.length > 0 && (
-        <RankingWidget
-          title='Popularity'
-          data={chowPopularityData}
-          titleIcon={<TrophyOutlined />}
-        />
-      )}
-      {chowRankings.popularity.length > 0 && (
-        <RankingWidget
-          title='Cuisine'
-          data={data}
-          titleIcon={<TrophyOutlined />}
-        />
-      )}
-      {chowRankings.popularity.length > 0 && (
-        <RankingWidget
-          title='Price Range'
-          data={data}
-          titleIcon={<TrophyOutlined />}
-        />
-      )}
-      {chowRankings.popularity.length > 0 && (
-        <RankingWidget
-          title='Area'
-          data={data}
-          titleIcon={<TrophyOutlined />}
-        />
+      {chowRankings && (
+        <>
+          <RankingWidget
+            title='Popularity'
+            data={chowRankings.popularity}
+            titleIcon={<TrophyOutlined />}
+          />
+          <RankingWidget
+            title='Cuisine'
+            data={chowRankings.cuisine}
+            titleIcon={<TrophyOutlined />}
+          />
+          <RankingWidget
+            title='Price Range'
+            data={chowRankings.priceRange}
+            titleIcon={<TrophyOutlined />}
+          />
+          <RankingWidget
+            title='Area'
+            data={chowRankings.area}
+            titleIcon={<TrophyOutlined />}
+          />
+        </>
       )}
     </div>
   );

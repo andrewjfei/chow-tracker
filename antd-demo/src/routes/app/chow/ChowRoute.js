@@ -5,6 +5,7 @@ import { Card, Empty } from 'antd';
 import {
   useRetrieveChowListMutation,
   setChowList,
+  setChowError,
 } from '../../../redux/slices';
 import { ChowList, ChowActionRow, ChowFilter } from './components';
 
@@ -22,6 +23,7 @@ const ChowRoute = () => {
       if (error) {
         // TODO: Logout user and display error modal
         console.log(error);
+        setChowError(error.data);
         return;
       }
 
@@ -31,18 +33,19 @@ const ChowRoute = () => {
 
   return (
     <Card
-      title={<ChowFilter />}
-      className={`${styles.chowCard}`}
+      className={`${styles.chowRouteContainer}`}
       headStyle={{ display: 'flex', justifyContent: 'space-between' }}
       bodyStyle={{
         display: 'flex',
         flexDirection: 'column',
         padding: '0rem',
+        height: '100%',
       }}
     >
+      <ChowFilter />
       <ChowActionRow />
       <div className={`${styles.chowListContainer}`}>
-        {chowList.length !== 0 ? (
+        {chowList.length > 0 ? (
           <ChowList chowListData={chowList} />
         ) : (
           <Empty

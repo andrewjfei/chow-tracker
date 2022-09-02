@@ -7,10 +7,7 @@ export {
   useDeleteChowMutation,
   useRetrieveRandomChowMutation,
   useVisitChowMutation,
-  useRetrieveChowPopularityRankingQuery,
-  useRetrieveChowCuisineRankingQuery,
-  useRetrieveChowPriceRangeRankingQuery,
-  useRetrieveChowAreaRankingQuery,
+  useRetrieveChowRankingsMutation,
 } from './apiSlice';
 
 export {
@@ -30,4 +27,4 @@ export {
   modifyChowHasBeen,
 } from './chowSlice';
 
-export { dashboardSlice, setChowRanking } from './dashboardSlice';
+export { dashboardSlice, setChowRankings } from './dashboardSlice';
