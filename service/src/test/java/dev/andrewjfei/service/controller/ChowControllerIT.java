@@ -4,6 +4,7 @@ import dev.andrewjfei.service.dao.ChowDao;
 import dev.andrewjfei.service.dao.UserDao;
 import dev.andrewjfei.service.dto.AuthDto;
 import dev.andrewjfei.service.dto.ChowDto;
+import dev.andrewjfei.service.dto.ChowRankingsDto;
 import dev.andrewjfei.service.dto.ErrorDto;
 import dev.andrewjfei.service.dto.CategoryOptionsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
@@ -562,6 +563,42 @@ public class ChowControllerIT {
 
         Assertions.assertNotNull(updatedChowDto);
         Assertions.assertEquals(CHOW_HAS_BEEN + 1, updatedChowDto.hasBeen());
+    }
+
+    /****************************************************************************************************************/
+    /*************************************** Get Chow List By Cuisine Ranking ***************************************/
+    /****************************************************************************************************************/
+
+    @Test
+    public void getChowRankings_success_returnsChowRankings() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("limit", String.valueOf(LIMIT));
+
+        // When
+        ResponseEntity<ChowRankingsDto> response = testRestTemplate.exchange(
+                CHOW_URI + "/ranking?limit={limit}",
+                HttpMethod.GET,
+                request,
+                ChowRankingsDto.class,
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(LIMIT, response.getBody().popularityRankings().size());
+        Assertions.assertEquals(LIMIT, response.getBody().cuisineRankings().size());
+        Assertions.assertEquals(LIMIT, response.getBody().priceRangeRankings().size());
+        Assertions.assertEquals(LIMIT, response.getBody().areaRankings().size());
     }
 
     /*******************************************************************************************************************/

@@ -10,7 +10,7 @@ const apiSlice = createApi({
       // const token = getState().auth.user?.token;
 
       const token =
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYyMDMwNzE4LCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.N32LLCHxcB-iezRNVPNh9HnerlO6xT2hEfhXhURLMnfLyFwekZeHD3fO6_huz1HadBp03VM9SdEzv22BG2-4d8s1OwN-1YHmy7zXAefw_uHhKRaQk9MCNT-VT5qCoRCsdgZrCfG7yTCWxvwa3NvQEVazot6gC8H-clJ_gZo9CJKR_mAqe6DhVVrV9IS8wVW1tWkDXkcmCC-iB39uIFaOMZoJ5NW-iRgMN_EcaGbrCGxUa88lFfA2Earh8Enpxj_rdzNpr8qQPJQ7BLuaIgS3uc_13yuHzoyZKb5NY5OyKnkm9qJ-0JMits5DK-mkWNiT-XNyxoWOqxcfbSnXScqOcA';
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYyMDczMTYzLCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.SnkpWrTKnyas08qs2T74VlNCRoG5d3LJHwtEoBQri8hIMnYcH-wSLejtySpw-CXdxON32B2TWktDdgyIzDP-6WSQpfxf2-YEPFKQ9oAcUP1XchnKX_ZOjGzgJtggYPTG1WmzYXt0v2XI_ZwUi1SIs_mMgeLsyJYofXm2SyHOdiN4nkC1lSkKgadcBPdATNL4g-_me7O5JYpRGSa1pqv5Qt8w27y_JVmR2G1u21nMwu_J2aImXdPmx35lI77JkeHyVUjraTYmKqA6zOaHxEnWAYdRny1FAvOYQgtjIrUnYZ3_s4mR_1MHFeF4Bd7SImECyuoLS3RviniRlsqK2HJvtA';
 
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
@@ -74,6 +74,38 @@ const apiSlice = createApi({
         };
       },
     }),
+    retrieveChowPopularityRanking: build.query({
+      query: () => {
+        return {
+          url: `/chow/ranking/popularity?limit=3`,
+          method: 'GET',
+        };
+      },
+    }),
+    retrieveChowCuisineRanking: build.query({
+      query: () => {
+        return {
+          url: `/chow/ranking/cuisine?limit=3`,
+          method: 'GET',
+        };
+      },
+    }),
+    retrieveChowPriceRangeRanking: build.query({
+      query: () => {
+        return {
+          url: `/chow/ranking/price-range?limit=3`,
+          method: 'GET',
+        };
+      },
+    }),
+    retrieveChowAreaRanking: build.query({
+      query: () => {
+        return {
+          url: `/chow/ranking/area?limit=3`,
+          method: 'GET',
+        };
+      },
+    }),
   }),
 });
 
@@ -85,6 +117,10 @@ export const {
   useDeleteChowMutation,
   useRetrieveRandomChowMutation,
   useVisitChowMutation,
+  useRetrieveChowPopularityRankingQuery,
+  useRetrieveChowCuisineRankingQuery,
+  useRetrieveChowPriceRangeRankingQuery,
+  useRetrieveChowAreaRankingQuery,
 } = apiSlice;
 
 export { apiSlice };

@@ -1,3 +1,11 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import TrophyOutlined from '@ant-design/icons/TrophyOutlined';
+
+import {
+  useRetrieveChowPopularityRankingQuery,
+  setChowRanking,
+} from '../../../redux/slices';
 import { RankingWidget } from './components';
 
 import styles from './DashboardRoute.module.less';
@@ -21,12 +29,51 @@ const data = [
 ];
 
 const DashboardRoute = () => {
+  const dispatch = useDispatch();
+
+  const { chowRankings } = useSelector((state) => state.dashboard);
+
+  const { data: chowPopularityData, isSuccess: isChowPopularitySuccess } =
+    useRetrieveChowPopularityRankingQuery();
+
+  useEffect(() => {
+    if (isChowPopularitySuccess) {
+      dispatch(
+        setChowRanking({ type: 'popularity', data: chowPopularityData })
+      );
+    }
+  }, [isChowPopularitySuccess]);
+
   return (
     <div className={`${styles.dashboardRouteContainer}`}>
-      <RankingWidget title='Popularity' data={data} />
-      <RankingWidget title='Cuisine' data={data} />
-      <RankingWidget title='Price Range' data={data} />
-      <RankingWidget title='Area' data={data} />
+      {chowRankings.popularity.length > 0 && (
+        <RankingWidget
+          title='Popularity'
+          data={chowPopularityData}
+          titleIcon={<TrophyOutlined />}
+        />
+      )}
+      {chowRankings.popularity.length > 0 && (
+        <RankingWidget
+          title='Cuisine'
+          data={data}
+          titleIcon={<TrophyOutlined />}
+        />
+      )}
+      {chowRankings.popularity.length > 0 && (
+        <RankingWidget
+          title='Price Range'
+          data={data}
+          titleIcon={<TrophyOutlined />}
+        />
+      )}
+      {chowRankings.popularity.length > 0 && (
+        <RankingWidget
+          title='Area'
+          data={data}
+          titleIcon={<TrophyOutlined />}
+        />
+      )}
     </div>
   );
 };

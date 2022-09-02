@@ -4,6 +4,7 @@ import dev.andrewjfei.service.dao.ChowDao;
 import dev.andrewjfei.service.dao.RankingItemDao;
 import dev.andrewjfei.service.dto.ChowDto;
 import dev.andrewjfei.service.dto.CategoryOptionsDto;
+import dev.andrewjfei.service.dto.ChowRankingsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.enumeration.Area;
@@ -151,6 +152,27 @@ public class ChowService {
     /***************************************************************************************/
     /*************************************** Ranking ***************************************/
     /***************************************************************************************/
+
+    public ChowRankingsDto retrieveChowRankings(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> popularityRankingsDao = chowRepository.retrieveChowListByPopularityRanking(userId, limit);
+        List<RankingItemDao> cuisineRankingsDao = chowRepository.retrieveChowListByCuisineRanking(userId, limit);
+        List<RankingItemDao> priceRangeRankingsDao = chowRepository.retrieveChowListByPriceRangeRanking(userId, limit);
+        List<RankingItemDao> areaRankingsDao = chowRepository.retrieveChowListByAreaRanking(userId, limit);
+
+        List<RankingItemDto> popularityRankingsDto = toRankingItemList(popularityRankingsDao);
+        List<RankingItemDto> cuisineRankingsDto = toRankingItemList(cuisineRankingsDao);
+        List<RankingItemDto> priceRangeRankingsDto = toRankingItemList(priceRangeRankingsDao);
+        List<RankingItemDto> areaRankingsDto = toRankingItemList(areaRankingsDao);
+
+        ChowRankingsDto chowRankingsDto = new ChowRankingsDto(popularityRankingsDto, cuisineRankingsDto, priceRangeRankingsDto, areaRankingsDto);
+
+        return chowRankingsDto;
+    }
 
     public List<RankingItemDto> retrieveChowListPopularityRanking(String userId, int limit) {
         // Check if user id is valid

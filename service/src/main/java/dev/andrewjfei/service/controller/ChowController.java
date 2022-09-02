@@ -2,6 +2,7 @@ package dev.andrewjfei.service.controller;
 
 import dev.andrewjfei.service.dto.ChowDto;
 import dev.andrewjfei.service.dto.CategoryOptionsDto;
+import dev.andrewjfei.service.dto.ChowRankingsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.enumeration.Area;
@@ -104,6 +105,15 @@ public class ChowController {
     /********************************************************************************************/
     /*************************************** Ranking APIs ***************************************/
     /********************************************************************************************/
+
+    @GetMapping("/ranking")
+    public ResponseEntity<ChowRankingsDto> getChowListRankings(HttpServletRequest request, @RequestParam int limit) {
+        String userId = RequestUtil.getUserIdAttribute(request);
+
+        ChowRankingsDto chowRankingsDto = chowService.retrieveChowRankings(userId, limit);
+
+        return new ResponseEntity<>(chowRankingsDto, HttpStatus.OK);
+    }
 
     @GetMapping("/ranking/popularity")
     public ResponseEntity<List<RankingItemDto>> getChowListPopularityRanking(HttpServletRequest request, @RequestParam int limit) {

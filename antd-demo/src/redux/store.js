@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
-import { apiSlice, chowSlice } from './slices';
+import { apiSlice, chowSlice, dashboardSlice } from './slices';
 
 export const store = configureStore({
   reducer: {
     // auth: authSlice.reducer,
     chow: chowSlice.reducer,
-    // chowListFilter: chowListFilterSlice.reducer,
+    dashboard: dashboardSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
