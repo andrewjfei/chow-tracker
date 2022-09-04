@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -36,12 +38,26 @@ public class UserService {
         );
 
         // Save user
-        UserDao newUserDAO = userRepository.save(userDao);
+        UserDao newUserDao = userRepository.save(userDao);
 
         // Get token
-        String token = TokenUtil.generateUserAuthToken(newUserDAO);
+        String token = TokenUtil.generateUserAuthToken(newUserDao);
 
-        return MapperUtil.toDto(newUserDAO, token);
+        return MapperUtil.toDto(newUserDao, token);
+    }
+
+    public UserDto retrieveUserById(String userId, String userToken) {
+        // Save user
+        Optional<UserDao> optionalUserDao = userRepository.findById(userId);
+
+        if (!optionalUserDao.isPresent()) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        // Get token
+        UserDao userDao = optionalUserDao.get();
+
+        return MapperUtil.toDto(userDao, userToken);
     }
 
     public boolean isUsernameAvailable(String username) {

@@ -1,8 +1,8 @@
 import { AppLayout } from '../../layouts';
+import { NavBar } from './components';
 import { ChowRoute, DashboardRoute } from '.';
 
 import styles from './AppRoute.module.less';
-import { NavBar } from './components';
 
 const AppRoute = () => {
   return (

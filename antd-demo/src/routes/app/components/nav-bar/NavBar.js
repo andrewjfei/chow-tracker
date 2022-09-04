@@ -5,11 +5,13 @@ import HomeOutlined from '@ant-design/icons/HomeOutlined';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 
 import styles from './NavBar.module.less';
+import { constants } from '../../../../constants';
 
 const NavBar = () => {
   const navigate = useNavigate();
 
   const onLogoutClick = () => {
+    localStorage.removeItem(constants.localStorage.tokenKey);
     navigate('/auth');
   };
 

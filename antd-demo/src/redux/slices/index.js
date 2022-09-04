@@ -1,5 +1,8 @@
 export {
   apiSlice,
+  useAutoLoginUserMutation,
+  useLoginUserMutation,
+  useRegisterUserMutation,
   useRetrieveChowCategoryOptionsQuery,
   useCreateNewChowMutation,
   useRetrieveChowListMutation,
@@ -9,6 +12,8 @@ export {
   useVisitChowMutation,
   useRetrieveChowRankingsMutation,
 } from './apiSlice';
+
+export { authSlice, setUser, setAuthError } from './authSlice';
 
 export {
   chowSlice,

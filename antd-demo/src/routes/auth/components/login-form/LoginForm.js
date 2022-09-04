@@ -1,24 +1,54 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, Checkbox, Input, Button, Space, Alert } from 'antd';
 
+import {
+  useLoginUserMutation,
+  setUser,
+  setAuthError,
+} from '../../../../redux/slices';
 import { FormTextButtonRow } from '../form-text-button-row/FormTextButtonRow';
 
 import styles from './LoginForm.module.less';
+import { isEmail } from '../../../../utils/inputUtil';
+import { constants } from '../../../../constants';
 
 const LoginForm = ({ onRegisterHereClick }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [showError, setShowError] = useState(false);
+  const { authError } = useSelector((state) => state.auth);
+
+  const [loginUser] = useLoginUserMutation();
 
   const onAlertClose = () => {
-    setShowError(false);
+    dispatch(setAuthError(null));
   };
 
   const onLogin = (values) => {
-    console.log('Success:', values);
-    setShowError(true);
-    navigate('/app');
+    const authCredentials = {
+      password: values.password,
+    };
+
+    if (isEmail(values.usernameOrEmail)) {
+      authCredentials.email = values.usernameOrEmail;
+    } else {
+      authCredentials.username = values.usernameOrEmail;
+    }
+
+    loginUser(authCredentials).then(({ data, error }) => {
+      if (error) {
+        // TODO: Logout user and display error modal
+        console.log(error);
+        dispatch(setAuthError(error.data));
+        return;
+      }
+
+      console.log(data);
+      dispatch(setUser(data));
+      localStorage.setItem(constants.localStorage.tokenKey, data.token);
+      navigate('/app');
+    });
   };
 
   return (
@@ -36,12 +66,12 @@ const LoginForm = ({ onRegisterHereClick }) => {
         size='middle'
         className={`${styles.formItem}`}
       >
-        {showError && (
+        {authError && (
           <Alert
             type='error'
             afterClose={onAlertClose}
             showIcon
-            message='Invalid credentials'
+            message={authError.description}
             closable
           />
         )}

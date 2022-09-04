@@ -14,6 +14,7 @@ import styles from './ChowRoute.module.less';
 const ChowRoute = () => {
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.auth);
   const { chowListFilter, chowList } = useSelector((state) => state.chow);
 
   const [retrieveChowList] = useRetrieveChowListMutation();
@@ -29,7 +30,7 @@ const ChowRoute = () => {
 
       dispatch(setChowList(data));
     });
-  }, [chowListFilter]);
+  }, [user, chowListFilter]);
 
   return (
     <Card

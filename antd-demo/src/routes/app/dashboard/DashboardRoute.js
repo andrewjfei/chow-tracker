@@ -13,6 +13,7 @@ import styles from './DashboardRoute.module.less';
 const DashboardRoute = () => {
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => state.auth);
   const { chowList } = useSelector((state) => state.chow);
   const { chowRankings } = useSelector((state) => state.dashboard);
 
@@ -27,7 +28,7 @@ const DashboardRoute = () => {
       }
       dispatch(setChowRankings(data));
     });
-  }, [chowList]);
+  }, [user, chowList]);
 
   return (
     <div className={`${styles.dashboardRouteContainer}`}>

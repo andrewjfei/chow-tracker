@@ -2,8 +2,10 @@ package dev.andrewjfei.service.controller;
 
 import dev.andrewjfei.service.dto.AuthDto;
 import dev.andrewjfei.service.dto.ErrorDto;
+import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.UserDto;
 import dev.andrewjfei.service.enumeration.Error;
+import dev.andrewjfei.service.service.AuthService;
 import dev.andrewjfei.service.util.TokenUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,71 @@ public class AuthControllerIT {
 
     @Autowired
     private AuthController authController;
+
+    @Autowired
+    private AuthService authService;
+
+    /******************************************************************************************/
+    /*************************************** Auto Login ***************************************/
+    /******************************************************************************************/
+
+    @Test
+    public void autoLogin_success_returnsUser() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<UserDto> response = testRestTemplate.exchange(
+                AUTH_URI + "/auto-login",
+                HttpMethod.GET,
+                request,
+                UserDto.class
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(USERNAME, response.getBody().username());
+        Assertions.assertEquals(FIRST_NAME, response.getBody().firstName());
+        Assertions.assertEquals(LAST_NAME, response.getBody().lastName());
+        Assertions.assertEquals(EMAIL, response.getBody().email());
+        Assertions.assertEquals(userDto.token(), response.getBody().token());
+
+        String token = response.getBody().token();
+
+        // Validate token
+        Assertions.assertDoesNotThrow(() -> TokenUtil.validateUserAuthToken(token));
+    }
+
+    @Test
+    public void autoLogin_withInvalidToken_throwsException() {
+        String invalidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiJCb2JieSIsImxhc3ROYW1lIjoiSm9uZXMiLCJpc3MiOiJhdXRoMCIsImlkIjoiMjQ0ZmRmNjYtNDI5ZS00ZDFiLTkxNTItNjE2Nzc1MTcyZTAxIiwiZXhwIjoxNjYyMjQ3MTQxLCJlbWFpbCI6ImJvYmJ5am9uZXNAdGVzdC5jb20iLCJ1c2VybmFtZSI6ImJvYmJ5am9uZXMifQ.fVNuQkh9jAISdrJ385yTDTVsXRXfzOJ7uw6UzL17r69MOuzVp1mRjvODNdMZ4o6Vg23xGNf--lbZnEkIQslePyoZudXT8Qe5vJVdWIV5WGhTV4J6zz4PGFIIOMG5OjJ6wOrYXAW8MsAvmS6c1owzzcGlxs-lXIFKaDEyesNAgxPAFSbZNPw-M442rzpXJHB0UKd_FRzgc5r2GZTrKjOtd-Ziqqzg3Wr-urBY4TiChJvzy3YZ7-9DtH0Ymafhe7XfIPk83hLaVtBctdC_lrVdGdZkQL9SzegvLAdC4g7WqSYBw1Jn5EE-JECHIimTrkduYYA7ywG4QvFG0w7q6eHkg2";
+
+        // Given
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + invalidToken);
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<ErrorDto> response = testRestTemplate.exchange(
+                AUTH_URI + "/auto-login",
+                HttpMethod.GET,
+                request,
+                ErrorDto.class
+        );
+
+        // Then
+        Assertions.assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.errorCode, response.getBody().code());
+        Assertions.assertEquals(Error.JWT_VERIFICATION_FAILURE.description, response.getBody().description());
+    }
 
     /*************************************************************************************/
     /*************************************** Login ***************************************/
@@ -148,6 +216,11 @@ public class AuthControllerIT {
     /**********************************************************************************************/
     /*************************************** Helper Methods ***************************************/
     /**********************************************************************************************/
+
+    private UserDto loginUser(String username, String email, String password) {
+        AuthDto authDto = new AuthDto(username, email, password);
+        return authService.authenticateUser(authDto);
+    }
 
     private AuthDto createAuthDto(String username, String email, String password) {
         return new AuthDto(username, email, password);
