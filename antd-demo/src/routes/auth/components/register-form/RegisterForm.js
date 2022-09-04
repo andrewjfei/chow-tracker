@@ -1,20 +1,81 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, Input, Button, Space, Alert } from 'antd';
 
+import {
+  useRegisterUserMutation,
+  setUser,
+  setAuthError,
+} from '../../../../redux/slices';
 import { FormTextButtonRow } from '../form-text-button-row/FormTextButtonRow';
+import { isEmail, splitBy } from '../../../../utils/inputUtil';
+import { constants } from '../../../../constants';
 
 import styles from './RegisterForm.module.less';
 
 const RegisterForm = ({ onLoginHereClick }) => {
-  const [showError, setShowError] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { authError } = useSelector((state) => state.auth);
+
+  const [registerUser] = useRegisterUserMutation();
 
   const onAlertClose = () => {
-    setShowError(false);
+    dispatch(setAuthError(null));
   };
 
   const onRegister = (values) => {
-    console.log('Success:', values);
-    setShowError(true);
+    const [firstName, lastName] = splitBy(values.fullName, ' ');
+
+    if (!firstName || !lastName) {
+      dispatch(
+        setAuthError({ code: -1, description: 'Full name must be provided.' })
+      );
+      return;
+    }
+
+    if (!isEmail(values.email)) {
+      dispatch(
+        setAuthError({
+          code: -1,
+          description: 'Email provided is not a valid email address.',
+        })
+      );
+      return;
+    }
+
+    if (values.password !== values.confirmedPassword) {
+      dispatch(
+        setAuthError({
+          code: -1,
+          description: 'Passwords provided do not match.',
+        })
+      );
+      return;
+    }
+
+    const newUser = {
+      username: values.username,
+      firstName,
+      lastName,
+      email: values.email,
+      password: values.password,
+      confirmedPassword: values.confirmedPassword,
+    };
+
+    registerUser(newUser).then(({ data, error }) => {
+      if (error) {
+        // TODO: Logout user and display error modal
+        console.log(error);
+        dispatch(setAuthError(error.data));
+        return;
+      }
+
+      dispatch(setUser(data));
+      localStorage.setItem(constants.localStorage.tokenKey, data.token);
+      navigate('/app');
+    });
   };
 
   return (
@@ -32,12 +93,12 @@ const RegisterForm = ({ onLoginHereClick }) => {
         size='middle'
         className={`${styles.formItem}`}
       >
-        {showError && (
+        {authError && (
           <Alert
             type='error'
             afterClose={onAlertClose}
             showIcon
-            message='Passwords do not match'
+            message={authError.description}
             closable
           />
         )}
@@ -53,7 +114,7 @@ const RegisterForm = ({ onLoginHereClick }) => {
         <Form.Item name='password' noStyle={true}>
           <Input placeholder='Password' type='password' />
         </Form.Item>
-        <Form.Item name='confirmPassword' noStyle={true}>
+        <Form.Item name='confirmedPassword' noStyle={true}>
           <Input placeholder='Confirm password' type='password' />
         </Form.Item>
         <Button

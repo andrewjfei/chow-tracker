@@ -8,10 +8,10 @@ import {
   setAuthError,
 } from '../../../../redux/slices';
 import { FormTextButtonRow } from '../form-text-button-row/FormTextButtonRow';
-
-import styles from './LoginForm.module.less';
 import { isEmail } from '../../../../utils/inputUtil';
 import { constants } from '../../../../constants';
+
+import styles from './LoginForm.module.less';
 
 const LoginForm = ({ onRegisterHereClick }) => {
   const navigate = useNavigate();
@@ -44,7 +44,6 @@ const LoginForm = ({ onRegisterHereClick }) => {
         return;
       }
 
-      console.log(data);
       dispatch(setUser(data));
       localStorage.setItem(constants.localStorage.tokenKey, data.token);
       navigate('/app');

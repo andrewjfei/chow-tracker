@@ -8,3 +8,7 @@ export const isEmail = (string) => {
 export const isBlank = (string) => {
   return string.trim().length === 0;
 };
+
+export const splitBy = (string, character) => {
+  return string.split(character);
+};
