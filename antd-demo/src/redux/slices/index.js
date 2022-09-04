@@ -3,7 +3,7 @@ export {
   useAutoLoginUserMutation,
   useLoginUserMutation,
   useRegisterUserMutation,
-  useRetrieveChowCategoryOptionsQuery,
+  useRetrieveChowCategoryOptionsMutation,
   useCreateNewChowMutation,
   useRetrieveChowListMutation,
   useUpdateChowMutation,

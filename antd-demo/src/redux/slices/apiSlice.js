@@ -40,7 +40,7 @@ const apiSlice = createApi({
         body: newUser,
       }),
     }),
-    retrieveChowCategoryOptions: build.query({
+    retrieveChowCategoryOptions: build.mutation({
       query: () => ({
         url: `/chow/category-options`,
         method: 'GET',
@@ -109,7 +109,7 @@ export const {
   useAutoLoginUserMutation,
   useLoginUserMutation,
   useRegisterUserMutation,
-  useRetrieveChowCategoryOptionsQuery,
+  useRetrieveChowCategoryOptionsMutation,
   useCreateNewChowMutation,
   useRetrieveChowListMutation,
   useUpdateChowMutation,

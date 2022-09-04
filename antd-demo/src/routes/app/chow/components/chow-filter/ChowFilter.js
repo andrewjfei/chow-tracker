@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, Select } from 'antd';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 
 import {
-  useRetrieveChowCategoryOptionsQuery,
+  useRetrieveChowCategoryOptionsMutation,
   setChowCategoryOptions,
   resetFilters,
   setSearchFilter,
   setCuisineFilter,
   setPriceRangeFilter,
   setAreaFilter,
-  useUpdateChowMutation,
 } from '../../../../../redux/slices';
 import {
   formatAreaOption,
@@ -23,8 +22,11 @@ import styles from './ChowFilter.module.less';
 const ChowFilter = () => {
   const dispatch = useDispatch();
 
-  const { data: chowCategoryOptions, isSuccess } =
-    useRetrieveChowCategoryOptionsQuery();
+  const { user } = useSelector((state) => state.auth);
+  const { chowCategoryOptions } = useSelector((state) => state.chow);
+
+  const [retrieveChowCategoryOptions] =
+    useRetrieveChowCategoryOptionsMutation();
 
   const [searchString, setSearchString] = useState('');
   const [selectedCuisineOptions, setSelectedCuisineOptions] = useState([]);
@@ -34,10 +36,15 @@ const ChowFilter = () => {
   const [selectedAreaOptions, setSelectedAreaOptions] = useState([]);
 
   useEffect(() => {
-    if (isSuccess) {
-      dispatch(setChowCategoryOptions(chowCategoryOptions));
-    }
-  }, [isSuccess]);
+    retrieveChowCategoryOptions().then(({ data, error }) => {
+      if (error) {
+        console.log(error);
+        return;
+      }
+
+      dispatch(setChowCategoryOptions(data));
+    });
+  }, [user]);
 
   // Updating Filters
   const onSearchFilterChange = (value) => {

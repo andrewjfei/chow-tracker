@@ -34,15 +34,14 @@ const ChowDrawer = ({
   //   resetValues();
   // });
 
-  // const resetValues = () => {
-  //   if (!chow) return;
-
-  //   setShowError(false);
-  //   setChowName(chow.name);
-  //   setChowCuisine(chow.cuisine);
-  //   setChowPriceRange(chow.priceRange);
-  //   setChowArea(chow.area);
-  // };
+  const resetValues = () => {
+    onAlertClose();
+    setChowName(chow ? chow.name : '');
+    setChowCuisine(chow ? chow.cuisine : null);
+    setChowPriceRange(chow ? chow.priceRange : null);
+    setChowArea(chow ? chow.area : null);
+    setChowHasBeen(chow ? chow.hasBeen : 0);
+  };
 
   const onAlertClose = () => {
     dispatch(setChowError(null));
@@ -65,11 +64,17 @@ const ChowDrawer = ({
   };
 
   const onCloseClick = () => {
+    resetValues();
     onClose();
   };
 
   const onSubmitClick = () => {
     // TODO: Call update api on success update item in list
+    console.log(chowName);
+    console.log(chowCuisine);
+    console.log(chowPriceRange);
+    console.log(chowArea);
+    console.log(chowHasBeen);
 
     if (chowName.length === 0 || !chowCuisine || !chowPriceRange || !chowArea) {
       dispatch(
@@ -86,6 +91,7 @@ const ChowDrawer = ({
       hasBeen: chowHasBeen,
     };
 
+    resetValues();
     onSubmit(chow);
   };
 
@@ -94,6 +100,7 @@ const ChowDrawer = ({
       title={title}
       width={420}
       onClose={onCloseClick}
+      destroyOnClose={true}
       visible={visible}
       extra={
         <Button onClick={onSubmitClick} type='primary' htmlType='submit'>
@@ -104,10 +111,10 @@ const ChowDrawer = ({
       <Form
         name='chow-form'
         initialValues={{
-          name: chowName,
-          cuisine: chowCuisine,
-          priceRange: chowPriceRange,
-          area: chowArea,
+          name: chow ? chow.name : '',
+          cuisine: chow ? chow.cuisine : null,
+          priceRange: chow ? chow.priceRange : null,
+          area: chow ? chow.area : null,
         }}
         autoComplete='off'
         className={`${styles.chowForm}`}
@@ -130,12 +137,14 @@ const ChowDrawer = ({
             <Input
               placeholder='Enter chow name'
               type='text'
+              value={chowName}
               onChange={(event) => onNameChange(event.target.value)}
             />
           </Form.Item>
           <Form.Item name='cuisine' noStyle={true}>
             <Select
               placeholder='Select chow cuisine'
+              value={chowCuisine}
               onChange={onCuisineCategoryChange}
               className={`${styles.select}`}
             >
@@ -153,6 +162,7 @@ const ChowDrawer = ({
           <Form.Item name='priceRange' noStyle={true}>
             <Select
               placeholder='Select chow price range'
+              value={chowPriceRange}
               onChange={onPriceRangeCategoryChange}
               className={`${styles.select}`}
             >
@@ -170,6 +180,7 @@ const ChowDrawer = ({
           <Form.Item name='area' noStyle={true}>
             <Select
               placeholder='Select chow area'
+              value={chowArea}
               onChange={onAreaCategoryChange}
               className={`${styles.select}`}
             >
