@@ -3,6 +3,8 @@ package dev.andrewjfei.service.service;
 import dev.andrewjfei.service.dao.ChowDao;
 import dev.andrewjfei.service.dao.RankingItemDao;
 import dev.andrewjfei.service.dto.ChowDto;
+import dev.andrewjfei.service.dto.CategoryOptionsDto;
+import dev.andrewjfei.service.dto.ChowRankingsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.enumeration.Area;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -111,10 +114,13 @@ public class ChowService {
 
         ChowDao chowDao = optionalChowDao.get();
 
-        // Check if chow name already exists in database
-        isNameAvailable(chowDao.getUserId(), newChowDto.name());
+        // If names are same then no need to check if name is available
+        if (!newChowDto.name().equals(chowDao.getName())) {
+            // Check if chow name already exists in database
+            isNameAvailable(chowDao.getUserId(), newChowDto.name());
+            chowDao.setName(newChowDto.name());
+        }
 
-        chowDao.setName(newChowDto.name());
         chowDao.setCuisine(newChowDto.cuisine());
         chowDao.setPriceRange(newChowDto.priceRange());
         chowDao.setArea(newChowDto.area());
@@ -146,6 +152,27 @@ public class ChowService {
     /***************************************************************************************/
     /*************************************** Ranking ***************************************/
     /***************************************************************************************/
+
+    public ChowRankingsDto retrieveChowRankings(String userId, int limit) {
+        // Check if user id is valid
+        if (!userRepository.existsById(userId)) {
+            throw new ChowTrackerServiceException(Error.INVALID_USER_ID, HttpStatus.BAD_REQUEST);
+        }
+
+        List<RankingItemDao> popularityRankingsDao = chowRepository.retrieveChowListByPopularityRanking(userId, limit);
+        List<RankingItemDao> cuisineRankingsDao = chowRepository.retrieveChowListByCuisineRanking(userId, limit);
+        List<RankingItemDao> priceRangeRankingsDao = chowRepository.retrieveChowListByPriceRangeRanking(userId, limit);
+        List<RankingItemDao> areaRankingsDao = chowRepository.retrieveChowListByAreaRanking(userId, limit);
+
+        List<RankingItemDto> popularityRankingsDto = toRankingItemList(popularityRankingsDao);
+        List<RankingItemDto> cuisineRankingsDto = toRankingItemList(cuisineRankingsDao);
+        List<RankingItemDto> priceRangeRankingsDto = toRankingItemList(priceRangeRankingsDao);
+        List<RankingItemDto> areaRankingsDto = toRankingItemList(areaRankingsDao);
+
+        ChowRankingsDto chowRankingsDto = new ChowRankingsDto(popularityRankingsDto, cuisineRankingsDto, priceRangeRankingsDto, areaRankingsDto);
+
+        return chowRankingsDto;
+    }
 
     public List<RankingItemDto> retrieveChowListPopularityRanking(String userId, int limit) {
         // Check if user id is valid
@@ -197,6 +224,20 @@ public class ChowService {
 
     public ChowDto selectRandomChow(List<ChowDto> chowDtoList) {
         return RandomUtil.selectRandomFromList(chowDtoList);
+    }
+
+    /**********************************************************************************************/
+    /*************************************** Filter Options ***************************************/
+    /**********************************************************************************************/
+
+    public CategoryOptionsDto retrieveChowCategoryOptions() {
+        List<Cuisine> cuisineList = Arrays.asList(Cuisine.values());
+        List<PriceRange> priceRangeList = Arrays.asList(PriceRange.values());
+        List<Area> areaList = Arrays.asList(Area.values());
+
+        CategoryOptionsDto categoryOptionsDto = new CategoryOptionsDto(cuisineList, priceRangeList, areaList);
+
+        return categoryOptionsDto;
     }
 
     /**********************************************************************************************/

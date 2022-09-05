@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import { BrowserRouter } from 'react-router-dom';
+import './index.less';
+import 'antd/dist/antd.less';
 import reportWebVitals from './reportWebVitals';
-import { RootRouter } from './routes';
 import { store } from './redux';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+
+import { RootRoute } from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <RootRouter />
+        <RootRoute />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

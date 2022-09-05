@@ -4,7 +4,9 @@ import dev.andrewjfei.service.dao.ChowDao;
 import dev.andrewjfei.service.dao.UserDao;
 import dev.andrewjfei.service.dto.AuthDto;
 import dev.andrewjfei.service.dto.ChowDto;
+import dev.andrewjfei.service.dto.ChowRankingsDto;
 import dev.andrewjfei.service.dto.ErrorDto;
+import dev.andrewjfei.service.dto.CategoryOptionsDto;
 import dev.andrewjfei.service.dto.NewChowDto;
 import dev.andrewjfei.service.dto.RankingItemDto;
 import dev.andrewjfei.service.dto.UserDto;
@@ -17,10 +19,8 @@ import dev.andrewjfei.service.repository.UserRepository;
 import dev.andrewjfei.service.service.AuthService;
 import dev.andrewjfei.service.util.MapperUtil;
 import dev.andrewjfei.service.util.RandomUtil;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +38,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -564,6 +565,42 @@ public class ChowControllerIT {
         Assertions.assertEquals(CHOW_HAS_BEEN + 1, updatedChowDto.hasBeen());
     }
 
+    /*************************************************************************************************/
+    /*************************************** Get Chow Rankings ***************************************/
+    /*************************************************************************************************/
+
+    @Test
+    public void getChowRankings_success_returnsChowRankings() {
+        // Given
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("limit", String.valueOf(LIMIT));
+
+        // When
+        ResponseEntity<ChowRankingsDto> response = testRestTemplate.exchange(
+                CHOW_URI + "/ranking?limit={limit}",
+                HttpMethod.GET,
+                request,
+                ChowRankingsDto.class,
+                uriVariables
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(LIMIT, response.getBody().popularity().size());
+        Assertions.assertEquals(LIMIT, response.getBody().cuisine().size());
+        Assertions.assertEquals(LIMIT, response.getBody().priceRange().size());
+        Assertions.assertEquals(LIMIT, response.getBody().area().size());
+    }
+
     /*******************************************************************************************************************/
     /*************************************** Get Chow List By Popularity Ranking ***************************************/
     /*******************************************************************************************************************/
@@ -733,6 +770,7 @@ public class ChowControllerIT {
 
         // Mocking static method using try with resources
         try (MockedStatic<RandomUtil> mockedRandomUtil = Mockito.mockStatic(RandomUtil.class)) {
+            // TODO: Fix mocking static method
             mockedRandomUtil.when(() -> RandomUtil.getRandomIndex(anyInt())).thenReturn(1);
 
             // When
@@ -752,6 +790,40 @@ public class ChowControllerIT {
             Assertions.assertEquals(priceRange2, response.getBody().priceRange());
             Assertions.assertEquals(area2, response.getBody().area());
         }
+    }
+
+    /*******************************************************************************************************/
+    /*************************************** Get Chow Filter Options ***************************************/
+    /*******************************************************************************************************/
+
+    @Test
+    public void getChowCategoryOptions_success_returnsCategoryOptions() {
+        List<Cuisine> cuisineList = Arrays.asList(Cuisine.values());
+        List<PriceRange> priceRangeList = Arrays.asList(PriceRange.values());
+        List<Area> areaList = Arrays.asList(Area.values());
+
+        UserDto userDto = loginUser(USERNAME, EMAIL, PASSWORD); // Login user
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + userDto.token());
+
+        HttpEntity<Void> request = new HttpEntity<>(headers);
+
+        // When
+        ResponseEntity<CategoryOptionsDto> response = testRestTemplate.exchange(
+                CHOW_URI + "/category-options",
+                HttpMethod.GET,
+                request,
+                CategoryOptionsDto.class
+        );
+
+        // Then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Assertions.assertEquals(cuisineList.size(), response.getBody().cuisineOptions().size());
+        Assertions.assertEquals(priceRangeList.size(), response.getBody().priceRangeOptions().size());
+        Assertions.assertEquals(areaList.size(), response.getBody().areaOptions().size());
     }
 
     /**********************************************************************************************/
