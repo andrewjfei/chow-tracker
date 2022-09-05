@@ -848,6 +848,34 @@ Chow Tracker is a simple web application to help you track and decide your next 
 
 ## UI/UX Design
 
+### Login
+
+![login](assets/ct-login.png)
+
+### Register
+
+![register](assets/ct-register.png)
+
+### Home
+
+![home](assets/ct-home.png)
+
+### Create New Chow
+
+![create-chow](assets/ct-create-chow.png)
+
+### Visit Chow
+
+![visit-chow](assets/ct-visit-chow.png)
+
+### Delete Chow
+
+![delete-chow](assets/ct-delete-chow.png)
+
+### Random Chow
+
+![random-chow](assets/ct-random-chow.png)
+
 ## Running Locally
 
 ### Running the Server (Using IntelliJ)

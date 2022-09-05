@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.less';
 import 'antd/dist/antd.less';
 import reportWebVitals from './reportWebVitals';
-import { store } from './redux';
+import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-
 import { RootRoute } from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
