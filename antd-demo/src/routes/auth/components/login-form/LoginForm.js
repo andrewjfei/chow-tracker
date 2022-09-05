@@ -13,7 +13,7 @@ import { constants } from '../../../../constants';
 
 import styles from './LoginForm.module.less';
 
-const LoginForm = ({ onRegisterHereClick }) => {
+const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,6 +23,10 @@ const LoginForm = ({ onRegisterHereClick }) => {
 
   const onAlertClose = () => {
     dispatch(setAuthError(null));
+  };
+
+  const onRegisterHereClick = () => {
+    navigate('/auth/register');
   };
 
   const onLogin = (values) => {
@@ -47,6 +51,7 @@ const LoginForm = ({ onRegisterHereClick }) => {
       dispatch(setUser(data));
       localStorage.setItem(constants.localStorage.tokenKey, data.token);
       navigate('/app');
+      dispatch(setAuthError(null));
     });
   };
 

@@ -59,6 +59,7 @@ const ChowItem = ({ chowItem, index }) => {
         return;
       }
 
+      console.log(index);
       dispatch(modifyChow({ index, modifedChow: data }));
       onDrawerCloseClick();
     });

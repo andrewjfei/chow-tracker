@@ -10,6 +10,10 @@ import { constants } from '../../../../constants';
 const NavBar = () => {
   const navigate = useNavigate();
 
+  const onHomeClick = () => {
+    navigate('/app/home');
+  };
+
   const onLogoutClick = () => {
     localStorage.removeItem(constants.localStorage.tokenKey);
     navigate('/auth');
@@ -34,8 +38,8 @@ const NavBar = () => {
           <Button
             type='text'
             icon={<HomeOutlined className={`${styles.icon}`} />}
-            size='large'
             className={`${styles.button}`}
+            onClick={onHomeClick}
           />
         </Tooltip>
         <Tooltip placement='right' title='Logout'>

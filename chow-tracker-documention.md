@@ -1,25 +1,22 @@
 # Chow Tracker Documentation
 
-
-
 ## What is Chow Tracker?
 
-
+Chow Tracker is a simple web application to help you track and decide your next meal. It provides a simple overview of your most visited chow venues to help you understand your current food choices, while also providing a storage system to help you track all the chow venues you have been to or is on your wishlist. A unique feautre that Chow Tracker provides, is a custom randomiser, to help you decide which chow venue you should go to for you next meal.
 
 ### Features
 
 - Protected API
 - Authentication
 - Input Validation
-- Chow Ranking List 
+- Chow Ranking List
 - Chow List
 - Chow Randomiser
+- Visit Chow
 
 ### Future Plans
 
 - Chow Audit History
-
-
 
 ## Technology Stack
 
@@ -32,17 +29,15 @@
     - java-jwt (JWT)
     - h2 (H2)
     - spring-boot-starter-test (JUnit & Mockito)
-    - mockito-inline (Mockito) 
-    - httpclient (Http Client) 
+    - mockito-inline (Mockito)
+    - httpclient (Http Client)
 - **Javascript (React.js)** - ES6
+  - Ant Design
+  - React Router
   - Redux Toolkit
-- SQL Database (MySQL)
-
-
+- **SQL Database (MySQL)**
 
 ## Architecture Design
-
-
 
 ### Database Schemas
 
@@ -58,11 +53,7 @@
 | VARCHAR(60) | VARCHAR(60) | VARCHAR(32) | ENUM    | ENUM        | ENUM | INT      | DATETIME |
 ```
 
-
-
 ### REST APIs
-
-
 
 #### Register
 
@@ -129,8 +120,6 @@
   
 </table>
 
-
-
 #### Login
 
 <table>
@@ -192,7 +181,6 @@
 </tr>
   
 </table>
-
 
 #### Retrieve Chow List
 
@@ -299,6 +287,7 @@
   "area": "CENTRAL_AUCKLAND"
 }
 ```
+
   </td>
 </tr>
 
@@ -328,15 +317,15 @@
 
 #### Update Chow
 
-| HTTP Request/Response | Value                                             |
-| --------------------- | ------------------------------------------------- |
-| **HTTP Method**       | PUT                                               |
-| **URI**               | /api/chow/{chowId}                                |
-| **Headers**           | Authorization                                     |
-| **Query Params**      | -                                                 |
-| **Request Body**      | name, cuisine, priceRange, area                   |
-| **Response Body**     | -                                                 |
-| **Response Status**   | `200 OK`,  `400 BAD_REQUEST`,  `401 UNAUTHORIZED` |
+| HTTP Request/Response | Value                                           |
+| --------------------- | ----------------------------------------------- |
+| **HTTP Method**       | PUT                                             |
+| **URI**               | /api/chow/{chowId}                              |
+| **Headers**           | Authorization                                   |
+| **Query Params**      | -                                               |
+| **Request Body**      | name, cuisine, priceRange, area                 |
+| **Response Body**     | -                                               |
+| **Response Status**   | `200 OK`, `400 BAD_REQUEST`, `401 UNAUTHORIZED` |
 
 <table>
 
@@ -372,6 +361,7 @@
   "area": "CENTRAL_AUCKLAND"
 }
 ```
+
   </td>
 </tr>
 
@@ -783,7 +773,7 @@
 
 <tr>
   <td> <b>Request Body</b> </td>
-  <td> 
+  <td>
 
 ```json
 [
@@ -840,3 +830,41 @@
 
 ### UI/UX Design
 
+## Running Locally
+
+### Running The Server (Using IntelliJ)
+
+Firstly, ensure that you have **IntelliJ** installed on your machine. As we will be using the IDE to run the server.
+
+Secondly, ensure that you have **Java 18** installed, specifcally **JDK (Java Development Kit) 18**. As this is the verison of Java which the server uses.
+
+Once you have **IntelliJ** and **JDK 18** installed and the server up and running follow the steps below:
+
+1. Open the `service` folder in **IntelliJ** and wait for all the dependencies to be installed.
+
+2. Confirm that the server builds successfully by running `mvn clean install`, executing the command by pressing `CMD + ENTER` (MacOS) to run the command via the IDE.
+
+3. If the build is successful proceed to step 4, otherwise fix the service until it builds successfully.
+
+4. Navigate to `src/main/java/dev/andrewjfei/service/ChowTrackerServiceApplication.java` and right click the file and `run`.
+
+5. Go to `localhost:8080/api/chow`, you should see something similar to below. Your server is now up and running.
+
+```json
+{
+  "code": 7,
+  "description": "User does not have the right permissions to make this request."
+}
+```
+
+### Running The Client
+
+Firstly, ensure that you have **Node** installed on your machine. The client side requires `npm` **(Node Package Manager)**, which comes installed with **Node**.
+
+Secondly, ensure that the server is up and running on `localhost:8080`.
+
+Once you have **Node** installed and the server up and running follow the steps below:
+
+1. Install all client dependencies by running `npm ci`.
+2. Start the client by running `npm start`.
+3. Go to `localhost:3000` to start using the web application.

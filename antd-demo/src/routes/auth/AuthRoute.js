@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Card from 'antd/lib/card/Card';
 
@@ -17,8 +17,6 @@ const AuthRoute = () => {
 
   const [autoLoginUser] = useAutoLoginUserMutation();
 
-  const [showLoginForm, setShowLoginForm] = useState(true);
-
   useEffect(() => {
     const token = localStorage.getItem(constants.localStorage.tokenKey);
 
@@ -28,20 +26,11 @@ const AuthRoute = () => {
           return;
         }
 
-        console.log(data);
         dispatch(setUser(data));
         navigate('/app');
       });
     }
   }, []);
-
-  const onRegisterHereClick = () => {
-    setShowLoginForm(false);
-  };
-
-  const onLoginHereClick = () => {
-    setShowLoginForm(true);
-  };
 
   return (
     <AuthLayout>
@@ -51,11 +40,16 @@ const AuthRoute = () => {
         headStyle={{ display: 'flex', justifyContent: 'center' }}
         bodyStyle={{ display: 'flex', flexDirection: 'column' }}
       >
-        {showLoginForm ? (
+        {/* {showLoginForm ? (
           <LoginForm onRegisterHereClick={onRegisterHereClick} />
         ) : (
           <RegisterForm onLoginHereClick={onLoginHereClick} />
-        )}
+        )} */}
+        <Routes>
+          <Route index element={<Navigate replace to='/auth/login' />} />
+          <Route path='login' element={<LoginForm />} />
+          <Route path='register' element={<RegisterForm />} />
+        </Routes>
       </Card>
     </AuthLayout>
   );

@@ -13,7 +13,6 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
     setAuthError: (state, action) => {
-      console.log(action.payload);
       state.authError = action.payload;
     },
   },

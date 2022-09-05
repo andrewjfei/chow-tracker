@@ -20,7 +20,9 @@ const ChowDrawer = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { chowCategoryOptions, chowError } = useSelector((state) => state.chow);
+  const { chowCategoryOptions, chowList, chowError } = useSelector(
+    (state) => state.chow
+  );
 
   const [chowName, setChowName] = useState(chow ? chow.name : '');
   const [chowCuisine, setChowCuisine] = useState(chow ? chow.cuisine : null);
@@ -30,9 +32,9 @@ const ChowDrawer = ({
   const [chowArea, setChowArea] = useState(chow ? chow.area : null);
   const [chowHasBeen, setChowHasBeen] = useState(chow ? chow.hasBeen : 0);
 
-  // useEffect(() => {
-  //   resetValues();
-  // });
+  useEffect(() => {
+    resetValues();
+  }, [chowList]);
 
   const resetValues = () => {
     onAlertClose();
@@ -69,13 +71,6 @@ const ChowDrawer = ({
   };
 
   const onSubmitClick = () => {
-    // TODO: Call update api on success update item in list
-    console.log(chowName);
-    console.log(chowCuisine);
-    console.log(chowPriceRange);
-    console.log(chowArea);
-    console.log(chowHasBeen);
-
     if (chowName.length === 0 || !chowCuisine || !chowPriceRange || !chowArea) {
       dispatch(
         setChowError({ code: -1, description: 'All fields are required.' })

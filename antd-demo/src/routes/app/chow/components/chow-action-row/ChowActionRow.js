@@ -68,7 +68,7 @@ const ChowActionRow = () => {
         return;
       }
 
-      dispatch(addNewChow(newChow));
+      dispatch(addNewChow(data));
       onDrawerCloseClick();
     });
   };

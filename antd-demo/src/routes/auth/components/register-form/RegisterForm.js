@@ -13,7 +13,7 @@ import { constants } from '../../../../constants';
 
 import styles from './RegisterForm.module.less';
 
-const RegisterForm = ({ onLoginHereClick }) => {
+const RegisterForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,7 +25,24 @@ const RegisterForm = ({ onLoginHereClick }) => {
     dispatch(setAuthError(null));
   };
 
+  const onLoginHereClick = () => {
+    navigate('/auth/login');
+  };
+
   const onRegister = (values) => {
+    if (
+      !values.username ||
+      !values.fullName ||
+      !values.email ||
+      !values.password ||
+      !values.confirmedPassword
+    ) {
+      dispatch(
+        setAuthError({ code: -1, description: 'All fields are required.' })
+      );
+      return;
+    }
+
     const [firstName, lastName] = splitBy(values.fullName, ' ');
 
     if (!firstName || !lastName) {
@@ -75,6 +92,7 @@ const RegisterForm = ({ onLoginHereClick }) => {
       dispatch(setUser(data));
       localStorage.setItem(constants.localStorage.tokenKey, data.token);
       navigate('/app');
+      dispatch(setAuthError(null));
     });
   };
 
@@ -117,6 +135,7 @@ const RegisterForm = ({ onLoginHereClick }) => {
         <Form.Item name='confirmedPassword' noStyle={true}>
           <Input placeholder='Confirm password' type='password' />
         </Form.Item>
+
         <Button
           type='primary'
           htmlType='submit'

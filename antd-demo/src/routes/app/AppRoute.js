@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { useAutoLoginUserMutation, setUser } from '../../redux/slices';
 import { AppLayout } from '../../layouts';
 import { NavBar } from './components';
-import { ChowRoute, DashboardRoute } from '.';
+import { HomeRoute } from '.';
 import { constants } from '../../constants';
 
 import styles from './AppRoute.module.less';
@@ -32,7 +32,6 @@ const AppRoute = () => {
         return;
       }
 
-      console.log(data);
       dispatch(setUser(data));
       navigate('/app');
     });
@@ -42,9 +41,10 @@ const AppRoute = () => {
     <AppLayout>
       <NavBar />
       <div className={`${styles.routeContainer}`}>
-        <DashboardRoute />
-        <div className={`${styles.rowGap}`} />
-        <ChowRoute />
+        <Routes>
+          <Route index element={<Navigate replace to='/app/home' />} />
+          <Route path='home' element={<HomeRoute />} />
+        </Routes>
       </div>
     </AppLayout>
   );
