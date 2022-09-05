@@ -1,6 +1,6 @@
 {
-  "short_name": "Chow Tracker",
-  "name": "Chow Tracker Web App",
+  "short_name": "Chow Tracker Web",
+  "name": "Chow Tracker Web Application",
   "icons": [
     {
       "src": "favicon.ico",

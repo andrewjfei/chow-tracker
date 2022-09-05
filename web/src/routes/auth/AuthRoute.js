@@ -1,31 +1,57 @@
-import { Button, Card, InputField, Spacer, CheckBox } from '../../components';
-import { RouteContainer } from '../../components/RouteContainer';
-import { Auth } from './components/Auth';
-import RamenDiningRoundedIcon from '@mui/icons-material/RamenDiningRounded';
-import { LoginForm } from './components/LoginForm';
+import { useEffect, useState } from 'react';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import Card from 'antd/lib/card/Card';
+
+import { useAutoLoginUserMutation, setUser } from '../../redux/slices';
+import { AuthLayout } from '../../layouts';
+import { LogoHeader } from '../../components';
+import { LoginForm, RegisterForm } from './components';
+import { constants } from '../../constants';
+
+import styles from './AuthRoute.module.less';
 
 const AuthRoute = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [autoLoginUser] = useAutoLoginUserMutation();
+
+  useEffect(() => {
+    const token = localStorage.getItem(constants.localStorage.tokenKey);
+
+    if (token) {
+      autoLoginUser(token).then(({ data, error }) => {
+        if (error) {
+          return;
+        }
+
+        dispatch(setUser(data));
+        navigate('/app');
+      });
+    }
+  }, []);
+
   return (
-    <RouteContainer className='items-center'>
-      <Card className='col-start-7 col-end-13 p-10'>
-        <Spacer size='sm' />
-        <div className='flex justify-center items-center'>
-          <RamenDiningRoundedIcon
-            color='primary'
-            fontSize='large'
-            sx={{
-              fill: 'rgb(249 115 22)',
-              marginRight: '0.5rem',
-            }}
-          />
-          <p className='text-xl text-orange-500 font-semibold uppercase'>
-            Chow Tracker
-          </p>
-        </div>
-        <Spacer size='lg' />
-        <LoginForm />
+    <AuthLayout>
+      <Card
+        title={<LogoHeader />}
+        className={`${styles.authCard}`}
+        headStyle={{ display: 'flex', justifyContent: 'center' }}
+        bodyStyle={{ display: 'flex', flexDirection: 'column' }}
+      >
+        {/* {showLoginForm ? (
+          <LoginForm onRegisterHereClick={onRegisterHereClick} />
+        ) : (
+          <RegisterForm onLoginHereClick={onLoginHereClick} />
+        )} */}
+        <Routes>
+          <Route index element={<Navigate replace to='/auth/login' />} />
+          <Route path='login' element={<LoginForm />} />
+          <Route path='register' element={<RegisterForm />} />
+        </Routes>
       </Card>
-    </RouteContainer>
+    </AuthLayout>
   );
 };
 
