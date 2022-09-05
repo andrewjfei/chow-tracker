@@ -1,5 +1,19 @@
 # Chow Tracker Documentation
 
+## Table of Contents
+
+- [What is Chow Tracker](#what-is-chow-tracker) 
+  - [Features](#features)
+  - [Future Plans](#future-plans)
+- [Technology Stack](#technology-stack) 
+- [Architecture Design](#architecture-design)
+  - [Database Schemas](#database-schemas)
+  - [REST APIs](#rest-apis)
+- [UI/UX Design](#uiux-design)
+- [Running Locally](#running-locally)
+  - [Running the Server](#running-the-server-using-intellij)
+  - [Running the Client](#running-the-client)
+
 ## What is Chow Tracker?
 
 Chow Tracker is a simple web application to help you track and decide your next meal. It provides a simple overview of your most visited chow venues to help you understand your current food choices, while also providing a storage system to help you track all the chow venues you have been to or is on your wishlist. A unique feautre that Chow Tracker provides, is a custom randomiser, to help you decide which chow venue you should go to for you next meal.
@@ -828,11 +842,11 @@ Chow Tracker is a simple web application to help you track and decide your next 
 
 </table>
 
-### UI/UX Design
+## UI/UX Design
 
 ## Running Locally
 
-### Running The Server (Using IntelliJ)
+### Running the Server (Using IntelliJ)
 
 Firstly, ensure that you have **IntelliJ** installed on your machine. As we will be using the IDE to run the server.
 
@@ -857,7 +871,7 @@ Once you have **IntelliJ** and **JDK 18** installed and the server up and runnin
 }
 ```
 
-### Running The Client
+### Running the Client
 
 Firstly, ensure that you have **Node** installed on your machine. The client side requires `npm` **(Node Package Manager)**, which comes installed with **Node**.
 
